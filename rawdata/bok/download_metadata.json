@@ -1,0 +1,142 @@
+{
+  "downloaded_at_utc": "2026-08-28T00:16:27.460579+00:00",
+  "source": "Bank of Korea",
+  "policy_rate_changes": 61,
+  "mpc_meetings": 190,
+  "source_pages": [
+    {
+      "year": 2008,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2008",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2008.html",
+      "sha256": "7b105a06688f336f05f1b076324c627f0a95721255639f98aeb8474ee02278be",
+      "meetings_parsed": 13
+    },
+    {
+      "year": 2009,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2009",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2009.html",
+      "sha256": "9cbb047e59a66e45b5d205fe3d860e54e4164c9f757ec626abd159e0145f2ed5",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2010,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2010",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2010.html",
+      "sha256": "10fa809edbe67426122f61fa57a0eff3d850ea5d5d11b5ffbfce94cfa6d5f26b",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2011,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2011",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2011.html",
+      "sha256": "5a70d0cb01fc1c2e21a4b65e95b0e89de58a5fe38ec71a6fcf1c2d461a8cb7a3",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2012,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2012",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2012.html",
+      "sha256": "d57c9d74c55f6548e12e8af3f1576385b3a6f67e1fae56cdad707df999515c9b",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2013,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2013",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2013.html",
+      "sha256": "5b6dfc079d90ca57b8ee808bce71660c4a285482a2905e4d29b5c336b46f5a70",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2014,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2014",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2014.html",
+      "sha256": "8c5509848d4a554da12bac9f77a56e594adfcc573fa6699f53ca424977b5e120",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2015,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2015",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2015.html",
+      "sha256": "b78fb84864310833731e3adf08d6e3d059645dbf0632d8c6bcf39a5380869235",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2016,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2016",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2016.html",
+      "sha256": "cfbd708ceff8ec842bcbbb919084629b662af68a6d63bec83d2e944a6585c7e6",
+      "meetings_parsed": 12
+    },
+    {
+      "year": 2017,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2017",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2017.html",
+      "sha256": "847deefaed196d1a2e903afe4af07c8ca2a4abe8df920eea922a3465ff2f9eb3",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2018,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2018",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2018.html",
+      "sha256": "5fdc71244a49d011b62c54b7076ed402e5cafb71c99acfb1191e9f32bbce1209",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2019,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2019",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2019.html",
+      "sha256": "a9d042e50d3969bd05a95117ec07eb72f4bde4d5031da97f532179b24f49ec9a",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2020,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2020",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2020.html",
+      "sha256": "6c20fbf079c3e905c21ec870dcfae76a0dc96a7221b617f31ed8831199ce3ec3",
+      "meetings_parsed": 9
+    },
+    {
+      "year": 2021,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2021",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2021.html",
+      "sha256": "6cb15131bcbde591b2e83491606725006436c8d82d87f7e03b1971514f71cfa5",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2022,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2022",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2022.html",
+      "sha256": "7a80c675cb981280af981e043bf163899594e818d3f78b99ef8ddcab55e04da0",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2023,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2023",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2023.html",
+      "sha256": "8be847b6031baa98d5b3c8edcaf9bb167c953571340906e768cd8358731883bc",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2024,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2024",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2024.html",
+      "sha256": "5fc20aef1c809248086a4b5d4fb4b38cf4ba131d50985f7c7d1325e3f012a48a",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2025,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2025",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2025.html",
+      "sha256": "bffcaf3f391b38ceb0511d7099a077b1042065534eae08360de36147ffd16d62",
+      "meetings_parsed": 8
+    },
+    {
+      "year": 2026,
+      "source_url": "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear=2026",
+      "relative_path": "rawdata\\bok\\source_pages\\mpc_meetings_2026.html",
+      "sha256": "da3abd06034552768f604476387f781ac05cb46fd15db718e900c06fa4721eea",
+      "meetings_parsed": 8
+    }
+  ],
+  "transformation": "HTML table cells were mechanically parsed into ISO dates and CSV; no rates or meeting dates were inferred."
+}

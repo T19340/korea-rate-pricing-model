@@ -1,0 +1,24 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/902Y023/M/195601/202608/IR3TIB/USA",
+  "query": {
+    "slug": "us_short_rate_monthly",
+    "category": "fx_global",
+    "stat_code": "902Y023",
+    "cycle": "M",
+    "start_time": "195601",
+    "items": [
+      "IR3TIB",
+      "USA"
+    ],
+    "description": "미국 단기금리",
+    "end_time": "202608"
+  },
+  "row_count": 744,
+  "first_time": "196406",
+  "last_time": "202606",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

@@ -1,0 +1,15 @@
+# Python 3.10 이상 (타입 힌트에 dict[...] / X | None 문법 사용)
+# 개발·검증 환경: Python 3.14.0 / Windows 11
+
+numpy>=2.0
+scipy>=1.11
+matplotlib>=3.8
+openpyxl>=3.1          # 인포맥스 xlsx 읽기
+python-docx>=1.1       # Word 리포트 생성
+pandas>=2.0            # 일부 수집·검증 스크립트
+
+# 선택 — 없어도 모형은 돌아간다
+pymupdf>=1.24          # Word 렌더 검수(PDF -> 페이지 PNG)
+nbformat>=5.10         # 동반 노트북 조립
+nbclient>=0.10         # 동반 노트북 실행
+pywin32>=306           # Word COM 검수. Windows 전용

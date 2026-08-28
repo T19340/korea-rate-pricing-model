@@ -1,0 +1,24 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/731Y004/M/196405/202608/0000001/0000100",
+  "query": {
+    "slug": "usdkrw_reference_monthly",
+    "category": "fx_global",
+    "stat_code": "731Y004",
+    "cycle": "M",
+    "start_time": "196405",
+    "items": [
+      "0000001",
+      "0000100"
+    ],
+    "description": "원/미국달러 매매기준율 월평균",
+    "end_time": "202608"
+  },
+  "row_count": 747,
+  "first_time": "196405",
+  "last_time": "202607",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

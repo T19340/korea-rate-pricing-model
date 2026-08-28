@@ -1,0 +1,33 @@
+{
+ "asof": "2026-08-07",
+ "anchor_cd91": 2.93,
+ "anchor_date": "2026-08-07",
+ "base_rate": 2.75,
+ "cd_wedge_bp": 18.0,
+ "tenors_pct": {
+  "91": 2.91448,
+  "182": 3.12514,
+  "273": 3.27038,
+  "365": 3.41579
+ },
+ "per_meeting": [
+  {
+   "meeting": "2026-08-27",
+   "delta_bp": 3.9,
+   "p_hike": 0.154
+  },
+  {
+   "meeting": "2026-10-22",
+   "delta_bp": -38.6,
+   "p_hike": 0.0
+  },
+  {
+   "meeting": "2026-11-26",
+   "delta_bp": 95.8,
+   "p_hike": 1.0
+  }
+ ],
+ "cum_2026_bp": 61.0,
+ "implied_yearend": 3.36,
+ "hikes_equiv": 2.44
+}

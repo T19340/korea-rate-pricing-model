@@ -1,0 +1,2 @@
+﻿status,slug,category,description,stat_code,cycle,items,rows,first_time,last_time,downloaded_at_utc,relative_path,sha256,error
+ok,bmsi_policy_rate_survey,surveys,"금투협 BMSI 기준금리 문항 인상/동결/인하 응답 비율(월별, 출처 URL 포함)",KOFIA-BMSI,M,hike|hold|cut,138,2013-01-09,2026-07-14,2026-08-07T10:01:07.275239+00:00,rawdata/surveys/bmsi_policy_rate_survey.csv,311cbf5e6849e9e1ef9ff6892389a1209578c00cde1b4b712bfbcb2c7adfa4c0,

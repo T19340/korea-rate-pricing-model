@@ -1,0 +1,23 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/817Y002/D/20211125/20260807/010901000",
+  "query": {
+    "slug": "kofr_daily",
+    "category": "rates",
+    "stat_code": "817Y002",
+    "cycle": "D",
+    "start_time": "20211125",
+    "items": [
+      "010901000"
+    ],
+    "description": "KOFR 공시 무위험지표금리",
+    "end_time": "20260807"
+  },
+  "row_count": 1153,
+  "first_time": "20211125",
+  "last_time": "20260805",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

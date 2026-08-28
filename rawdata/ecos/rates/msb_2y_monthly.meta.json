@@ -1,0 +1,23 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/721Y001/M/199903/202608/6010200",
+  "query": {
+    "slug": "msb_2y_monthly",
+    "category": "rates",
+    "stat_code": "721Y001",
+    "cycle": "M",
+    "start_time": "199903",
+    "items": [
+      "6010200"
+    ],
+    "description": "통안증권 2년 금리",
+    "end_time": "202608"
+  },
+  "row_count": 329,
+  "first_time": "199903",
+  "last_time": "202607",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

@@ -1,0 +1,21 @@
+{
+  "lambda_per_year": 0.55,
+  "cross_section_rmse_bp": 4.66,
+  "sample": [
+    "2013-01",
+    "2026-08"
+  ],
+  "n_months": 164,
+  "var_eigenvalues_abs": [
+    0.968,
+    0.932,
+    0.932
+  ],
+  "short_proxy_now": 2.982,
+  "base_rate_now": 3.0,
+  "wedge_bp": -1.8,
+  "expected_base_2026_12": 3.239,
+  "expected_base_2027_08": 3.315,
+  "expected_base_2028_08": 2.997,
+  "note": "two-step DNS + VAR(1); expectation under P-measure, no no-arbitrage adjustment; premium for tenor>36m not computed (needs longer path)."
+}

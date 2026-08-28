@@ -1,0 +1,268 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "api_base_url": "https://ecos.bok.or.kr/api/StatisticSearch",
+  "series": [
+    {
+      "slug": "bok_policy_rate_monthly",
+      "category": "rates",
+      "stat_code": "722Y001",
+      "cycle": "M",
+      "start_time": "199905",
+      "items": ["0101000"],
+      "description": "한국은행 기준금리"
+    },
+    {
+      "slug": "unsecured_call_overnight_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "199101",
+      "items": ["1010200"],
+      "description": "무담보 콜금리(1일, 중개거래)"
+    },
+    {
+      "slug": "cd_91d_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "199103",
+      "items": ["2010000"],
+      "description": "CD 91일 금리"
+    },
+    {
+      "slug": "msb_91d_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "200609",
+      "items": ["6010300"],
+      "description": "통안증권 91일 금리"
+    },
+    {
+      "slug": "msb_1y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "198701",
+      "items": ["6010100"],
+      "description": "통안증권 1년 금리"
+    },
+    {
+      "slug": "msb_2y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "199903",
+      "items": ["6010200"],
+      "description": "통안증권 2년 금리"
+    },
+    {
+      "slug": "ktb_1y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "200002",
+      "items": ["5030000"],
+      "description": "국고채 1년 금리"
+    },
+    {
+      "slug": "ktb_2y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "202103",
+      "items": ["5090000"],
+      "description": "국고채 2년 금리"
+    },
+    {
+      "slug": "ktb_3y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "199505",
+      "items": ["5020000"],
+      "description": "국고채 3년 금리"
+    },
+    {
+      "slug": "ktb_5y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "199505",
+      "items": ["5040000"],
+      "description": "국고채 5년 금리"
+    },
+    {
+      "slug": "ktb_10y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "200010",
+      "items": ["5050000"],
+      "description": "국고채 10년 금리"
+    },
+    {
+      "slug": "corporate_aa_minus_3y_monthly",
+      "category": "rates",
+      "stat_code": "721Y001",
+      "cycle": "M",
+      "start_time": "198701",
+      "items": ["7020000"],
+      "description": "회사채 3년 AA- 금리; 신용·유동성 통제용"
+    },
+    {
+      "slug": "kofr_daily",
+      "category": "rates",
+      "stat_code": "817Y002",
+      "cycle": "D",
+      "start_time": "20211125",
+      "items": ["010901000"],
+      "description": "KOFR 공시 무위험지표금리"
+    },
+    {
+      "slug": "cpi_headline_monthly",
+      "category": "inflation",
+      "stat_code": "901Y009",
+      "cycle": "M",
+      "start_time": "196501",
+      "items": ["0"],
+      "description": "소비자물가지수 총지수"
+    },
+    {
+      "slug": "cpi_core_ex_agri_oil_monthly",
+      "category": "inflation",
+      "stat_code": "901Y010",
+      "cycle": "M",
+      "start_time": "197501",
+      "items": ["QB"],
+      "description": "농산물 및 석유류 제외 소비자물가지수"
+    },
+    {
+      "slug": "cpi_core_ex_food_energy_monthly",
+      "category": "inflation",
+      "stat_code": "901Y010",
+      "cycle": "M",
+      "start_time": "199001",
+      "items": ["DB"],
+      "description": "식료품 및 에너지 제외 소비자물가지수"
+    },
+    {
+      "slug": "expected_inflation_1y_monthly",
+      "category": "inflation",
+      "stat_code": "511Y003",
+      "cycle": "M",
+      "start_time": "200202",
+      "items": ["FMB"],
+      "description": "향후 1년 기대인플레이션율"
+    },
+    {
+      "slug": "all_industry_production_monthly",
+      "category": "activity",
+      "stat_code": "901Y033",
+      "cycle": "M",
+      "start_time": "200001",
+      "items": ["A00", "2"],
+      "description": "전산업생산지수(농림어업 제외, 계절조정)"
+    },
+    {
+      "slug": "economic_sentiment_cycle_monthly",
+      "category": "activity",
+      "stat_code": "513Y001",
+      "cycle": "M",
+      "start_time": "200301",
+      "items": ["E2000"],
+      "description": "경제심리지수 순환변동치"
+    },
+    {
+      "slug": "exports_value_monthly",
+      "category": "activity",
+      "stat_code": "901Y118",
+      "cycle": "M",
+      "start_time": "200001",
+      "items": ["T002"],
+      "description": "수출금액"
+    },
+    {
+      "slug": "real_gdp_sa_quarterly",
+      "category": "activity",
+      "stat_code": "200Y104",
+      "cycle": "Q",
+      "start_time": "1960Q1",
+      "items": ["1400"],
+      "description": "계절조정 실질 GDP"
+    },
+    {
+      "slug": "usdkrw_reference_monthly",
+      "category": "fx_global",
+      "stat_code": "731Y004",
+      "cycle": "M",
+      "start_time": "196405",
+      "items": ["0000001", "0000100"],
+      "description": "원/미국달러 매매기준율 월평균"
+    },
+    {
+      "slug": "us_policy_rate_monthly",
+      "category": "fx_global",
+      "stat_code": "902Y006",
+      "cycle": "M",
+      "start_time": "195407",
+      "items": ["US"],
+      "description": "미국 중앙은행 정책금리"
+    },
+    {
+      "slug": "us_short_rate_monthly",
+      "category": "fx_global",
+      "stat_code": "902Y023",
+      "cycle": "M",
+      "start_time": "195601",
+      "items": ["IR3TIB", "USA"],
+      "description": "미국 단기금리"
+    },
+    {
+      "slug": "us_long_rate_monthly",
+      "category": "fx_global",
+      "stat_code": "902Y023",
+      "cycle": "M",
+      "start_time": "195304",
+      "items": ["IRLT", "USA"],
+      "description": "미국 장기금리"
+    },
+    {
+      "slug": "kb_housing_price_total_monthly",
+      "category": "financial_stability",
+      "stat_code": "901Y062",
+      "cycle": "M",
+      "start_time": "198601",
+      "items": ["P63A"],
+      "description": "KB 주택매매가격지수 총지수"
+    },
+    {
+      "slug": "kb_seoul_apartment_price_monthly",
+      "category": "financial_stability",
+      "stat_code": "901Y062",
+      "cycle": "M",
+      "start_time": "198601",
+      "items": ["P63ACA"],
+      "description": "KB 서울 아파트 매매가격지수"
+    },
+    {
+      "slug": "household_credit_quarterly",
+      "category": "financial_stability",
+      "stat_code": "151Y001",
+      "cycle": "Q",
+      "start_time": "2002Q4",
+      "items": ["1000000"],
+      "description": "가계신용 잔액"
+    },
+    {
+      "slug": "korea_unemployment_monthly",
+      "category": "activity",
+      "stat_code": "902Y021",
+      "cycle": "M",
+      "start_time": "199001",
+      "items": ["KOR"],
+      "description": "한국 실업률(계절조정)"
+    }
+  ]
+}

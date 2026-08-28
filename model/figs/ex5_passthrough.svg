@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="481.993203pt" height="243.47717pt" viewBox="0 0 481.993203 243.47717" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-08-10T01:52:29.653034</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 243.47717 
+L 481.993203 243.47717 
+L 481.993203 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 47.113203 188.208 
+L 471.193203 188.208 
+L 471.193203 10.8 
+L 47.113203 10.8 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 82.653971 188.208 
+L 82.653971 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m83196f10df" d="M 0 0 
+L 0 3.5 
+" style="stroke: #6e6e6e; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m83196f10df" x="82.653971" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(73.653971 202.040969)">통안</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(71.175455 212.368187)">3개월</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 126.778779 188.208 
+L 126.778779 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m83196f10df" x="126.778779" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(117.778779 202.040969)">통안</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(115.300263 212.368187)">6개월</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 170.903587 188.208 
+L 170.903587 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m83196f10df" x="170.903587" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(161.903587 202.040969)">통안</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(163.925071 212.368187)">1년</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 215.028395 188.208 
+L 215.028395 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m83196f10df" x="215.028395" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(206.028395 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(208.049879 212.368187)">2년</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 259.153203 188.208 
+L 259.153203 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m83196f10df" x="259.153203" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(250.153203 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(252.174688 212.368187)">3년</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 303.278011 188.208 
+L 303.278011 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m83196f10df" x="303.278011" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(294.278011 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(296.299496 212.368187)">5년</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_13">
+      <path d="M 347.402819 188.208 
+L 347.402819 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m83196f10df" x="347.402819" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(338.402819 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(337.945788 212.368187)">10년</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_15">
+      <path d="M 391.527627 188.208 
+L 391.527627 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m83196f10df" x="391.527627" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(382.527627 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(382.070596 212.368187)">20년</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_17">
+      <path d="M 435.652435 188.208 
+L 435.652435 10.8 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#m83196f10df" x="435.652435" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(426.652435 202.040969)">국고</text>
+      <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; fill: #6e6e6e" transform="translate(426.195404 212.368187)">30년</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_19">
+      <path d="M 47.113203 188.208 
+L 471.193203 188.208 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_20">
+      <defs>
+       <path id="m19e2a54e30" d="M 0 0 
+L -3.5 0 
+" style="stroke: #6e6e6e; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="188.208" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="192.193898" transform="rotate(-0 40.113203 192.193898)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_21">
+      <path d="M 47.113203 157.354435 
+L 471.193203 157.354435 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="157.354435" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="161.340333" transform="rotate(-0 40.113203 161.340333)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_23">
+      <path d="M 47.113203 126.50087 
+L 471.193203 126.50087 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="126.50087" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="130.486768" transform="rotate(-0 40.113203 130.486768)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_25">
+      <path d="M 47.113203 95.647304 
+L 471.193203 95.647304 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_26">
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="95.647304" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="99.633203" transform="rotate(-0 40.113203 99.633203)">0.6</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_27">
+      <path d="M 47.113203 64.793739 
+L 471.193203 64.793739 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_28">
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="64.793739" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="68.779638" transform="rotate(-0 40.113203 68.779638)">0.8</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_29">
+      <path d="M 47.113203 33.940174 
+L 471.193203 33.940174 
+" clip-path="url(#p826e701ada)" style="fill: none; stroke: #d6d6d6; stroke-width: 0.5; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_30">
+      <g>
+       <use xlink:href="#m19e2a54e30" x="47.113203" y="33.940174" style="fill: #6e6e6e; stroke: #6e6e6e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: end; fill: #6e6e6e" x="40.113203" y="37.926072" transform="rotate(-0 40.113203 37.926072)">1.0</text>
+     </g>
+    </g>
+    <g id="text_16">
+     <text style="font-size: 10.5px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #6e6e6e" x="19.767656" y="99.504" transform="rotate(-90 19.767656 99.504)">서프라이즈 1bp당 반응 (bp)</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 66.389567 188.208 
+L 82.150948 188.208 
+L 82.150948 33.940174 
+L 66.389567 33.940174 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 110.514375 188.208 
+L 126.275756 188.208 
+L 126.275756 79.757718 
+L 110.514375 79.757718 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 154.639183 188.208 
+L 170.400564 188.208 
+L 170.400564 109.531409 
+L 154.639183 109.531409 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 198.763991 188.208 
+L 214.525372 188.208 
+L 214.525372 148.715437 
+L 198.763991 148.715437 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 242.888799 188.208 
+L 258.65018 188.208 
+L 258.65018 126.50087 
+L 242.888799 126.50087 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 287.013607 188.208 
+L 302.774988 188.208 
+L 302.774988 116.164925 
+L 287.013607 116.164925 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 331.138415 188.208 
+L 346.899796 188.208 
+L 346.899796 122.489906 
+L 331.138415 122.489906 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 375.263223 188.208 
+L 391.024604 188.208 
+L 391.024604 121.718567 
+L 375.263223 121.718567 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 419.388031 188.208 
+L 435.149412 188.208 
+L 435.149412 145.475812 
+L 419.388031 145.475812 
+z
+" clip-path="url(#p826e701ada)" style="fill: #16487e"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 83.156994 188.208 
+L 98.918375 188.208 
+L 98.918375 33.940174 
+L 83.156994 33.940174 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 127.281802 188.208 
+L 143.043183 188.208 
+L 143.043183 43.813315 
+L 127.281802 43.813315 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 171.40661 188.208 
+L 187.167991 188.208 
+L 187.167991 61.245579 
+L 171.40661 61.245579 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 215.531418 188.208 
+L 231.292799 188.208 
+L 231.292799 88.088181 
+L 215.531418 88.088181 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 259.656226 188.208 
+L 275.417607 188.208 
+L 275.417607 107.371659 
+L 259.656226 107.371659 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 303.781034 188.208 
+L 319.542415 188.208 
+L 319.542415 132.054511 
+L 303.781034 132.054511 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 347.905842 188.208 
+L 363.667223 188.208 
+L 363.667223 158.280042 
+L 347.905842 158.280042 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 392.03065 188.208 
+L 407.792031 188.208 
+L 407.792031 173.244021 
+L 392.03065 173.244021 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 436.155458 188.208 
+L 451.916839 188.208 
+L 451.916839 178.180591 
+L 436.155458 178.180591 
+z
+" clip-path="url(#p826e701ada)" style="fill: #8f7332"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 47.113203 188.208 
+L 47.113203 10.8 
+" style="fill: none; stroke: #0e2a47; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 47.113203 188.208 
+L 471.193203 188.208 
+" style="fill: none; stroke: #0e2a47; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="74.270257" y="30.940174" transform="rotate(-0 74.270257 30.940174)">1.00</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="118.395066" y="76.757718" transform="rotate(-0 118.395066 76.757718)">0.70</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="162.519874" y="106.531409" transform="rotate(-0 162.519874 106.531409)">0.51</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="206.644682" y="145.715437" transform="rotate(-0 206.644682 145.715437)">0.26</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="250.76949" y="123.50087" transform="rotate(-0 250.76949 123.50087)">0.40</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="294.894298" y="113.164925" transform="rotate(-0 294.894298 113.164925)">0.47</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="339.019106" y="119.489906" transform="rotate(-0 339.019106 119.489906)">0.43</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="383.143914" y="118.718567" transform="rotate(-0 383.143914 118.718567)">0.43</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #0e2a47" x="427.268722" y="142.475812" transform="rotate(-0 427.268722 142.475812)">0.28</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="91.037685" y="30.940174" transform="rotate(-0 91.037685 30.940174)">1.00</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="135.162493" y="40.813315" transform="rotate(-0 135.162493 40.813315)">0.94</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="179.287301" y="58.245579" transform="rotate(-0 179.287301 58.245579)">0.82</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="223.412109" y="85.088181" transform="rotate(-0 223.412109 85.088181)">0.65</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="267.536917" y="104.371659" transform="rotate(-0 267.536917 104.371659)">0.52</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="311.661725" y="129.054511" transform="rotate(-0 311.661725 129.054511)">0.36</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="355.786533" y="155.280042" transform="rotate(-0 355.786533 155.280042)">0.19</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="399.911341" y="170.244021" transform="rotate(-0 399.911341 170.244021)">0.10</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: middle; fill: #8f7332" x="444.036149" y="175.180591" transform="rotate(-0 444.036149 175.180591)">0.07</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 8px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: start; fill: #6e6e6e" x="51.354003" y="230.78592" transform="rotate(-0 51.354003 230.78592)">* 통안 3개월 실증 베타 1.00은 정의상 고정(서프라이즈 측정 지표 자신)</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_23">
+     <path d="M 308.026016 25.927031 
+L 326.026016 25.927031 
+L 326.026016 19.627031 
+L 308.026016 19.627031 
+z
+" style="fill: #16487e"/>
+    </g>
+    <g id="text_36">
+     <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: start" x="333.226016" y="25.927031" transform="rotate(-0 333.226016 25.927031)">실증 베타(금통위 이벤트 회귀)</text>
+    </g>
+    <g id="patch_24">
+     <path d="M 308.026016 39.652031 
+L 326.026016 39.652031 
+L 326.026016 33.352031 
+L 308.026016 33.352031 
+z
+" style="fill: #8f7332"/>
+    </g>
+    <g id="text_37">
+     <text style="font-size: 9px; font-family: 'Malgun Gothic', 'Inter', 'Segoe UI', sans-serif; text-anchor: start" x="333.226016" y="39.652031" transform="rotate(-0 333.226016 39.652031)">DNS 기울기충격 전파(KIRI 방식)</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p826e701ada">
+   <rect x="47.113203" y="10.8" width="424.08" height="177.408"/>
+  </clipPath>
+ </defs>
+</svg>

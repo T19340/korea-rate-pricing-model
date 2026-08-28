@@ -1,0 +1,6 @@
+﻿month,base,ktb3y_zero,spread_bp,avg_exp_short_3y,exp_minus_base_bp,tp_bp
+2022-10,3.0,4.182,118.2,2.991,-0.9,119.1
+2023-01,3.5,3.311,-18.9,2.342,-115.8,96.8
+delta,,,-137.1,,-114.9,-22.3
+delta_base_bp,50.0,,,,,
+delta_exp_pure_bp,-64.9,(기대 자체 변화 = 순기대 몫 + 실현 인상),,,,

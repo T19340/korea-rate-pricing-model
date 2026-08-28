@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시장이 매긴 금리인상 확률 — KOFR OIS 계단함수 학습 노트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Modern CAD Plotter Output — Project Finance Blueprint
+   BP_SKILL의 외형 시스템만 이식: Source Sans 3 본문 / Source Serif 4
+   헤드라인 / IBM Plex Mono 라벨 · 순백 + 차콜 + CAD red 액센트.
+   엔지니어링 미학은 라벨·타이틀블록·레이어패널·차트에만, 본문은 명료하게.
+   ========================================================= */
+:root{
+  --paper:#FFFFFF; --paper-2:#FAFAFA;
+  --ink:#0A0A0A; --ink-2:#2A2A2A; --mute:#6E6E6E; --muted:#6E6E6E;
+  --rule:#0A0A0A; --rule-l:#D6D6D6; --rule-xl:#ECECEC;
+  --cad-red:#C53030; --cad-blue:#2D7EAA; --layer-or:#ED8936;
+  --sans:'Source Sans 3','Malgun Gothic','맑은 고딕',system-ui,sans-serif;
+  --serif:'Source Serif 4','Nanum Myeongjo','바탕',Georgia,serif;
+  --mono:'IBM Plex Mono','D2Coding',Consolas,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--paper);}
+body{font-family:var(--sans);font-size:15px;line-height:1.65;color:var(--ink);
+  -webkit-font-smoothing:antialiased;}
+.wrap{max-width:1100px;margin:0 auto;padding:36px 50px 54px;
+  border-left:1px solid var(--rule-xl);border-right:1px solid var(--rule-xl);}
+a{color:var(--cad-red);text-decoration:none;border-bottom:1px solid var(--rule-l);}
+a:hover{border-bottom-color:var(--cad-red);}
+b,strong{font-weight:700;}
+i,em{font-style:italic;}
+
+/* ── Top strip · 프로젝트 태그 + ISO 7200 타이틀 블록 ── */
+header.mast{display:grid;grid-template-columns:1fr 322px;gap:26px;
+  align-items:start;padding-bottom:20px;border-bottom:1.5px solid var(--rule);
+  margin-bottom:38px;}
+.mast .firm{grid-column:1;grid-row:1;font-family:var(--mono);
+  font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cad-red);margin-bottom:3px;}
+.mast .series{grid-column:1;grid-row:2;font-family:var(--mono);
+  font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin-bottom:11px;}
+.mast h1{grid-column:1;grid-row:3;font-family:var(--serif);font-weight:600;
+  font-size:33px;line-height:1.16;letter-spacing:-.01em;color:var(--ink);
+  margin:0 0 10px;font-variation-settings:'opsz' 36;}
+.mast .subtitle{grid-column:1;grid-row:4;font-family:var(--sans);
+  font-weight:400;font-size:16px;line-height:1.5;color:var(--ink-2);
+  margin:0;max-width:600px;}
+.mast .metarow{grid-column:2;grid-row:1 / span 4;align-self:start;
+  border:1px solid var(--rule);background:var(--paper);font-family:var(--mono);
+  font-size:10.5px;}
+.mast .metarow .iso-row{display:grid;grid-template-columns:78px 1fr;
+  border-bottom:.5px solid var(--rule);}
+.mast .metarow .iso-row:last-child{border-bottom:0;}
+.mast .metarow .iso-row .k{padding:6px 9px;border-right:.5px solid var(--rule);
+  letter-spacing:.05em;color:var(--mute);font-weight:500;background:var(--paper-2);}
+.mast .metarow .iso-row .v{padding:6px 9px;color:var(--ink);
+  letter-spacing:.02em;font-weight:500;line-height:1.45;}
+
+/* ── 본문 2단 · 콘텐츠 + 레이어 패널 ── */
+.with-layer-panel{display:grid;grid-template-columns:1fr 264px;gap:30px;
+  align-items:start;}
+.content{min-width:0;}
+html{scroll-behavior:smooth;}
+.panel-rail{position:sticky;top:18px;display:flex;flex-direction:column;
+  gap:14px;max-height:calc(100vh - 34px);overflow-y:auto;}
+.tool-panel{border:1px solid var(--rule);background:var(--paper-2);
+  font-family:var(--mono);}
+.tool-panel .p-head{background:var(--ink);color:var(--paper);font-size:9px;
+  font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:7px 12px;}
+.nav-panel{padding-bottom:7px;}
+.nav-panel .p-grp{font-size:8.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);padding:11px 12px 3px;}
+.nav-panel a{display:flex;gap:7px;padding:3.5px 12px 3.5px 13px;font-size:11px;
+  color:var(--ink-2);text-decoration:none;border-bottom:none;
+  border-left:2px solid transparent;letter-spacing:.01em;}
+.nav-panel a:hover{color:var(--cad-red);background:#F0F0F0;}
+.nav-panel a .nl-n{min-width:23px;font-size:10px;font-weight:600;color:var(--mute);}
+.nav-panel a.grp-link{font-weight:600;color:var(--ink);margin-top:5px;}
+.nav-panel a.active{color:var(--cad-red);background:var(--paper);
+  border-left-color:var(--cad-red);font-weight:600;}
+.nav-panel a.active .nl-n{color:var(--cad-red);}
+.formula-panel{padding:0 0 4px;}
+.fcard{display:none;}
+.fcard.fc-on{display:block;}
+.fblock{padding:9px 13px 11px;border-top:.5px solid var(--rule-l);}
+.fblock:first-child{border-top:none;}
+.fb-eq{font-size:13px;text-align:center;color:var(--ink);margin:3px 0 9px;}
+.fb-eq mjx-container{margin:0 !important;}
+.fb-eq mjx-container svg{max-width:100%;}
+.fb-note{font-family:var(--sans);font-size:10.5px;line-height:1.55;
+  color:var(--ink-2);margin:1px 0 9px;}
+.fb-note b{color:var(--cad-red);font-weight:600;}
+.fv-h{font-size:8px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--mute);margin:4px 0 3px;}
+.fv{padding:3px 0;font-size:10px;line-height:1.5;color:var(--mute);}
+.fv .s{font-size:11.5px;color:var(--ink);margin-right:2px;}
+.fv .d{font-family:var(--sans);color:var(--mute);}
+
+/* ── 핵심 요지 ── */
+.summary{border:1px solid var(--rule-l);border-top:3px solid var(--cad-red);
+  background:var(--paper-2);padding:17px 22px;margin:0 0 30px;}
+.summary h2{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--cad-red);margin:0 0 11px;}
+.summary p{margin:8px 0;font-size:14.5px;line-height:1.7;}
+.summary ul{margin:9px 0 0;padding-left:20px;font-size:14.5px;}
+.summary li{margin:5px 0;line-height:1.6;}
+
+/* ── 목차 ── */
+nav.toc{border:1px solid var(--rule);margin:0 0 30px;padding-bottom:13px;}
+nav.toc h2{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  background:var(--paper-2);border-bottom:1px solid var(--rule);
+  padding:9px 16px;margin:0;}
+nav.toc .grp{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--cad-red);
+  margin:14px 0 0;padding:0 16px;}
+nav.toc ul{margin:6px 0 0;padding:0 16px 0 36px;list-style:none;}
+nav.toc li{margin:5px 0;font-size:14px;}
+nav.toc a{color:var(--ink);border-bottom:none;}
+nav.toc a:hover{color:var(--cad-red);}
+
+/* ── 파트 구분 ── */
+.part{border-top:3px solid var(--rule);margin:60px 0 10px;padding-top:16px;}
+.part .pn{font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--cad-red);}
+.part h2{font-family:var(--serif);font-weight:600;font-size:27px;line-height:1.15;
+  letter-spacing:-.01em;color:var(--ink);margin:9px 0 7px;}
+.part p{font-family:var(--sans);font-size:14px;line-height:1.5;
+  color:var(--ink-2);margin:0;}
+
+/* ── 섹션 헤딩 · CAD 섹션 태그 ── */
+h3.sec{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:center;
+  margin:46px 0 20px;padding-bottom:9px;border-bottom:1.5px solid var(--rule);
+  font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.005em;
+  color:var(--ink);}
+h3.sec .sn{display:inline-flex;align-items:center;justify-content:center;
+  min-width:24px;height:24px;padding:0 6px;border:1.2px solid var(--cad-red);
+  color:var(--cad-red);font-family:var(--mono);font-size:11.5px;font-weight:700;
+  background:var(--paper);}
+h4.sub{font-family:var(--sans);font-weight:600;font-size:12px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--cad-red);
+  margin:30px 0 11px;}
+
+/* ── 본문 ── */
+p{font-size:15px;line-height:1.75;margin:0 0 16px;color:var(--ink);}
+.lead-q{font-family:var(--sans);font-size:15.5px;line-height:1.6;color:var(--ink-2);
+  border-left:3px solid var(--cad-red);padding-left:15px;margin:0 0 18px;}
+
+/* ── 수식 · Engineering Note ── */
+.eq{cursor:pointer;position:relative;background:var(--paper-2);
+  border:1px solid var(--rule-l);border-left:3px solid var(--cad-red);
+  padding:24px 24px 16px;margin:24px 0;overflow-x:auto;
+  transition:background .2s,border-color .2s;}
+.eq::before{content:"NOTE / EQ";position:absolute;top:7px;left:20px;
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.18em;
+  color:var(--cad-red);}
+.eq:hover{background:#F4F4F4;border-left-color:var(--ink);}
+.eq::after{content:"⊕ CLICK TO COPY LATEX";position:absolute;bottom:5px;right:13px;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;
+  color:var(--mute);opacity:0;transition:opacity .2s;}
+.eq:hover::after{opacity:1;}
+.eqi{cursor:pointer;border-bottom:1px dotted var(--rule-l);}
+.eqi:hover{background:#F4F4F4;}
+
+/* ── MathJax 수식 SVG ── */
+mjx-container[jax="SVG"]{max-width:100%;}
+mjx-container[jax="SVG"] svg{max-width:100%;height:auto;}
+.eq mjx-container[jax="SVG"][display="true"]{margin:0!important;}
+.eq mjx-container[jax="SVG"]{font-size:106%;}
+
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;
+  opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+
+/* ── 콜아웃 ── */
+.note{border:1px solid var(--rule-l);border-left:3px solid var(--cad-blue);
+  background:var(--paper-2);padding:12px 16px;margin:18px 0;font-size:14px;
+  color:var(--ink-2);line-height:1.7;}
+.note b{color:var(--cad-blue);font-weight:700;}
+.warn{border:1px solid var(--rule-l);border-left:3px solid var(--cad-red);
+  background:var(--paper-2);padding:12px 16px;margin:18px 0;font-size:14px;
+  color:var(--ink-2);line-height:1.7;}
+.warn b{color:var(--cad-red);font-weight:700;}
+
+/* ── 도표 · Exhibit (CAD plotter chart) ── */
+figure{margin:30px 0;}
+.fig{border:1px solid var(--rule);background:var(--paper);}
+.figtag{font-family:var(--mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.1em;color:var(--ink);background:var(--paper-2);
+  border-bottom:1px solid var(--rule);padding:9px 16px;}
+.figtag::before{content:"";display:inline-block;width:7px;height:7px;
+  background:var(--cad-red);margin-right:8px;vertical-align:1px;}
+.fig > svg{display:block;width:100%;height:auto;padding:16px 18px 6px;}
+.fig > img{display:block;width:100%;height:auto;padding:16px 18px 6px;cursor:zoom-in;}
+/* 라이트박스 — 그림 클릭 확대 (모든 노트 기본 장치) */
+.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.87);display:none;
+  align-items:center;justify-content:center;z-index:200;cursor:zoom-out;}
+.lightbox.on{display:flex;}
+.lightbox img{max-width:92vw;max-height:92vh;background:#fff;
+  box-shadow:0 10px 44px rgba(0,0,0,.55);}
+figcaption{font-family:var(--sans);font-size:11.5px;line-height:1.6;
+  color:var(--mute);border-top:.5px solid var(--rule-l);
+  padding:9px 16px 11px;margin:0;}
+figcaption b{font-weight:700;color:var(--ink-2);}
+
+/* ── 표 · Schedule ── */
+table.tbl{width:100%;border-collapse:collapse;margin:22px 0;
+  font-family:var(--sans);font-size:13px;border:1px solid var(--rule);}
+table.tbl thead th{background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-weight:500;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;
+  text-align:left;vertical-align:bottom;}
+table.tbl td{padding:8px 12px;border-bottom:.5px solid var(--rule-l);
+  text-align:left;vertical-align:top;line-height:1.55;}
+table.tbl tbody tr:nth-child(even) td{background:var(--paper-2);}
+table.tbl tbody tr:last-child td{border-bottom:0;}
+table.tbl code{font-size:12px;}
+
+/* ── 코드 / 셀 ── */
+code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
+  border:1px solid var(--rule-l);padding:1px 5px;}
+.cell{margin:22px 0;border:1px solid var(--rule);}
+.cell-hd{background:var(--ink);color:var(--paper);font-family:var(--mono);
+  font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 15px;}
+pre.code{background:var(--paper-2);margin:0;padding:15px 17px;overflow-x:auto;
+  border-bottom:1px solid var(--rule-l);font-family:var(--mono);
+  font-size:12px;line-height:1.65;color:var(--ink-2);}
+pre.code .cmt{color:var(--mute);font-style:italic;}
+pre.code .kw{color:var(--cad-red);}
+.cell-note{font-family:var(--sans);padding:11px 16px;font-size:13px;
+  color:var(--ink-2);line-height:1.7;}
+details.out,details.key{border-top:1px solid var(--rule-l);}
+details.key{margin:22px 0;border:1px solid var(--rule);}
+summary{cursor:pointer;font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;padding:9px 15px;color:var(--ink);
+  background:var(--paper-2);list-style:none;user-select:none;}
+summary::-webkit-details-marker{display:none;}
+summary::before{content:"+  ";color:var(--cad-red);font-weight:700;}
+details[open] summary::before{content:"−  ";}
+details.key summary{color:var(--cad-red);}
+.output{font-family:var(--mono);margin:0;padding:13px 17px;background:var(--paper);
+  font-size:11.5px;line-height:1.7;color:var(--ink-2);white-space:pre-wrap;
+  border-top:1px solid var(--rule-l);}
+.keybody{font-family:var(--sans);padding:9px 16px 14px;font-size:13px;
+  color:var(--ink-2);}
+.keybody pre.code{margin:9px 0;border:1px solid var(--rule-l);}
+
+/* ── 체크리스트 ── */
+.checklist div{font-size:14px;margin:7px 0;padding-left:26px;position:relative;
+  color:var(--ink-2);line-height:1.6;}
+.checklist div::before{content:"";position:absolute;left:0;top:4px;
+  width:11px;height:11px;border:1.3px solid var(--cad-red);}
+
+/* ── 각주 · 참고문헌 · 고지 ── */
+sup.fn{font-size:.66em;line-height:0;}
+sup.fn a{font-family:var(--mono);color:var(--cad-red);font-weight:600;border-bottom:none;}
+.refs{margin-top:46px;border-top:1.5px solid var(--rule);padding-top:18px;}
+.refs h2{font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink);}
+.refs ol{padding-left:22px;}
+.refs li{font-family:var(--sans);font-size:12px;line-height:1.7;
+  color:var(--mute);margin-bottom:9px;}
+.refs li a{color:var(--cad-red);border-bottom:none;word-break:break-all;}
+.refs li a.fn-back{font-family:var(--mono);font-weight:600;word-break:normal;padding:0 3px;}
+.disclaimer{margin-top:20px;font-family:var(--sans);font-size:11px;
+  line-height:1.55;color:var(--mute);}
+.disclaimer b{font-weight:600;color:var(--ink-2);}
+footer{margin-top:26px;border-top:1.5px solid var(--rule);padding-top:13px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);text-align:center;}
+
+@media (max-width:980px){
+  .wrap{padding:24px;border-left:0;border-right:0;}
+  header.mast{grid-template-columns:1fr;}
+  .mast .firm,.mast .series,.mast h1,.mast .subtitle{grid-column:1;}
+  .mast .metarow{grid-column:1;grid-row:auto;margin-top:14px;}
+  .with-layer-panel{grid-template-columns:1fr;}
+  .panel-rail{position:static;max-height:none;overflow:visible;}
+}
+</style>
+</head>
+<body>
+<div id="toast">LaTeX 수식이 복사되었습니다</div>
+<div class="wrap">
+
+<header class="mast">
+  <div class="firm">Korea Rate Pricing Model</div>
+  <div class="series">방법론 학습 문서 · Method School 01</div>
+  <h1>시장이 매긴 금리인상 확률<br>— KOFR OIS 계단함수 완전 학습</h1>
+  <p class="subtitle">호가 일곱 개에서 금통위 인상확률이 나오기까지의 모든 계산을, 아무것도 모르는 상태에서 출발해 직접 재현할 수 있을 때까지</p>
+  <div class="metarow">
+    <div class="iso-row"><div class="k">발행</div><div class="v">2026-08-08</div></div>
+    <div class="iso-row"><div class="k">분류</div><div class="v">금리 파생 / 정책금리 예측</div></div>
+    <div class="iso-row"><div class="k">기준 데이터</div><div class="v">2026-08-07 KOFR OIS 호가</div></div>
+    <div class="iso-row"><div class="k">동반 워크북</div><div class="v"><a href="step_method_workbook.ipynb">step_method_workbook.ipynb</a></div></div>
+    <div class="iso-row"><div class="k">검증환경</div><div class="v">Python 3.14 · numpy 2.4 · matplotlib 3.10</div></div>
+  </div>
+</header>
+
+<div class="with-layer-panel">
+<div class="content">
+
+<div class="summary">
+  <h2>이 문서의 목표</h2>
+  <p>이 문서를 끝까지 따라오면, <b>어느 날짜든 KOFR OIS 호가 일곱 개·금통위 일정·현재 기준금리만 주어지면 그날 시장이 매긴 회의별 25bp 인상확률을 직접 계산</b>할 수 있게 됩니다. 2026-08-07 기준 "8월 50% · 10월 95% · 11월 36%"라는 결과를 결론으로 외우는 것이 아니라, 그 숫자가 나오는 계산 전체를 손으로 재현하는 것이 목표입니다.</p>
+  <ul>
+    <li><b>1부 · 재료</b> — 하루짜리 금리와 OIS 계약. 이 상품이 무엇을 사고파는 것인지, 호가 숫자가 정확히 무엇의 값인지.</li>
+    <li><b>2부 · 계단 하나</b> — 회의 하나만 있을 때. 호가 한 개로 확률을 손으로 읽어 내는 완전한 계산.</li>
+    <li><b>3부 · 연립</b> — 회의 여섯 개. 그냥 풀면 왜 무너지는지, 실전 엔진이 무엇을 어떻게 덧대는지.</li>
+    <li><b>4부 · 실전</b> — 전체 파이프라인, 산출물을 읽는 규율, 한계, 그리고 다른 날짜로 치르는 졸업시험.</li>
+  </ul>
+  <p style="font-size:13px;color:var(--muted);margin-top:8px;">본문의 코드 셀 (a)~(h)는 동반 워크북의 셀과 코드·출력이 글자까지 같습니다. 수식 영역을 클릭하면 LaTeX 소스가 복사됩니다.</p>
+</div>
+
+<nav class="toc">
+  <h2>목차</h2>
+  <div class="grp">1부 — 재료: 하루짜리 금리와 OIS 계약</div>
+  <ul>
+    <li><a href="#s11">1.1 하루짜리 금리 — 기준금리·KOFR, 그리고 왜 하필 여기서 출발하는가</a></li>
+    <li><a href="#s12">1.2 OIS 계약의 해부 — 두 다리와 실제 현금흐름</a></li>
+    <li><a href="#s13">1.3 호가는 경로의 평균이다 — 손해 보지 않을 값 찾기</a></li>
+    <li><a href="#s14">1.4 연율화 관행 — 20%p를 갈랐던 한 줄 · 셀 (a)</a></li>
+  </ul>
+  <div class="grp">2부 — 계단 하나: 한 회의의 확률</div>
+  <ul>
+    <li><a href="#s21">2.1 금리는 회의 날에만 움직인다 — 계단 경로</a></li>
+    <li><a href="#s22">2.2 경로의 시작점 r₀ — 세 후보의 비교</a></li>
+    <li><a href="#s23">2.3 2개월 호가 손계산 — 확률 56%가 나오기까지 · 셀 (b)</a></li>
+    <li><a href="#s24">2.4 이 확률의 정체 — 무엇이고 무엇이 아닌가</a></li>
+  </ul>
+  <div class="grp">3부 — 연립: 여섯 호가, 여섯 회의</div>
+  <ul>
+    <li><a href="#s31">3.1 어느 호가가 어느 회의를 보는가 — 민감도 행렬 · 셀 (c)</a></li>
+    <li><a href="#s32">3.2 그냥 풀면 — 특이성과 잡음 증폭 · 셀 (d)</a></li>
+    <li><a href="#s33">3.3 세 가지 처방 — 가중·평활·수축, 그리고 λ 고르기</a></li>
+    <li><a href="#s34">3.4 가우스-뉴턴과 구현의 실제 · 셀 (e)</a></li>
+  </ul>
+  <div class="grp">4부 — 실전: 전체 워크스루와 규율</div>
+  <ul>
+    <li><a href="#s41">4.1 파이프라인 전체 조감</a></li>
+    <li><a href="#s42">4.2 2026-08-07 하루치 완전 재현 · 셀 (f)</a></li>
+    <li><a href="#s43">4.3 확률의 신뢰 폭 — 잡음과 근사 · 셀 (g)</a></li>
+    <li><a href="#s44">4.4 읽는 규율과 정직한 한계</a></li>
+    <li><a href="#s45">4.5 졸업시험 — 2026-07-15 · 셀 (h)</a></li>
+  </ul>
+  <div class="grp">동반 워크북</div>
+  <ul><li><a href="#wb">셀 구성 · 실행 방법 · 본문과의 계약</a></li></ul>
+</nav>
+
+<!-- ================= PART 1 ================= -->
+<div class="part">
+  <div class="pn">Part 1</div>
+  <h2>재료 — 하루짜리 금리와 OIS 계약</h2>
+  <p>모형은 3부에나 나옵니다. 그 전에, 우리가 다루는 상품이 정확히 무엇을 사고파는 것인지부터 바닥까지 내려가서 확인합니다.</p>
+</div>
+
+<h3 class="sec" id="s11"><span class="sn">1.1</span> 하루짜리 금리 — 기준금리·KOFR, 그리고 왜 하필 여기서 출발하는가</h3>
+<p class="lead-q">"금리인상 기대"를 재려면, 인상되는 그 금리를 매일 거래하는 시장이 필요합니다.</p>
+
+<p>한국은행 금융통화위원회(이하 금통위)는 1년에 여덟 번 모여 <b>기준금리</b>를 정합니다. 지금(2026-08-07)은 2.75%입니다. 우리가 알고 싶은 것은 "다음 회의에서 25bp를 올릴 확률을 시장이 얼마로 보고 있는가"입니다. 여기서 bp(베이시스포인트)는 0.01%p — 25bp 인상이면 2.75%에서 3.00%가 됩니다.</p>
+
+<p>그런데 기준금리 자체는 거래되는 가격이 아니라 정책 선언입니다. 기대를 가격에서 읽으려면, 기준금리를 <i>그대로 따라다니면서 매일 거래로 결정되는</i> 금리가 필요합니다. 그 역할을 하는 것이 <b>KOFR</b>(Korea Overnight Financing Repo rate, 한국 무위험 익일물 금리)입니다 — 국채·통안증권을 담보로 한 <b>하루짜리</b> 환매조건부매매(레포) 거래의 실제 체결 금리를 거래량으로 가중평균해 매일 공시하는 지표입니다. 담보가 있어 신용위험이 거의 없고, 자금의 하루 값이므로 기준금리 언저리에서 움직입니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 1 · 기준금리 · KOFR · 1주 OIS — 2026년 실측</div>
+    <img src="figs/01-kofr-base-history.png" alt="2026년 2월부터 8월까지 기준금리 계단, KOFR 일별 궤적, 1주 OIS 호가의 실측 비교">
+    <figcaption><b>이 그림에서 볼 것.</b> 검정 계단이 기준금리(7/16에 2.50→2.75%로 인상), 파랑이 KOFR, 주황이 1주 OIS 호가입니다. 두 가지를 확인하세요. ① 파랑(KOFR)은 기준금리에 붙어 다니지만 매일 몇 bp씩 출렁이고, 세금 납부기 수급에 밀리면 7월 초처럼 한참 아래(2.44%)까지 벗어나기도 하며, 인상 <i>당일에야</i> 뜁니다 — 하루짜리 "현물"은 미래를 담지 않습니다. ② 주황(1주 호가)은 7/16 인상 <i>직전</i>에 기준금리보다 먼저 떠오릅니다 — 만기 안에 회의가 든 <b>파생계약</b>만이 미래를 미리 가격에 넣습니다. 이 "미리 넣는 정도"를 정확히 계량하는 것이 이 문서 전체의 주제입니다. (실측: 보조 스크립트 <code>_extra_figures.py</code>)</figcaption>
+  </div>
+</figure>
+
+<p>KOFR는 하루짜리라서 <i>오늘의</i> 자금 사정만 담습니다. "석 달 뒤 금리가 어디 있을까"라는 <i>미래</i>에 대한 견해는 하루짜리 금리 자체가 아니라, 하루짜리 금리를 <b>일정 기간에 걸쳐 주고받기로 약속하는 파생계약</b>의 가격에 담깁니다. 그 계약이 다음 절의 OIS입니다.</p>
+
+<div class="note"><b>왜 콜금리가 아니라 KOFR인가.</b> 무담보 하루짜리인 콜금리도 후보지만, 한국 금융당국은 2021년 KOFR를 공식 무위험 지표금리로 선정했고 파생계약(OIS)이 KOFR를 준거로 상장·거래됩니다. "매일 공시되는 하루짜리 지표 + 그것을 준거로 한 파생 호가"의 짝이 성립하는 것이 KOFR 쪽이므로 출발점도 KOFR입니다.</div>
+
+<h3 class="sec" id="s12"><span class="sn">1.2</span> OIS 계약의 해부 — 두 다리와 실제 현금흐름</h3>
+<p class="lead-q">OIS 호가 "2개월 2.84%"는 정확히 무엇의 값인가 — 이 절이 끝나면 한 줄로 답할 수 있습니다.</p>
+
+<p><b>OIS</b>(Overnight Index Swap, 익일물 지표금리 스왑)는 두 당사자가 같은 원금(명목원금)에 대해 서로 다른 방식의 이자를 교환하는 계약입니다. 만기까지:</p>
+
+<table class="tbl">
+  <thead><tr><th>다리</th><th>지급하는 이자</th><th>계약 시점에 아는가</th></tr></thead>
+  <tbody>
+    <tr><td><b>고정다리</b></td><td>미리 합의한 고정금리 K (연율)</td><td>안다 — 이 K가 곧 "호가"</td></tr>
+    <tr><td><b>변동다리</b></td><td>계약 기간의 KOFR를 <b>매일 복리로</b> 굴린 이자</td><td>모른다 — 만기가 되어야 확정</td></tr>
+  </tbody>
+</table>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 2 · KOFR OIS의 구조 — 2개월(61일) 계약의 예</div>
+    <svg viewBox="0 0 660 296" role="img" aria-label="OIS 고정다리와 변동다리의 교환 구조와 61일 타임라인">
+      <!-- 두 당사자 박스 -->
+      <rect x="52" y="34" width="180" height="52" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+      <text x="142" y="56" font-family="Segoe UI,sans-serif" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">고정 지급자</text>
+      <text x="142" y="74" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">"금리가 오른다"에 거는 쪽</text>
+      <rect x="428" y="34" width="180" height="52" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+      <text x="518" y="56" font-family="Segoe UI,sans-serif" font-size="12.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">변동 지급자</text>
+      <text x="518" y="74" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">"동결·인하"에 거는 쪽</text>
+      <!-- 교환 화살표 -->
+      <line x1="238" y1="48" x2="420" y2="48" stroke="#2D7EAA" stroke-width="1.8"/>
+      <polygon points="420,48 411,44 411,52" fill="#2D7EAA"/>
+      <text x="329" y="41" font-family="Segoe UI,sans-serif" font-size="11" fill="#2D7EAA" text-anchor="middle">고정 K = 2.84% (연율)</text>
+      <line x1="420" y1="72" x2="238" y2="72" stroke="#ED8936" stroke-width="1.8"/>
+      <polygon points="238,72 247,68 247,76" fill="#ED8936"/>
+      <text x="329" y="88" font-family="Segoe UI,sans-serif" font-size="11" fill="#B05A10" text-anchor="middle">61일치 KOFR 일복리 (만기에 확정)</text>
+      <!-- 타임라인 -->
+      <line x1="70" y1="196" x2="590" y2="196" stroke="#0A0A0A" stroke-width="1.4"/>
+      <line x1="70" y1="188" x2="70" y2="204" stroke="#0A0A0A" stroke-width="1.4"/>
+      <line x1="590" y1="188" x2="590" y2="204" stroke="#0A0A0A" stroke-width="1.4"/>
+      <text x="70" y="222" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#0A0A0A" text-anchor="middle">계약일 (8/7)</text>
+      <text x="590" y="222" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#0A0A0A" text-anchor="middle">만기 (10/7)</text>
+      <!-- 일별 눈금 -->
+      <g stroke="#D6D6D6" stroke-width="0.8">
+        <line x1="104" y1="191" x2="104" y2="201"/><line x1="138" y1="191" x2="138" y2="201"/>
+        <line x1="172" y1="191" x2="172" y2="201"/><line x1="206" y1="191" x2="206" y2="201"/>
+        <line x1="240" y1="191" x2="240" y2="201"/><line x1="274" y1="191" x2="274" y2="201"/>
+        <line x1="308" y1="191" x2="308" y2="201"/><line x1="342" y1="191" x2="342" y2="201"/>
+        <line x1="376" y1="191" x2="376" y2="201"/><line x1="410" y1="191" x2="410" y2="201"/>
+        <line x1="444" y1="191" x2="444" y2="201"/><line x1="478" y1="191" x2="478" y2="201"/>
+        <line x1="512" y1="191" x2="512" y2="201"/><line x1="546" y1="191" x2="546" y2="201"/>
+      </g>
+      <text x="330" y="180" font-family="Segoe UI,sans-serif" font-size="10" fill="#6E6E6E" text-anchor="middle">매일 그날의 KOFR가 공시되어 변동다리에 복리로 쌓인다 (61회)</text>
+      <!-- 정산 -->
+      <line x1="590" y1="230" x2="590" y2="252" stroke="#C53030" stroke-width="1.6"/>
+      <polygon points="590,256 586,248 594,248" fill="#C53030"/>
+      <text x="470" y="274" font-family="Segoe UI,sans-serif" font-size="11" fill="#C53030" text-anchor="start">만기에 단 한 번, 두 이자의 차액만 정산</text>
+      <text x="70" y="252" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E">원금은 오가지 않는다 — 이자 차액 교환 계약</text>
+    </svg>
+    <figcaption><b>이 그림에서 볼 것.</b> 위쪽 두 화살표가 교환의 방향입니다 — 파랑(고정 K)은 계약 순간 확정되고, 주황(변동)은 만기까지 61일치 KOFR가 쌓여야 확정됩니다. 아래 타임라인이 핵심 사실 두 가지를 보여 줍니다. 이자는 매일 쌓이지만 <b>돈은 만기에 차액으로 단 한 번</b> 오가고, <b>원금은 아예 오가지 않습니다</b>. 그래서 이 계약은 원금 부담 없이 "앞으로 두 달간 하루짜리 금리의 평균 수준"에 베팅하는 수단이 됩니다.</figcaption>
+  </div>
+</figure>
+
+<p>숫자로 확인합니다. 명목원금 100억 원, 만기 61일(2개월), 고정 K = 2.84%로 계약했다고 합시다. 편의상 61일 내내 KOFR가 2.74%로 동결됐다고 가정하면:</p>
+
+<table class="tbl">
+  <thead><tr><th>다리</th><th>계산</th><th>만기 시 이자</th></tr></thead>
+  <tbody>
+    <tr><td>고정다리</td><td>100억 × 2.84% × 61/365</td><td>47,463,014원</td></tr>
+    <tr><td>변동다리</td><td>100억 × [(1+2.74%/365)⁶¹ − 1]</td><td>45,895,059원</td></tr>
+    <tr><td><b>정산</b></td><td>고정 지급자가 차액을 지급</td><td><b>−1,567,955원</b> (고정 지급자 손실)</td></tr>
+  </tbody>
+</table>
+
+<p>고정이자를 "K × 경과일/365"의 단순 비례로 계산한 근거는 잠시 뒤 1.4의 연율화 관행에서 확정합니다 — 지금은 결과부터 봅니다. 동결이었는데 고정 지급자가 약 157만 원을 잃었습니다 — 2.84%라는 고정금리가 "동결이면 정당화되지 않는 높은 값"이었다는 뜻입니다. 거꾸로 말하면, <b>시장이 2.84%에 합의했다는 사실 자체가 "동결로 끝나지는 않을 것"이라는 기대를 담고 있습니다.</b> 이 직관을 다음 절에서 정확한 식으로 바꿉니다.</p>
+
+<div class="note"><b>호가 데이터에 관한 사실 세 가지.</b> ① 이 문서가 쓰는 호가는 한국자금중개(중개회사)가 고시하는 매수·매도 호가의 중간값(MID)으로, 인포맥스 단말로 수신한 값입니다. 체결가가 아니라 호가라는 한계는 4.4에서 다룹니다. ② 만기는 1주·1개월·2개월·3개월·6개월·9개월·1년 등 몇 개 지점만 고시됩니다. ③ 최소 호가 단위(틱)는 0.25bp입니다 — 3.0725% 같은 값이 존재하는 이유이고, 뒤에서 잡음의 크기를 잴 때 이 단위를 씁니다.</div>
+
+<h3 class="sec" id="s13"><span class="sn">1.3</span> 호가는 경로의 평균이다 — 손해 보지 않을 값 찾기</h3>
+<p class="lead-q">호가 K가 "미래 KOFR 경로의 요약값"이 되는 이유를, 딜러의 손익 계산 하나로 끌어냅니다.</p>
+
+<p>딜러가 되어 봅시다. 누군가 2개월 OIS의 고정금리를 받고 싶다며 가격을 물어 옵니다. 나는 K를 얼마로 불러야 할까요? 계약의 만기 손익은 (고정이자 − 변동이자)이고, 변동이자는 앞으로 61일의 KOFR 경로 <span class="eqi" data-tex="r_1, r_2, \ldots, r_{61}"></span>에 달려 있습니다. 원금 1원 기준으로 변동다리의 원리금 배율은</p>
+
+<div class="eq" data-tex="\text{배율} \;=\; \prod_{i=1}^{D}\Big(1 + \frac{r_i}{365}\Big) \qquad (D = 61)"></div>
+
+<p>입니다. 말로 풀면 — 매일 그날 금리의 하루치(연율을 365로 나눈 것)만큼 원리금이 불어나고, 다음 날은 불어난 원리금 위에 다시 이자가 붙습니다(일복리). 딜러가 손해 보지 않을 K는 <b>고정이자와 변동이자의 기대값이 같아지는 값</b>입니다. 미래 경로는 모르지만, 가능한 경로마다 확률을 매겨 평균한 값(기대값)과 고정이자를 맞추면, 이 가격에 여러 번 계약을 반복할 때 평균 손익이 0이 됩니다. 그보다 높게 부르면 경쟁 딜러에게 고객을 뺏기고, 낮게 부르면 앉아서 잃습니다 — 경쟁이 K를 이 균형값으로 밀어붙입니다.</p>
+
+<div class="warn"><b>정확히 말하면 "위험중립 기대값"입니다.</b> 딜러가 평균을 낼 때 쓰는 확률은 통계학자의 예측 확률이 아니라, 헤지 비용과 위험 보상까지 반영된 <b>가격 책정용 확률</b>(위험중립 확률)입니다. 이 구분이 최종 확률의 해석에 어떤 영향을 주는지는 2.4에서 정면으로 다룹니다. 여기서는 "K는 시장이 가격에 쓰는 확률로 평균한 미래 경로의 요약값"이라는 것만 가져가면 됩니다.</div>
+
+<p>정리하면 이렇습니다.</p>
+<div class="note"><b>1부의 중간 결론.</b> OIS 호가 K는 "계약 기간 동안 하루짜리 금리(KOFR)가 밟을 경로"에 대한 시장의 확률가중 평균을, 연율 숫자 하나로 압축한 값이다. 그러므로 <b>K에서 거꾸로 경로에 대한 확률을 풀어낼 수 있다</b> — 이것이 이 방법론 전체의 뼈대다.</div>
+
+<h3 class="sec" id="s14"><span class="sn">1.4</span> 연율화 관행 — 20%p를 갈랐던 한 줄 · 셀 (a)</h3>
+<p class="lead-q">"복리로 쌓인 이자를 어떻게 연율 숫자 하나로 적는가"는 사소해 보이지만, 이 모형에서 실제로 8월 확률 20%p를 갈랐던 지점입니다.</p>
+
+<p>변동다리 배율은 61일치 복리 곱입니다. 이것과 비교할 고정금리 K는 "연율 %"라는 단위로 고시됩니다. 그렇다면 곱을 연율로 바꾸는 규칙 — <b>연율화 관행</b> — 이 필요합니다. 후보가 둘 있습니다.</p>
+
+<div class="eq" data-tex="\textbf{(KRX 명세 · Act/365 단리)}\qquad K \;=\; \frac{365}{D}\left[\prod_{i=1}^{D}\Big(1+\frac{r_i}{365}\Big) - 1\right]\times 100"></div>
+
+<p>읽는 법: 대괄호 안은 "원금 1원이 D일 동안 복리로 불어난 <i>순수 이자</i>"입니다. 그것을 D일로 나눠 하루치로 만들고 365를 곱해 연율로 폅니다 — 이자 자체는 복리로 쌓되, <b>연율로 펼 때는 단순 비례(단리)</b>로 펴는 방식입니다. 실제 KRX의 KOFR OIS 상품 명세가 이 방식입니다(Act/365: 실제 경과일수를 세고 1년을 365일로 치는 일수 계산 관행).</p>
+
+<p>또 하나의 후보는 "이 계약의 수익률을 1년짜리 복리 수익률로 환산하면 몇 %인가"로 적는 <b>유효연율</b> 방식입니다: <span class="eqi" data-tex="K = \big[\prod(1+r_i/365)\big]^{365/D} - 1"></span>. 채권 수익률 비교에는 자연스러운 방식이라 금리 실무자의 손이 먼저 가는 쪽이기도 합니다. 문제는 — <b>이 모형의 구판이 실제로 이 방식을 썼고, 그것이 오류였다는 것</b>입니다.</p>
+
+<p>어느 쪽이 맞는지는 논쟁이 아니라 <b>검증</b>으로 정합니다. 1주 구간에는 금통위가 없으므로(다음 회의 8/27은 20일 뒤), "1주 내내 지금 수준 그대로"라는 경로를 넣으면 모형이 1주 호가를 그대로 재현해야 합니다. 아래 셀이 그 검증입니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (a) · 연율화 두 관행 — 1주 호가 재현 검증</div>
+<pre class="code"># 셀 (a) · 연율화 두 관행 — 1주 호가 재현 검증
+# 경로가 일정 구간별로 (일수, 금리%) 로 주어질 때 복리 곱의 로그를 계산
+def log_growth(segments):
+    return sum(n * math.log(1 + r / 100 / 365) for n, r in segments)
+
+def k_simple(segments, days):
+    # KRX KOFR OIS 명세: K = (365/D) * [곱 - 1]  (Act/365 단리 연율화)
+    return (math.exp(log_growth(segments)) - 1) * 365 / days * 100
+
+def k_effective(segments, days):
+    # 구판의 잘못된 관행: K = 곱^(365/D) - 1  (유효연율)
+    return (math.exp(log_growth(segments) * 365 / days) - 1) * 100
+
+# 검증 1 — 1주 동결 경로가 1주 호가를 재현하는가
+r0 = QUOTES[&quot;1주&quot;]
+flat_1w = [(7, r0)]
+print(f&quot;1주 시장 호가       : {QUOTES[&#x27;1주&#x27;]:.4f}%&quot;)
+print(f&quot;단리 연율화 (KRX)   : {k_simple(flat_1w, 7):.4f}%  &lt;- 재현&quot;)
+print(f&quot;유효연율 (구판 오류): {k_effective(flat_1w, 7):.4f}%  &lt;- 3.8bp 초과&quot;)
+
+# 검증 2 — 동결 경로의 만기별 고정금리 (두 관행)
+print(&quot;\n동결 경로(전 구간 &quot; + f&quot;{r0:.3f}%)의 만기별 고정금리:&quot;)
+print(&quot;만기    일수   단리(KRX)   유효연율&quot;)
+hold_simple, hold_eff = {}, {}
+for t in FIT_TENORS:
+    d_ = DAYS[t]
+    hold_simple[t] = k_simple([(d_, r0)], d_)
+    hold_eff[t] = k_effective([(d_, r0)], d_)
+    print(f&quot;{t:&lt;5s} {d_:&gt;4d}   {hold_simple[t]:.4f}%    {hold_eff[t]:.4f}%&quot;)
+
+fig, ax = plt.subplots(figsize=(6.8, 3.2))
+xs = [DAYS[t] for t in FIT_TENORS]
+ax.plot(xs, [hold_simple[t] for t in FIT_TENORS], color=CADBLUE, marker=&quot;o&quot;,
+        ms=5, label=&quot;단리 연율화 (KRX 명세)&quot;)
+ax.plot(xs, [hold_eff[t] for t in FIT_TENORS], color=ORANGE, marker=&quot;s&quot;,
+        ms=5, ls=(0, (5, 2)), label=&quot;유효연율 (구판 오류)&quot;)
+ax.scatter([7], [QUOTES[&quot;1주&quot;]], s=60, color=INK, zorder=5, label=&quot;1주 시장 호가 2.740&quot;)
+ax.annotate(&quot;동결인데도 만기마다 값이 다르다\n(복리 이자가 단리 분모로 나뉘므로)&quot;,
+            xy=(210, 2.7535), fontsize=8, color=CADBLUE)
+ax.annotate(&quot;전 만기 한 값 2.778 — 곡선 정보가 사라진다&quot;,
+            xy=(40, 2.7745), fontsize=8, color=&quot;#B05A10&quot;)
+ax.set_ylim(2.7365, 2.7825)
+ax.set_xlabel(&quot;만기 (일)&quot;)
+ax.set_ylabel(&quot;동결 경로의 고정금리 (%)&quot;)
+ax.set_title(&quot;연율화 관행 두 가지 — 같은 경로, 다른 호가&quot;)
+ax.legend(loc=&quot;lower right&quot;)
+save(fig, &quot;03-annualization-conventions.png&quot;)
+plt.show()</pre>
+  <div class="cell-note">이 셀은 위 두 연율화 식을 그대로 코드로 옮기고(k_simple·k_effective), 두 가지를 검증합니다 — ① 동결 경로가 1주 호가 2.740%를 재현하는가, ② 동결 경로에서 만기별 고정금리가 어떤 모양이 되는가. 데이터는 셋업 셀에 내장된 2026-08-07 실제 호가입니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">1주 시장 호가       : 2.7400%
+단리 연율화 (KRX)   : 2.7406%  &lt;- 재현
+유효연율 (구판 오류): 2.7778%  &lt;- 3.8bp 초과
+
+동결 경로(전 구간 2.740%)의 만기별 고정금리:
+만기    일수   단리(KRX)   유효연율
+1개월     31   2.7431%    2.7778%
+2개월     61   2.7462%    2.7778%
+3개월     92   2.7494%    2.7778%
+6개월    184   2.7589%    2.7778%
+9개월    273   2.7682%    2.7778%
+1년     365   2.7778%    2.7778%</pre></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 3 · 연율화 관행 두 가지 — 같은 동결 경로, 다른 호가</div>
+    <img src="figs/03-annualization-conventions.png" alt="단리 연율화와 유효연율 각각이 만드는 동결 경로의 만기별 고정금리 비교">
+    <figcaption><b>이 그림에서 볼 것.</b> 검정 점이 1주 시장 호가 2.740%입니다. 파랑(단리, KRX 명세)은 이 점을 통과한 뒤 만기를 따라 2.778%까지 완만히 올라가고, 주황(유효연율, 구판 오류)은 전 만기가 2.778% 한 값으로 평평합니다. 유효연율은 1주 호가부터 3.8bp 어긋납니다 — 시장 호가 자체가 어느 관행이 맞는지 심판해 준 셈입니다. (셀 (a) 산출)</figcaption>
+  </div>
+</figure>
+
+<p>파랑 선이 만기를 따라 올라가는 이유를 짚고 갑니다. 이자는 복리로 쌓이므로 만기가 길수록 "이자의 이자"가 커지는데, 연율화는 단리(단순 나눗셈)로 펴니 그 몫이 고정금리에 얹힙니다. 즉 <b>단리 관행에서는 완전한 동결 기대라도 곡선이 살짝 우상향</b>합니다. 이 "동결 눈금"의 모양을 모르면, 곡선의 우상향을 전부 인상 기대로 오독하거나(과대) 반대로 눈금이 평평하다고 착각해 인상 기대를 놓칩니다(과소).</p>
+
+<div class="warn"><b>실화 — 구판이 치른 수업료.</b> 이 모형의 구판은 유효연율을 썼습니다. 그러면 동결 눈금이 전 만기 평평해져서, 실제 곡선의 완만한 우상향 중 "복리-단리 차이" 몫까지 인상 기대가 아닌 것으로 처리됩니다. 결과: 8월 인상확률이 30%로 눌려 나왔습니다(교정 후 50%). 잘못을 잡아낸 것은 별도 경로로 같은 문제를 푼 다른 분석의 교차 감사였고, 관행을 KRX 명세대로 고치자 여섯 호가의 적합 오차(RMSE)가 1.5bp에서 0.8bp로 반토막 났습니다 — 시장 데이터가 "이쪽이 맞다"고 답해 준 것입니다. 교훈: <b>가격 엔진을 만들면 반드시 계약 명세를 대조하고, 벤치마크 상품(여기서는 1주 호가) 재현 테스트를 먼저 돌려야 합니다.</b> 내부 논리가 아무리 정합적이어도 단위 관행이 틀리면 전부 틀립니다.</div>
+
+<div class="note" style="border-left-color:var(--cad-red);">
+  <b>이 가격식으로 실무자가 하는 일.</b> K 식은 이 문서에서는 확률 추출의 재료지만, 데스크에서는 그 자체로 매일 쓰입니다.
+  <br>① <b>호가 정합성 점검.</b> 고시된 OIS 호가를 자기 경로 가정으로 재가격해 이상 호가(스테일·오타)를 걸러냅니다.
+  <br>② <b>캐리 계산.</b> 고정 수취 포지션의 "가만히 있을 때 손익" = 고정 K − 실현 KOFR 복리 — 위 100억 예제의 계산 그대로입니다.
+  <br>③ <b>헤지 비율 산출.</b> 예금·대출·채권의 단기 금리 익스포저를 OIS로 상쇄할 때 두 다리의 이자 산식을 정확히 맞춰야 합니다.
+  <br>한국 채권 운용 실무에서는 ①을 이 모형의 일별 재실행 전에 자동으로 돌리는 것이 표준 절차입니다.
+</div>
+
+<!-- ================= PART 2 ================= -->
+<div class="part">
+  <div class="pn">Part 2</div>
+  <h2>계단 하나 — 한 회의의 확률</h2>
+  <p>회의가 하나뿐인 세상에서 확률을 손으로 완전하게 계산합니다. 3부의 연립은 이 계산의 반복일 뿐입니다.</p>
+</div>
+
+<h3 class="sec" id="s21"><span class="sn">2.1</span> 금리는 회의 날에만 움직인다 — 계단 경로</h3>
+<p class="lead-q">미래 KOFR 경로는 무한히 다양할 수 있는데, 어떻게 미지수 몇 개로 줄이는가.</p>
+
+<p>K가 "미래 경로의 확률가중 평균"이라는 것까지 왔습니다(1.3). 그런데 61일짜리 경로는 그 자체로 61개의 미지수입니다. 이대로는 아무것도 풀 수 없습니다. 여기서 이 방법론의 결정적 단순화가 들어옵니다: <b>하루짜리 금리는 기준금리에 붙어 다니고(도표 1), 기준금리는 금통위 회의 날에만 바뀐다.</b> 그렇다면 미래 경로를 "회의 날에만 점프하는 계단"으로 쓸 수 있습니다.</p>
+
+<div class="eq" data-tex="r(s) \;=\; r_0 \;+\; \sum_{k} \Delta_k \cdot \mathbf{1}\{s \ge m_k\}"></div>
+
+<p>기호를 하나씩 풀면 — <span class="eqi" data-tex="s"></span>는 기준일로부터의 일수, <span class="eqi" data-tex="r_0"></span>는 경로의 시작 수준(다음 절), <span class="eqi" data-tex="m_k"></span>는 k번째 금통위까지의 일수, <span class="eqi" data-tex="\Delta_k"></span>는 그 회의에서의 점프 폭(우리가 구할 미지수), <span class="eqi" data-tex="\mathbf{1}\{\cdot\}"></span>은 조건이 참이면 1, 아니면 0인 지시함수입니다. 즉 "s일째 금리 = 시작 수준 + 그때까지 지나온 회의들의 점프 합"입니다. 미지수가 61개에서 <b>회의 수만큼</b>으로 줄었습니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 4 · 한 회의의 두 갈래 — 계단 경로와 기대 경로</div>
+    <svg viewBox="0 0 660 300" role="img" aria-label="회의 전 단일 경로가 회의 후 인상·동결 두 갈래로 갈라지고 기대 경로가 그 사이에 놓이는 개념도">
+      <!-- 축 -->
+      <line x1="70" y1="250" x2="600" y2="250" stroke="#0A0A0A" stroke-width="1.3"/>
+      <line x1="70" y1="40" x2="70" y2="250" stroke="#0A0A0A" stroke-width="1.3"/>
+      <text x="335" y="285" font-family="Segoe UI,sans-serif" font-size="11.5" fill="#0A0A0A" text-anchor="middle">기준일로부터 일수 (s)</text>
+      <text x="26" y="145" font-family="Segoe UI,sans-serif" font-size="11.5" fill="#0A0A0A" text-anchor="middle" transform="rotate(-90 26 145)">하루짜리 금리 r(s)</text>
+      <!-- y 눈금 -->
+      <g font-family="IBM Plex Mono,monospace" font-size="10" fill="#6E6E6E" text-anchor="end">
+        <text x="64" y="200">2.740</text><text x="64" y="96">2.990</text>
+      </g>
+      <line x1="70" y1="196" x2="600" y2="196" stroke="#ECECEC" stroke-width="1"/>
+      <line x1="70" y1="92" x2="600" y2="92" stroke="#ECECEC" stroke-width="1"/>
+      <!-- 회의일 수직선 -->
+      <line x1="250" y1="45" x2="250" y2="250" stroke="#D6D6D6" stroke-width="1"/>
+      <text x="250" y="266" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">회의일 (m = 20일)</text>
+      <!-- 회의 전 경로 -->
+      <line x1="70" y1="196" x2="250" y2="196" stroke="#0A0A0A" stroke-width="2.6"/>
+      <text x="150" y="186" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#0A0A0A" text-anchor="middle">회의 전: r₀ 그대로</text>
+      <!-- 인상 갈래 -->
+      <line x1="250" y1="196" x2="250" y2="92" stroke="#2D7EAA" stroke-width="1.4" stroke-dasharray="2,3"/>
+      <line x1="250" y1="92" x2="590" y2="92" stroke="#2D7EAA" stroke-width="2.4"/>
+      <text x="470" y="82" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#2D7EAA" text-anchor="middle">인상 갈래: r₀ + 25bp (확률 P)</text>
+      <!-- 동결 갈래 -->
+      <line x1="250" y1="196" x2="590" y2="196" stroke="#ED8936" stroke-width="2.4" stroke-dasharray="6,3"/>
+      <text x="470" y="216" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#B05A10" text-anchor="middle">동결 갈래: r₀ 그대로 (확률 1−P)</text>
+      <!-- 기대 경로 -->
+      <line x1="250" y1="196" x2="250" y2="144" stroke="#C53030" stroke-width="1.2" stroke-dasharray="2,3"/>
+      <line x1="250" y1="144" x2="590" y2="144" stroke="#C53030" stroke-width="1.8"/>
+      <text x="430" y="134" font-family="Segoe UI,sans-serif" font-size="10.5" fill="#C53030" text-anchor="middle">기대 경로: r₀ + P·25bp — 호가가 실제로 담는 것</text>
+      <!-- 델타 표시 -->
+      <line x1="602" y1="196" x2="602" y2="92" stroke="#0A0A0A" stroke-width="1"/>
+      <line x1="597" y1="196" x2="607" y2="196" stroke="#0A0A0A" stroke-width="1"/>
+      <line x1="597" y1="92" x2="607" y2="92" stroke="#0A0A0A" stroke-width="1"/>
+      <text x="612" y="148" font-family="IBM Plex Mono,monospace" font-size="10" fill="#0A0A0A">25bp</text>
+    </svg>
+    <figcaption><b>이 그림에서 볼 것.</b> 회의 전에는 경로가 하나뿐입니다(검정). 회의를 지나면 인상(파랑, 확률 P)과 동결(주황, 확률 1−P) 두 갈래로 갈라집니다. 호가에 반영되는 것은 두 갈래 중 하나가 아니라 그 확률가중 평균인 <b>빨간 기대 경로</b> — 점프 폭으로 쓰면 Δ = P × 25bp입니다. 그래서 적합으로 얻는 Δ는 "그 회의에서 기대되는 평균 점프"이고, 이를 25bp로 나누면 확률이 됩니다.</figcaption>
+  </div>
+</figure>
+
+<p>이 그림이 Δ와 P의 관계를 이미 다 말해 줍니다. 회의 결과가 "동결(0bp) 아니면 +25bp" 둘 중 하나라면, 기대 점프는</p>
+<div class="eq" data-tex="\Delta \;=\; P \times 25\text{bp} \;+\; (1-P) \times 0 \;=\; P \times 25\text{bp} \qquad\Longrightarrow\qquad P \;=\; \frac{\Delta}{25\text{bp}}"></div>
+<p>입니다. 남은 일은 Δ를 호가에서 구해 내는 것뿐입니다. 그 전에, 계단의 출발 높이 <span class="eqi" data-tex="r_0"></span>부터 확정해야 합니다.</p>
+
+<h3 class="sec" id="s22"><span class="sn">2.2</span> 경로의 시작점 r₀ — 세 후보의 비교</h3>
+<p class="lead-q">"지금 수준"이라는 말에는 후보가 셋이나 있습니다 — 그리고 셋 중 무엇을 고르느냐가 앞 회의 확률을 직접 흔듭니다.</p>
+
+<p>계단 경로의 시작 수준 r₀는 "회의 전까지 하루짜리 금리가 머무는 높이"입니다. 자연스러운 후보가 셋 있습니다.</p>
+
+<table class="tbl">
+  <thead><tr><th>후보</th><th>8/7 값</th><th>장점</th><th>결정적 결함</th></tr></thead>
+  <tbody>
+    <tr><td>① 기준금리</td><td>2.750%</td><td>정책의 공식 수준</td><td>KOFR는 기준금리에 정확히 붙지 않는다 — 담보 수급에 따라 몇 bp 아래·위에서 거래된다(도표 1). 이 <b>베이시스</b>(괴리)를 무시하면 그만큼이 통째로 첫 회의의 Δ로 오인된다.</td></tr>
+    <tr><td>② 당일 KOFR</td><td>2.754% (전일 공시)</td><td>실거래 수준</td><td>하루짜리 실거래는 분기말·세금기 수급으로 하루 만에 수 bp씩 튄다(도표 1의 7월 초 2.44%). 그날의 우연한 수급이 그대로 확률에 들어간다. 게다가 당일치는 다음 영업일 오전에야 공시된다.</td></tr>
+    <tr><td>③ <b>1주 OIS 호가</b></td><td><b>2.740%</b></td><td>같은 상품군의 "가까운 미래 평균"</td><td>1주 안에 회의가 있으면 못 쓴다 — 그때만 ②로 폴백한다.</td></tr>
+  </tbody>
+</table>
+
+<p>운영 모형의 선택은 ③입니다. 논리는 <b>내부 정합성</b>입니다 — 우리가 풀려는 대상이 "OIS 호가"이므로, 경로의 시작 수준도 같은 OIS 시장이 매긴 값으로 잡아야 OIS 특유의 미세한 프리미엄·베이시스가 시작점에 흡수되고, 회의 점프 Δ에는 <i>회의에 관한 정보만</i> 남습니다. 실제로 8/7의 1주 호가는 2.740%로 기준금리보다 1bp 낮습니다 — ①을 썼다면 이 −1bp가 8월 회의의 Δ에 섞여 확률을 왜곡했을 것입니다.</p>
+
+<div class="warn"><b>단서 조항이 실전에서 작동합니다.</b> ③의 결함 칸을 그냥 지나치지 마세요. 1주 구간(기준일+1 ~ 기준일+7)에 회의가 끼어 있으면, 1주 호가는 이미 "회의 전 며칠 + 회의 후 며칠의 평균"이라 인상 기대가 섞인 값입니다. 이걸 시작점으로 쓰면 인상 기대를 시작 수준에 넣어 놓고 다시 인상확률을 재는 순환이 됩니다. 이때는 ②(최근 KOFR 공시값)로 폴백합니다 — 4.5의 졸업시험(7/15, 다음날이 회의)이 정확히 이 상황이고, 이 규칙을 아는지가 시험의 핵심 함정입니다.</div>
+
+<h3 class="sec" id="s23"><span class="sn">2.3</span> 2개월 호가 손계산 — 확률 56%가 나오기까지 · 셀 (b)</h3>
+<p class="lead-q">여기가 이 문서의 심장입니다. 이 절의 계산을 재현할 수 있으면 나머지는 규모의 문제일 뿐입니다.</p>
+
+<p>재료가 다 모였습니다. 2026-08-07 기준: r₀ = 2.740%(1주 호가), 다음 회의 8/27(20일 뒤), 2개월 호가 2.840%(만기 61일 — 8/7의 2개월 뒤인 10/7까지). 2개월 만기 안에 회의는 8/27 하나뿐이므로, 미지수는 Δ 하나입니다. 계산은 세 걸음입니다.</p>
+
+<p><b>걸음 1 — 동결 눈금.</b> Δ = 0(동결)이면 61일 내내 2.740%입니다. 셀 (a)의 단리 연율화로 이 경로의 고정금리를 계산하면 <b>2.7462%</b> — 시장 호가가 이보다 높은 만큼이 "인상 기대의 몫"입니다.</p>
+
+<p><b>걸음 2 — 확실한 인상 눈금.</b> Δ = 25bp(인상 확정)이면 처음 20일은 2.740%, 나머지 41일은 2.990%입니다. 이 경로의 고정금리는 <b>2.9150%</b>입니다. 동결 눈금과의 차이는 16.9bp — 25bp가 아닙니다. 회의 <i>앞</i> 20일은 인상의 영향을 받지 않으므로, 만기 평균에는 점프가 대략 "회의 뒤 날수 비중"(41/61 ≈ 2/3)만큼만 반영되기 때문입니다. 이 비중이 3부에서 <b>민감도</b>라는 이름으로 주인공이 됩니다.</p>
+
+<p><b>걸음 3 — 시장의 위치 읽기.</b> 시장 호가 2.840%는 동결 눈금보다 9.4bp 위, 두 눈금 사이의 약 56% 지점에 있습니다.</p>
+
+<div class="eq" data-tex="P \;=\; \frac{K_{\text{시장}} - K_{\text{동결}}}{K_{\text{인상}} - K_{\text{동결}}} \;=\; \frac{2.8400 - 2.7462}{2.9150 - 2.7462} \;=\; \frac{9.4\text{bp}}{16.9\text{bp}} \;\approx\; 56\%"></div>
+
+<p>이 식이 도표 4의 기하 그대로입니다 — 시장 호가가 동결 갈래와 인상 갈래 사이 어디쯤에 떠 있는지의 위치가 곧 확률입니다. 아래 셀이 이 세 걸음을 코드로 옮긴 것이고, 같은 계산을 1개월 호가로도 반복합니다.</p>
+
+<div class="note" style="border-left-color:var(--cad-red);">
+  <b>이 한 줄 독해로 실무자가 하는 일.</b> 3부의 엔진 없이도 이 식만으로 되는 일이 셋 있습니다.
+  <br>① <b>30초 간이 확률.</b> 회의 아침, 1·2개월 호가 두 개와 동결 눈금만으로 오늘 회의의 반영도를 암산 수준으로 뽑습니다.
+  <br>② <b>데스크 공용어.</b> "2개월이 동결 눈금 위로 9bp 떠 있다"는 말이 곧 확률 진술이 됩니다 — 팀 안에서 확률을 놓고 다툴 때 근거가 호가 숫자로 내려갑니다.
+  <br>③ <b>엔진 검산.</b> 3부 엔진의 앞 회의 산출이 이 간이 독해와 크게 어긋나면(±10%p 이상) 데이터나 코드부터 의심합니다.
+  <br>한국 채권 데스크에서는 ①을 금통위 당일 아침 루틴으로 쓰는 경우가 많습니다.
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 (b) · model_rate — 계단 경로의 가격 함수와 2개월 손계산</div>
+<pre class="code"># 셀 (b) · model_rate — 계단 경로를 넣으면 고정금리가 나오는 함수
+def model_rate(asof, days, r0, nodes, deltas):
+    # 경로를 (일수, 금리) 구간 목록으로 자른 뒤 셀 (a)의 단리 연율화 적용
+    segments, prev, cur = [], 0, r0
+    for b, dlt in sorted(((n - asof).days, dl) for n, dl in zip(nodes, deltas)):
+        if b &gt;= days:
+            break                     # 만기 밖의 회의는 이 호가와 무관
+        if b &gt; prev:
+            segments.append((b - prev, cur))
+            prev = b
+        cur += dlt                    # 회의를 지나며 금리가 점프
+    segments.append((days - prev, cur))
+    return k_simple(segments, days)
+
+# ── 2개월 호가(61일) 손계산: 회의(8/27)는 20일째, 그 뒤가 41일
+r0 = QUOTES[&quot;1주&quot;]                    # 경로 시작 수준 = 1주 호가 2.740
+nodes_1 = [MEETINGS_2026[0]]          # 8/27 하나만 고려
+D2 = DAYS[&quot;2개월&quot;]
+m_aug = (MEETINGS_2026[0] - ASOF).days
+print(f&quot;2개월 만기 {D2}일 · 회의까지 {m_aug}일 · 회의 뒤 {D2 - m_aug}일&quot;)
+
+hold = model_rate(ASOF, D2, r0, nodes_1, np.array([0.0]))     # 동결 경로
+full = model_rate(ASOF, D2, r0, nodes_1, np.array([0.25]))    # 25bp 인상 경로
+mkt = QUOTES[&quot;2개월&quot;]
+p_2m = (mkt - hold) / (full - hold)
+print(f&quot;동결 경로의 2개월 고정금리 : {hold:.4f}%&quot;)
+print(f&quot;인상 경로의 2개월 고정금리 : {full:.4f}%  (동결 대비 +{(full-hold)*100:.1f}bp)&quot;)
+print(f&quot;시장 호가                  : {mkt:.4f}%  (동결 대비 +{(mkt-hold)*100:.1f}bp)&quot;)
+print(f&quot;=&gt; 2개월 호가 하나로 읽은 8월 인상확률 P = {p_2m:.1%}&quot;)
+
+# 같은 계산을 1개월 호가로
+D1 = DAYS[&quot;1개월&quot;]
+hold1 = model_rate(ASOF, D1, r0, nodes_1, np.array([0.0]))
+full1 = model_rate(ASOF, D1, r0, nodes_1, np.array([0.25]))
+p_1m = (QUOTES[&quot;1개월&quot;] - hold1) / (full1 - hold1)
+print(f&quot;\n1개월(31일·회의 뒤 11일)로 같은 계산: 동결 {hold1:.4f} · 인상 {full1:.4f}&quot;
+      f&quot; · 시장 {QUOTES[&#x27;1개월&#x27;]:.4f} =&gt; P = {p_1m:.1%}&quot;)
+
+fig, ax = plt.subplots(figsize=(6.8, 3.2))
+ps = np.linspace(0, 1, 101)
+line = [model_rate(ASOF, D2, r0, nodes_1, np.array([0.25 * p])) for p in ps]
+ax.plot(ps * 100, line, color=CADBLUE, label=&quot;모형: P에 따른 2개월 고정금리&quot;)
+ax.axhline(mkt, color=INK, lw=1.2, ls=(0, (5, 2)), label=f&quot;시장 호가 {mkt:.3f}&quot;)
+ax.axvline(p_2m * 100, color=CADRED, lw=1.0, ls=(0, (2, 2)))
+ax.annotate(f&quot;교차점 P = {p_2m:.0%}&quot;, xy=(p_2m * 100, mkt),
+            xytext=(8, -18), textcoords=&quot;offset points&quot;, color=CADRED, fontsize=9)
+ax.scatter([0, 100], [hold, full], s=45, color=CADBLUE, zorder=5)
+ax.annotate(f&quot;동결 {hold:.4f}&quot;, xy=(0, hold), xytext=(6, 6),
+            textcoords=&quot;offset points&quot;, fontsize=8, color=MUTE)
+ax.annotate(f&quot;확실한 인상 {full:.4f}&quot;, xy=(100, full), xytext=(-96, -4),
+            textcoords=&quot;offset points&quot;, fontsize=8, color=MUTE)
+ax.set_xlabel(&quot;8월 인상확률 P (%)&quot;)
+ax.set_ylabel(&quot;2개월 고정금리 (%)&quot;)
+ax.set_title(&quot;호가 하나로 확률 읽기 — 2개월 OIS&quot;)
+ax.legend(loc=&quot;upper left&quot;)
+save(fig, &quot;05-two-month-readout.png&quot;)
+plt.show()</pre>
+  <div class="cell-note"><code>model_rate</code>가 이 방법론의 가격 함수입니다 — 계단 경로(r₀, 회의일, Δ들)를 받아 구간별로 자른 뒤 셀 (a)의 단리 연율화를 적용합니다. 이후 3부의 모든 계산이 이 함수 하나를 반복 호출합니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">2개월 만기 61일 · 회의까지 20일 · 회의 뒤 41일
+동결 경로의 2개월 고정금리 : 2.7462%
+인상 경로의 2개월 고정금리 : 2.9150%  (동결 대비 +16.9bp)
+시장 호가                  : 2.8400%  (동결 대비 +9.4bp)
+=&gt; 2개월 호가 하나로 읽은 8월 인상확률 P = 55.6%
+
+1개월(31일·회의 뒤 11일)로 같은 계산: 동결 2.7431 · 인상 2.8320 · 시장 2.7700 =&gt; P = 30.3%</pre></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 5 · 호가 하나로 확률 읽기 — 2개월 OIS</div>
+    <img src="figs/05-two-month-readout.png" alt="8월 인상확률 P에 따른 2개월 고정금리 직선과 시장 호가의 교차점이 56%임을 보이는 그림">
+    <figcaption><b>이 그림에서 볼 것.</b> 파랑 선이 "확률이 P라면 2개월 고정금리는 얼마여야 하는가"의 모형값, 검정 점선이 실제 시장 호가 2.840%입니다. 두 선의 교차점(빨강)이 P = 56%. 양 끝점이 걸음 1·2의 두 눈금(2.7462 / 2.9150)입니다. 파랑 선이 거의 완전한 직선이라는 것도 기억해 두세요 — 3.4에서 "가우스-뉴턴 첫 스텝이 답의 대부분을 만드는" 이유가 됩니다. (셀 (b) 산출)</figcaption>
+  </div>
+</figure>
+
+<p>셀 (b)의 마지막 줄이 다음 단계의 문을 엽니다. 1개월 호가(2.770%)로 똑같이 계산하면 P = <b>30%</b> — 2개월의 56%와 다릅니다. 같은 회의의 확률이 호가마다 다르게 읽힌다는 것은 각 호가에 그 호가만의 잡음(스프레드 안 위치·수급·스테일)이 붙어 있다는 뜻입니다. 하나만 믿을 이유가 없으므로, 실전 모형은 여섯 호가를 <b>동시에</b> 만족시키는 Δ를 찾습니다 — 그것이 3부이고, 그 결과가 8월 50%입니다.</p>
+
+<h3 class="sec" id="s24"><span class="sn">2.4</span> 이 확률의 정체 — 무엇이고 무엇이 아닌가</h3>
+<p class="lead-q">"P = 56%"라고 적는 순간 따라붙는 세 가지 질문을 미리 끝냅니다.</p>
+
+<h4 class="sub">질문 1 — 왜 25bp 격자인가</h4>
+<p>P = Δ/25bp라는 변환은 "회의 결과는 동결 아니면 ±25bp"라는 가정 위에 서 있습니다. 근거는 한국은행의 실제 행동입니다 — 2010년 이후 기준금리 변경은 코로나 국면의 50bp 인하(2020-03) 단 한 번을 빼면 전부 25bp 단위였고, 인상은 예외 없이 25bp였습니다(2008~09년 금융위기에는 50~100bp 인하도 있었으므로, 위기 국면에서는 격자 가정 자체를 다시 봐야 합니다). 다만 이것은 관행이지 법칙이 아닙니다. 만약 시장이 "50bp 인상 25% 확률"을 가격에 넣는다면 Δ = 12.5bp가 되어 "25bp 인상 50%"와 구분되지 않습니다 — <b>Δ는 식별되지만, Δ를 확률로 해석하는 층은 격자 가정에 의존합니다.</b> 그래서 Δ(bp)와 P(%)를 항상 나란히 표기합니다.</p>
+
+<h4 class="sub">질문 2 — 이것은 예보 확률인가</h4>
+<p>아닙니다. 1.3의 경고 그대로, 이 확률은 <b>위험중립 확률</b> — 시장이 가격을 매길 때 쓰는, 위험 보상이 섞인 확률입니다. 인상이 두려운 쪽이 보험료를 더 낼 의향이 있으면 실제 믿음보다 확률이 높게 찍힐 수 있습니다. 다행히 이 왜곡은 만기가 짧을수록 작습니다 — 두 달짜리 계약의 위험 보상은 크지 않습니다. 그래도 원칙은: <b>이 숫자는 "시장이 가격에 반영한 정도"이지 "실제로 일어날 빈도"가 아니며</b>, 예보로 쓰려면 서베이(채권시장 심리지수) 같은 독립 지표와 교차 검증해야 합니다. 이 프로젝트의 본 리포트가 그 교차 검증(2013~2026년 124회 백테스트 포함)을 수행합니다.</p>
+
+<h4 class="sub">질문 3 — 인하 가능성은 어디 갔는가</h4>
+<p>Δ는 부호가 자유롭습니다 — 시장이 인하를 가격에 넣으면 Δ가 음수로 적합되고, 그때는 −Δ/25bp를 인하확률로 읽습니다. 확률로 변환할 때 [0, 1] 구간을 벗어나는 값은 구간 끝으로 자릅니다(Δ = 28bp → P = 100%). "인상 50% + 인하 10%"처럼 양쪽이 동시에 있는 분포는 Δ 하나(순기대치)로는 분리되지 않습니다 — 이 방법론의 해상도 한계이며, 4.4의 한계 표에 다시 등장합니다.</p>
+
+<!-- ================= PART 3 ================= -->
+<div class="part">
+  <div class="pn">Part 3</div>
+  <h2>연립 — 여섯 호가, 여섯 회의</h2>
+  <p>회의가 여섯 개가 되는 순간 이 문제는 "역문제"가 됩니다 — 잘 풀리는 방향과 안 풀리는 방향이 갈리고, 그 구분이 모든 설계를 결정합니다.</p>
+</div>
+
+<h3 class="sec" id="s31"><span class="sn">3.1</span> 어느 호가가 어느 회의를 보는가 — 민감도 행렬 · 셀 (c)</h3>
+<p class="lead-q">2.3의 "회의 뒤 날수 비중 41/61"을 모든 (호가, 회의) 짝에 대해 한꺼번에 계산하면, 이 문제의 지도가 나옵니다.</p>
+
+<p>이제 실전 규모입니다. 기준일로부터 1년 안에 확정된 금통위가 셋(8/27·10/22·11/26) 있고, 2027년 일정은 아직 공표 전이므로 분기 간격의 <b>가정 노드</b> 셋(1/15·4/15·7/15)을 세워 1년 만기 호가가 보는 "그 너머 기대"를 받아 냅니다. 가정 노드의 날짜 자체(15일)는 임의 선택입니다 — 하루 이틀 옮겨도 민감도가 거의 변하지 않아 결과에 영향이 없고, 중요한 것은 "1년 만기가 보는 그 너머 기대를 받아 줄 자리가 분기 간격으로 있다"는 사실뿐입니다. 미지수는 Δ 여섯 개, 방정식은 1개월~1년 호가 여섯 개입니다.</p>
+
+<div class="note"><b>왜 1년 만기까지만 쓰는가.</b> 호가는 18개월·2년·3년까지 고시되지만 적합에는 1년까지만 씁니다. 1년 밖 호가는 민감도의 대부분이 일정도 없는 2027년 이후 회의들에 걸리는데, 그 몫을 받을 가정 노드를 늘릴수록 미지수만 늘고 식별은 나빠집니다. 게다가 만기가 길수록 기간프리미엄(§3.3)이 커져 "기대"만 분리하기 어려워집니다 — 정보가 늘기보다 오염이 느는 구간이라 잘라냅니다.</div>
+
+<p>각 호가가 각 회의에 얼마나 반응하는지 — 2.3 걸음 2의 논리를 일반화하면, 만기 D일 호가의 회의 k에 대한 <b>민감도</b>(그 회의 점프가 호가에 전달되는 비율)는 근사적으로</p>
+
+<div class="eq" data-tex="\frac{\partial K_D}{\partial \Delta_k} \;\approx\; \frac{D - m_k}{D} \qquad (m_k < D,\ \text{만기 밖 회의는 } 0)"></div>
+
+<p>즉 "만기 안에서 그 회의 <i>뒤에</i> 남는 날수의 비중"입니다. 이 값을 6×6으로 모두 계산한 것이 민감도 행렬(수학 용어로는 자코비안 — 출력들의 입력들에 대한 미분을 모은 행렬)이고, 아래 셀이 그것입니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (c) · 민감도 행렬 — 성분 = 만기 내 회의-이후 날수 비중</div>
+<pre class="code"># 셀 (c) · 민감도 행렬 — 성분 = 만기 내 회의-이후 날수 비중
+ALL_NODES = MEETINGS_2026 + NODES_2027
+J_frac = np.zeros((len(FIT_TENORS), len(ALL_NODES)))
+for i, t in enumerate(FIT_TENORS):
+    for k, n in enumerate(ALL_NODES):
+        b = (n - ASOF).days
+        if b &lt; DAYS[t]:
+            J_frac[i, k] = (DAYS[t] - b) / DAYS[t]
+
+print(&quot;민감도 행렬 (행=만기, 열=회의):&quot;)
+hdr = &quot;        &quot; + &quot;  &quot;.join(n.strftime(&quot;%y/%m/%d&quot;) for n in ALL_NODES)
+print(hdr)
+for i, t in enumerate(FIT_TENORS):
+    print(f&quot;{t:&lt;6s} &quot; + &quot;  &quot;.join(f&quot;{v:8.3f}&quot; for v in J_frac[i]))
+
+d3, b_oct = DAYS[&quot;3개월&quot;], (MEETINGS_2026[1] - ASOF).days
+print(f&quot;\n예: 3개월({d3}일) 호가의 10/22 민감도 = ({d3}-{b_oct})/{d3}&quot;
+      f&quot; = {(d3-b_oct)/d3:.3f}&quot;)
+print(&quot;=&gt; 10월 인상 25bp는 3개월 호가를 약 &quot; f&quot;{25*(d3-b_oct)/d3:.1f}bp만 움직인다&quot;)
+
+fig, ax = plt.subplots(figsize=(6.8, 3.4))
+im = ax.imshow(J_frac, cmap=&quot;Blues&quot;, vmin=0, vmax=1, aspect=&quot;auto&quot;)
+ax.set_xticks(range(len(ALL_NODES)),
+              [n.strftime(&quot;%m/%d&quot;) + (&quot;\n(가정)&quot; if n.year == 2027 else &quot;&quot;)
+               for n in ALL_NODES], fontsize=8)
+ax.set_yticks(range(len(FIT_TENORS)), FIT_TENORS, fontsize=8)
+for i in range(len(FIT_TENORS)):
+    for k in range(len(ALL_NODES)):
+        v = J_frac[i, k]
+        if v &gt; 0:
+            ax.text(k, i, f&quot;{v:.2f}&quot;, ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=7.5,
+                    color=&quot;white&quot; if v &gt; 0.55 else INK)
+ax.set_title(&quot;민감도 행렬 — 호가 1bp를 움직이는 데 필요한 회의별 지렛대&quot;)
+ax.grid(False)
+fig.colorbar(im, ax=ax, shrink=0.85, label=&quot;회의 뒤 날수 비중&quot;)
+save(fig, &quot;06-coverage-jacobian.png&quot;)
+plt.show()</pre>
+  <div class="cell-note">행이 만기, 열이 회의입니다. 값 0.174의 뜻: 10/22에 25bp를 올려도 3개월 호가는 25 × 0.174 ≈ 4.3bp만 움직입니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">민감도 행렬 (행=만기, 열=회의):
+        26/08/27  26/10/22  26/11/26  27/01/15  27/04/15  27/07/15
+1개월       0.355     0.000     0.000     0.000     0.000     0.000
+2개월       0.672     0.000     0.000     0.000     0.000     0.000
+3개월       0.783     0.174     0.000     0.000     0.000     0.000
+6개월       0.891     0.587     0.397     0.125     0.000     0.000
+9개월       0.927     0.722     0.593     0.410     0.081     0.000
+1년        0.945     0.792     0.696     0.559     0.312     0.063
+
+예: 3개월(92일) 호가의 10/22 민감도 = (92-76)/92 = 0.174
+=&gt; 10월 인상 25bp는 3개월 호가를 약 4.3bp만 움직인다</pre></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 6 · 민감도 행렬 — 이 문제의 지도</div>
+    <img src="figs/06-coverage-jacobian.png" alt="만기 여섯 개와 회의 노드 여섯 개 사이의 민감도 히트맵">
+    <figcaption><b>이 그림에서 볼 것.</b> 진할수록 그 호가가 그 회의를 잘 봅니다. 세 가지 구조를 읽으세요. ① 8/27 열은 위부터 아래까지 진합니다 — 특히 1·2개월은 <b>오직 이 회의만</b> 봅니다(전용 호가). ② 뒤 회의로 갈수록 열이 옅어집니다 — 10/22를 단독으로 보는 호가는 없고, 3개월이 0.17로 살짝 볼 뿐입니다. ③ 마지막 27-07/15 열은 1년 호가가 0.06으로 겨우 스칩니다 — 사실상 아무도 안 보는 방향입니다. 이 세 구조가 각각 "8월 확률은 단단하다", "뒷 회의는 성기게 읽어라", "2027 노드는 수축으로 붙들어야 한다"로 이어집니다. (셀 (c) 산출)</figcaption>
+  </div>
+</figure>
+
+<h3 class="sec" id="s32"><span class="sn">3.2</span> 그냥 풀면 — 특이성과 잡음 증폭 · 셀 (d)</h3>
+<p class="lead-q">"방정식 여섯 개, 미지수 여섯 개면 유일해가 나온다"는 직관이 여기서 두 번 부서집니다.</p>
+
+<p>첫 번째 균열: 도표 6에서 1개월 행과 2개월 행은 <b>8/27 열 하나만</b> 값이 있습니다. 방정식 두 개가 같은 미지수 하나를 재고 있으니, 서로 독립인 방정식은 사실상 다섯 개뿐입니다. 이런 상황을 수학에서는 행렬의 <b>계수</b>(rank — 행렬이 실제로 구분해낼 수 있는 독립 방향의 개수)가 6이 아니라 5라고 말합니다. 계수가 미지수보다 작으면 연립방정식의 해는 유일하지 않습니다 — "정확해"가 무한히 많고, 컴퓨터로 그냥 풀면(<code>np.linalg.solve</code>) 특이행렬 오류이거나 해가 폭주합니다.</p>
+
+<p>둘째 균열은 더 실질적입니다. 유일하지 않은 해들 중 가장 얌전한 것(최소노름 해 — 가능한 해 가운데 크기가 가장 작은 것)을 골라도, <b>입력의 작은 잡음이 출력에서 크게 증폭됩니다.</b> 이유는 민감도의 산수입니다: 민감도 0.174짜리 방향에서 호가 1bp를 설명하려면 Δ가 1/0.174 ≈ 5.7bp 움직여야 합니다 — 확률로는 23%p입니다. 아래 셀이 두 균열을 모두 실측합니다: 행렬의 특이값(행렬이 각 방향을 얼마나 잘 구분하는지의 세기 목록 — 0이면 그 방향을 전혀 구분 못 함)을 확인하고, 호가를 1틱(0.25bp)씩 흔들어 해가 얼마나 널뛰는지를 봅니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (d) · 특이성 확인 + 최소노름 해의 1틱 섭동 실험</div>
+<pre class="code"># 셀 (d) · 특이성 확인 + 최소노름 해의 1틱 섭동 실험 (규칙화 전부 끄고)
+def solve_naive(quotes_dict):
+    # 규칙화 없는 최소제곱 (뉴턴 반복 + lstsq = 최소노름 해)
+    yv = np.array([quotes_dict[t] for t in FIT_TENORS])
+    days_l = [DAYS[t] for t in FIT_TENORS]
+    deltas, eps = np.zeros(len(ALL_NODES)), 1e-4
+    for _ in range(8):
+        f0 = np.array([model_rate(ASOF, d_, r0, ALL_NODES, deltas) for d_ in days_l])
+        J = np.zeros((len(days_l), len(ALL_NODES)))
+        for k in range(len(ALL_NODES)):
+            dd = deltas.copy(); dd[k] += eps
+            J[:, k] = (np.array([model_rate(ASOF, d_, r0, ALL_NODES, dd)
+                                 for d_ in days_l]) - f0) / eps
+        step, *_ = np.linalg.lstsq(J, yv - f0, rcond=None)
+        deltas = deltas + step
+        if np.max(np.abs(step)) &lt; 1e-9:
+            break
+    return deltas, J
+
+base_dl, J = solve_naive(QUOTES)
+sv = np.linalg.svd(J, compute_uv=False)
+print(&quot;민감도 행렬의 특이값:&quot;, &quot; &quot;.join(f&quot;{s:.3f}&quot; for s in sv))
+print(&quot;=&gt; 여섯째 특이값이 0 — 계수(rank)는 5. 6x6 &#x27;정확해&#x27;는 유일하지 않다.&quot;)
+print(&quot;   (np.linalg.solve로 그냥 풀면 특이행렬이라 해가 폭주한다)&quot;)
+print(f&quot;유효 조건수 (첫째/다섯째 특이값 비): {sv[0]/sv[4]:.0f}&quot;
+      &quot;  — 최악 방향으로는 잡음이 이 배율로 증폭될 수 있다&quot;)
+print(&quot;\n최소노름 해 (bp):&quot;,
+      &quot; &quot;.join(f&quot;{d_*100:+.1f}&quot; for d_ in base_dl))
+
+# 만기 하나씩 +1틱(0.25bp) 올려 보고 해가 얼마나 움직이는지
+TICK = 0.0025
+print(&quot;\n+1틱 섭동별 해의 변화 (bp):&quot;)
+print(&quot;섭동 만기   &quot; + &quot;  &quot;.join(n.strftime(&quot;%m/%d&quot;) for n in ALL_NODES))
+swings = {}
+for t in FIT_TENORS:
+    q2 = dict(QUOTES); q2[t] = q2[t] + TICK
+    dl2, _ = solve_naive(q2)
+    swings[t] = (dl2 - base_dl) * 100
+    print(f&quot;{t:&lt;8s} &quot; + &quot;  &quot;.join(f&quot;{v:+8.2f}&quot; for v in swings[t]))
+
+fig, ax = plt.subplots(figsize=(6.8, 3.4))
+width = 0.13
+xs = np.arange(len(ALL_NODES))
+shades = [&quot;#BDD4E7&quot;, &quot;#8FB4D4&quot;, &quot;#5E92BC&quot;, &quot;#2D7EAA&quot;, &quot;#1E5E85&quot;, &quot;#123F5C&quot;]
+for j, t in enumerate(FIT_TENORS):
+    ax.bar(xs + (j - 2.5) * width, swings[t], width, color=shades[j], label=t)
+ax.axhline(0, color=INK, lw=0.8)
+ax.set_xticks(xs, [n.strftime(&quot;%m/%d&quot;) for n in ALL_NODES], fontsize=8)
+ax.set_ylabel(&quot;점프 추정치 변화 (bp)&quot;)
+ax.set_title(&quot;호가 +0.25bp(1틱)가 규칙화 없는 해를 흔드는 폭&quot;)
+ax.annotate(&quot;입력은 0.25bp, 출력은 최대 ±2.4bp — 약 10배 증폭\n&quot;
+            &quot;확률로는 한 호가의 잡음이 ±10%p&quot;, xy=(0.02, 0.03),
+            xycoords=&quot;axes fraction&quot;, fontsize=8.5, color=CADRED)
+ax.legend(ncols=3, loc=&quot;upper right&quot;)
+save(fig, &quot;07-noise-amplification.png&quot;)
+plt.show()</pre>
+  <div class="cell-note"><code>lstsq</code>는 해가 유일하지 않을 때 최소노름 해를 돌려줍니다 — "규칙 없이 풀 수 있는 가장 점잖은 방법"에 해당합니다. 그 해조차 1틱에 얼마나 흔들리는지가 이 실험의 요점입니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">민감도 행렬의 특이값: 2.552 0.762 0.248 0.093 0.057 0.000
+=&gt; 여섯째 특이값이 0 — 계수(rank)는 5. 6x6 &#x27;정확해&#x27;는 유일하지 않다.
+   (np.linalg.solve로 그냥 풀면 특이행렬이라 해가 폭주한다)
+유효 조건수 (첫째/다섯째 특이값 비): 45  — 최악 방향으로는 잡음이 이 배율로 증폭될 수 있다
+
+최소노름 해 (bp): +12.5 +23.9 +8.9 +17.3 +18.2 +4.3
+
++1틱 섭동별 해의 변화 (bp):
+섭동 만기   08/27  10/22  11/26  01/15  04/15  07/15
+1개월         +0.15     -0.69     +0.74     -0.20     -0.02     +0.05
+2개월         +0.29     -1.30     +1.40     -0.37     -0.03     +0.09
+3개월         +0.00     +1.43     -2.42     +0.98     +0.06     -0.19
+6개월         +0.00     -0.00     +1.20     -1.84     +0.53     +0.44
+9개월         +0.00     -0.00     -0.54     +1.71     -1.70     -0.79
+1년          +0.00     -0.00     +0.13     -0.41     +1.13     +0.43</pre></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 7 · 잡음 증폭 — 1틱이 만드는 널뛰기</div>
+    <img src="figs/07-noise-amplification.png" alt="각 만기 호가를 0.25bp 올렸을 때 여섯 회의의 점프 추정치가 움직이는 폭의 막대그림">
+    <figcaption><b>이 그림에서 볼 것.</b> 막대 하나 = "그 만기 호가를 +0.25bp 흔들었을 때 그 회의 Δ의 변화"입니다. 두 패턴을 확인하세요. ① 입력은 0.25bp인데 출력 막대는 최대 ±2.4bp — 약 10배 증폭이고 확률로는 ±10%p입니다. ② 같은 색 막대들이 이웃 회의에서 <b>부호를 바꿔 가며</b> 나타납니다(예: 3개월 +1틱 → 10/22 +1.4bp, 11/26 −2.4bp). 합은 지키고 배분만 서로 뺏는 시소 — 이 잡음의 고유한 모양이며, 다음 절의 "평활" 처방이 정확히 이 모양을 겨냥합니다. (셀 (d) 산출)</figcaption>
+  </div>
+</figure>
+
+<div class="note"><b>이 널뛰기는 이론 속 이야기가 아닙니다.</b> 규칙화를 붙인 운영 모형에서도 8월 배분 확률은 한 달 사이 100%와 26%를 오갑니다(도표 12의 실측 시계열) — 규칙화 없는 판은 이보다 험합니다. 날마다 결론이 뒤집히는 지표는 실무에서 쓸 수 없습니다 — 다음 절의 처방이 필요한 이유입니다.</div>
+
+<h3 class="sec" id="s33"><span class="sn">3.3</span> 세 가지 처방 — 가중·평활·수축, 그리고 λ 고르기</h3>
+<p class="lead-q">처방은 병의 모양을 따라갑니다 — 3.2에서 본 병이 셋이었으니 처방도 셋입니다.</p>
+
+<p>병의 목록을 다시 적으면: ⓐ 뒷 만기 호가는 기간프리미엄·2027 가정 노드의 오염이 커서 발언권을 그대로 주면 안 되고, ⓑ 잡음이 "이웃 회의 시소" 모양으로 증폭되며, ⓒ 아무 호가도 못 보는 방향(2027 끝 노드)은 해가 정해지지 않습니다. 각각에 하나씩:</p>
+
+<table class="tbl">
+  <thead><tr><th>처방</th><th>수식 항</th><th>무엇을 하는가</th><th>강도 선택의 논리</th></tr></thead>
+  <tbody>
+    <tr><td><b>① 가중 (W)</b></td><td>잔차를 W로 가중</td><td>만기별 발언권 차등: 1M·2M·3M은 1.0, 6M 0.9, 9M 0.8, 1Y 0.7</td><td>뒤로 갈수록 기간프리미엄(장기 계약에 붙는 위험 보상)과 2027 가정의 오염이 커진다 — 완만하게만 낮춰 정보는 살린다. 0.9·0.8·0.7이라는 수치 자체는 "앞은 온전히, 뒤는 완만히"라는 원칙을 수치화한 실무 선택이다</td></tr>
+    <tr><td><b>② 평활 (λ‖DΔ‖²)</b></td><td>이웃 점프의 <b>차이</b>에 벌점</td><td>시소 모양(이웃이 반대로 튀는 것)을 직접 벌한다. 점프의 크기 자체는 벌하지 않는다</td><td>λ = 2×10⁻³ — 아래 도표 8에서 결정 논리를 통째로 본다</td></tr>
+    <tr><td><b>③ 수축 (Δ'TΔ)</b></td><td>점프 자체를 0으로 살짝 당김</td><td>아무도 안 보는 방향이 남아도 해가 폭주하지 않게 하는 안전핀</td><td>확정 회의는 2×10⁻⁴로 미미하게, 일정도 없는 2027 가정 노드는 5배(10⁻³) — 정보가 없는 자리일수록 "0(동결)"이라는 중립 기본값에 세게 묶는다</td></tr>
+  </tbody>
+</table>
+
+<p>세 처방을 합친 설계 목적함수가 이것입니다.</p>
+
+<div class="eq" data-tex="\min_{\Delta}\;\; \big(y - K(\Delta)\big)^{\!\top} W \,\big(y - K(\Delta)\big) \;+\; \lambda \,\lVert D\Delta \rVert^2 \;+\; \Delta^{\!\top} T\, \Delta"></div>
+
+<p>읽는 법 — 첫 항은 "여섯 호가 y를 모형가 K(Δ)로 잘 맞춰라(가중해서)", 둘째 항은 "이웃 점프끼리 너무 다르게 벌리지 마라"(D는 이웃 차분을 만드는 행렬), 셋째 항은 "근거 없는 점프는 0에 가깝게"입니다. λ가 첫 항(데이터)과 둘째 항(안정)의 줄다리기를 조절합니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 8 · λ의 결정 — 배분과 적합 오차의 맞교환</div>
+    <img src="figs/08-lambda-sensitivity.png" alt="평활 강도 람다를 훑으며 회의별 확률과 적합 오차가 어떻게 변하는지 보이는 두 패널">
+    <figcaption><b>이 그림에서 볼 것.</b> 왼쪽 — λ를 키우면(오른쪽으로 갈수록) 10/22(파랑, 96→73%)와 11/26(주황, 35→67%)이 서로를 향해 섞입니다: 평활이 이웃 배분의 구분을 지워 가는 과정입니다. 8/27(검정)은 전용 호가 둘이 붙들고 있어 거의 움직이지 않습니다. 채택값 2×10⁻³(빨간 점선)은 곡선들이 아직 평평한 구간의 초입 — λ를 절반·두 배로 흔들어도 답이 몇 %p 안 바뀌는 자리입니다. 오른쪽 — λ를 극단까지 키워도 적합 오차는 0.05bp만 나빠집니다. 즉 λ의 진짜 비용은 적합이 아니라 <b>배분의 뭉개짐</b>이고, 그래서 "시소 잡음을 눌러 줄 만큼만, 배분 정보를 지우기 전까지"가 선택 기준이 됩니다. (셀 (e) 산출)</figcaption>
+  </div>
+</figure>
+
+<div class="note"><b>왜 이만큼의 적합 오차는 쫓지 않는가.</b> 채택 λ에서 잔차(시장 호가 − 모형가)는 1개월 −1.8bp, 2개월 +0.9bp 정도 남습니다(4.2의 표). 호가의 틱이 0.25bp이고 미세 수급으로 반틱~1틱은 늘 흔들리므로, 이보다 작은 잔차를 쥐어짜는 것은 시장의 정보가 아니라 <b>그날의 잡음을 외우는 일</b>입니다. "완벽한 적합"이 아니라 "잡음 규모까지의 적합"이 목표입니다.</div>
+
+<h3 class="sec" id="s34"><span class="sn">3.4</span> 가우스-뉴턴과 구현의 실제 · 셀 (e)</h3>
+<p class="lead-q">식은 섰습니다. 이제 "실제로 어떻게 푸는가" — 그리고 운영 코드가 목적함수를 곧이곧대로 풀지 않는다는 미묘한 사실까지.</p>
+
+<p>가격 함수 K(Δ)는 복리 때문에 Δ의 완전한 일차식이 아닙니다. 이런 문제의 표준 해법이 <b>가우스-뉴턴</b>입니다: 현재 추정치 주변에서 K를 일차 근사(민감도 행렬 J로 선형화)하고, 그 선형 문제의 정규방정식을 풀어 한 걸음 전진하고, 새 위치에서 다시 선형화하기를 반복합니다. 운영 구현의 갱신식은</p>
+
+<div class="eq" data-tex="\Delta \;\leftarrow\; \Delta \;+\; \big(J^{\top} W J + \lambda D^{\top} D + T\big)^{-1} J^{\top} W \big(y - K(\Delta)\big)"></div>
+
+<p>이고 이것을 8회 반복합니다. 도표 5에서 봤듯 K는 Δ에 거의 선형이라 첫 걸음이 답의 대부분을 만들고, 나머지는 미세 조정입니다.</p>
+
+<p>그런데 이 갱신식을 자세히 보면 미묘한 점이 있습니다. <b>벌점(λD'D + T)이 역행렬 안(걸음의 곡률)에는 들어 있는데, 우변(밀어내는 힘)에는 없습니다.</b> 목적함수를 정확히 최소화하려면 우변에서 벌점의 기울기 −(λD'D+T)Δ를 빼 줘야 합니다. 안 빼면 어떻게 되는가 — 벌점은 "최종 답을 자기 쪽으로 끌어당기는 힘"이 아니라 <b>"걸음이 위험한 방향으로 크게 나가지 못하게 하는 감쇠"</b>로만 작동합니다. 결과적으로: 데이터가 강하게 식별하는 방향(앞 회의)은 몇 걸음 만에 데이터가 완전히 이기고, 아무 호가도 못 보는 방향(3.2의 특이 방향)은 걸음이 아예 만들어지지 않아 0에 남습니다. <b>잘 보이는 곳은 데이터가, 안 보이는 곳은 벌점이 채우는</b> 구조입니다.</p>
+
+<p>이것이 실수인지 설계인지는 말이 아니라 숫자로 판정해야 합니다. 아래 셀은 엔진을 완성한 뒤 세 변형 — 운영 구현(8회) / 운영 구현을 200회까지 / 벌점을 우변에도 넣은 정확 최적해 — 을 나란히 놓습니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (e) · fit_deltas — 실전 엔진과 세 변형의 대조</div>
+<pre class="code"># 셀 (e) · fit_deltas — 실전 엔진 (기본 인자에서 m1_step_function.py 와 동일)
+TENOR_W = {&quot;1개월&quot;: 1.0, &quot;2개월&quot;: 1.0, &quot;3개월&quot;: 1.0, &quot;6개월&quot;: 0.9,
+           &quot;9개월&quot;: 0.8, &quot;1년&quot;: 0.7}
+LAMBDA_SMOOTH, SHRINK_2026, SHRINK_2027 = 2.0e-3, 2.0e-4, 1.0e-3
+
+def fit_deltas(asof, obs_days, obs_vals, weights, nodes, is_ph, r0,
+               smooth=LAMBDA_SMOOTH, shrink26=SHRINK_2026, shrink27=SHRINK_2027,
+               iters=8, exact_rhs=False):
+    # exact_rhs=False (운영): 벌점은 스텝의 곡률(좌변)에만 — 감쇠 가우스-뉴턴
+    # exact_rhs=True  (비교용): 벌점을 우변에도 — 목적함수의 정확 최적해로 수렴
+    K = len(nodes)
+    D = np.zeros((max(K - 1, 1), K))          # 이웃 차분 행렬
+    for i in range(K - 1):
+        D[i, i], D[i, i + 1] = -1.0, 1.0
+    R = smooth * D.T @ D + np.diag(np.where(is_ph, shrink27, shrink26))
+    W = np.diag(weights)
+
+    def price_vec(dl):
+        return np.array([model_rate(asof, d_, r0, nodes, dl) for d_ in obs_days])
+
+    deltas, eps = np.zeros(K), 1e-4
+    steps = []
+    for _ in range(iters):                     # 가우스-뉴턴 반복
+        f0 = price_vec(deltas)
+        J = np.zeros((len(obs_days), K))
+        for k in range(K):
+            dd = deltas.copy(); dd[k] += eps
+            J[:, k] = (price_vec(dd) - f0) / eps
+        lhs = J.T @ W @ J + R
+        rhs = J.T @ W @ (obs_vals - f0)
+        if exact_rhs:
+            rhs = rhs - R @ deltas
+        step = np.linalg.solve(lhs, rhs)
+        deltas = deltas + step
+        steps.append(np.max(np.abs(step)))
+        if steps[-1] &lt; 1e-6:
+            break
+    fitted = price_vec(deltas)
+    rmse = float(np.sqrt(np.mean(((obs_vals - fitted) * weights) ** 2)))
+    return deltas, rmse, fitted, steps
+
+IS_PH = np.array([n.year == 2027 for n in ALL_NODES])
+y = np.array([QUOTES[t] for t in FIT_TENORS])
+w = np.array([TENOR_W[t] for t in FIT_TENORS])
+days_l = [DAYS[t] for t in FIT_TENORS]
+
+dl, rmse, fitted, steps = fit_deltas(ASOF, days_l, y, w, ALL_NODES, IS_PH, r0)
+print(&quot;운영 적합 (벌점=좌변만, 8회, λ=2e-3):&quot;)
+for n, d_ in zip(ALL_NODES, dl):
+    tag = &quot; (2027 가정)&quot; if n.year == 2027 else &quot;&quot;
+    print(f&quot;  {n}{tag}: {d_*100:+6.2f}bp -&gt; P = {min(max(d_/0.25,0),1):.1%}&quot;)
+print(f&quot;  가중 RMSE {rmse*100:.2f}bp · 스텝 크기: &quot;
+      + &quot; &quot;.join(f&quot;{s:.0e}&quot; for s in steps))
+
+# ── 세 변형 대조: 운영(8회) / 운영을 200회까지 / 정확 벌점 최적해
+dl200, rm200, _, _ = fit_deltas(ASOF, days_l, y, w, ALL_NODES, IS_PH, r0, iters=200)
+dlex, rmex, _, _ = fit_deltas(ASOF, days_l, y, w, ALL_NODES, IS_PH, r0,
+                              iters=200, exact_rhs=True)
+print(&quot;\n                       8/27        10/22       11/26     가중RMSE&quot;)
+for lab, d_, rm_ in [(&quot;운영 구현(8회)   &quot;, dl, rmse),
+                     (&quot;운영 구현(200회) &quot;, dl200, rm200),
+                     (&quot;정확 벌점 최적해 &quot;, dlex, rmex)]:
+    p3 = [f&quot;{v*100:+5.1f}bp/{min(max(v/0.25,0),1):4.0%}&quot; for v in d_[:3]]
+    print(f&quot;{lab} &quot; + &quot;  &quot;.join(p3) + f&quot;   {rm_*100:.2f}bp&quot;)
+
+# ── λ 훑기: 배분(회의별 확률)과 적합 오차의 맞교환 (운영 방식 기준)
+lams = np.logspace(-5, -1, 33)
+probs, rmses = [], []
+for lam in lams:
+    d2, r2, _, _ = fit_deltas(ASOF, days_l, y, w, ALL_NODES, IS_PH, r0, smooth=lam)
+    probs.append([min(max(v / 0.25, 0), 1) for v in d2[:3]])
+    rmses.append(r2 * 100)
+probs = np.array(probs)
+print(&quot;\nλ 민감도 (8/27 확률): &quot;
+      + &quot; · &quot;.join(f&quot;λ={lam_:g}: {np.interp(np.log10(lam_), np.log10(lams), probs[:,0])*100:.0f}%&quot;
+                   for lam_ in [1e-3, 2e-3, 4e-3]))
+print(&quot;λ 민감도 (11/26 확률): &quot;
+      + &quot; · &quot;.join(f&quot;λ={lam_:g}: {np.interp(np.log10(lam_), np.log10(lams), probs[:,2])*100:.0f}%&quot;
+                   for lam_ in [1e-3, 2e-3, 4e-3]))
+
+fig, (axL, axR) = plt.subplots(1, 2, figsize=(8.6, 3.2))
+for j, (lab, c_) in enumerate([(&quot;8/27&quot;, INK), (&quot;10/22&quot;, CADBLUE), (&quot;11/26&quot;, ORANGE)]):
+    axL.plot(lams, probs[:, j] * 100, color=c_, label=lab)
+axL.axvline(LAMBDA_SMOOTH, color=CADRED, lw=1.0, ls=(0, (2, 2)))
+axL.annotate(&quot;채택 λ=2e-3&quot;, xy=(0.46, 0.55), xycoords=&quot;axes fraction&quot;,
+             fontsize=8, color=CADRED)
+axL.set_ylabel(&quot;인상확률 P (%)&quot;); axL.set_title(&quot;λ에 따른 회의별 확률&quot;)
+axL.legend(loc=&quot;center left&quot;)
+axR.plot(lams, rmses, color=INK)
+axR.axvline(LAMBDA_SMOOTH, color=CADRED, lw=1.0, ls=(0, (2, 2)))
+axR.set_ylabel(&quot;가중 RMSE (bp)&quot;); axR.set_title(&quot;λ에 따른 적합 오차&quot;)
+for ax_ in (axL, axR):
+    ax_.set_xscale(&quot;log&quot;)
+    ax_.set_xticks([1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
+                   [&quot;1e-5&quot;, &quot;1e-4&quot;, &quot;1e-3&quot;, &quot;1e-2&quot;, &quot;1e-1&quot;])
+    ax_.minorticks_off()
+    ax_.set_xlabel(&quot;평활 강도 λ (로그)&quot;)
+save(fig, &quot;08-lambda-sensitivity.png&quot;)
+plt.show()</pre>
+  <div class="cell-note"><code>fit_deltas</code>는 기본 인자에서 운영 모형(m1_step_function.py)과 같은 수식입니다. <code>exact_rhs</code> 스위치가 "벌점을 우변에도 넣은 정확 최적해" 변형을 켭니다. 마지막 블록이 도표 8의 λ 훑기를 생산합니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">운영 적합 (벌점=좌변만, 8회, λ=2e-3):
+  2026-08-27: +12.54bp -&gt; P = 50.2%
+  2026-10-22: +23.77bp -&gt; P = 95.1%
+  2026-11-26:  +9.00bp -&gt; P = 36.0%
+  2027-01-15 (2027 가정): +17.81bp -&gt; P = 71.2%
+  2027-04-15 (2027 가정): +16.13bp -&gt; P = 64.5%
+  2027-07-15 (2027 가정): +11.15bp -&gt; P = 44.6%
+  가중 RMSE 0.81bp · 스텝 크기: 2e-01 2e-02 1e-02 8e-03 5e-03 3e-03 2e-03 2e-03
+
+                       8/27        10/22       11/26     가중RMSE
+운영 구현(8회)    +12.5bp/ 50%  +23.8bp/ 95%   +9.0bp/ 36%   0.81bp
+운영 구현(200회)  +12.5bp/ 50%  +23.9bp/ 96%   +8.6bp/ 35%   0.81bp
+정확 벌점 최적해  +12.9bp/ 52%  +20.2bp/ 81%  +14.5bp/ 58%   0.84bp
+
+λ 민감도 (8/27 확률): λ=0.001: 50% · λ=0.002: 50% · λ=0.004: 50%
+λ 민감도 (11/26 확률): λ=0.001: 35% · λ=0.002: 36% · λ=0.004: 40%</pre></details>
+</div>
+
+<p>출력의 세 줄 비교표가 판정입니다.</p>
+<table class="tbl">
+  <thead><tr><th>변형</th><th>8/27</th><th>10/22</th><th>11/26</th><th>가중 RMSE</th><th>읽기</th></tr></thead>
+  <tbody>
+    <tr><td>운영 구현 (8회)</td><td>50%</td><td>95%</td><td>36%</td><td>0.81bp</td><td>공표값 — 데이터를 그대로 맞추면서 특이 방향만 벌점이 채움</td></tr>
+    <tr><td>운영 구현 (200회)</td><td>50%</td><td>96%</td><td>35%</td><td>0.81bp</td><td>8회에서 이미 사실상 수렴 — 반복 횟수는 결과를 좌우하지 않음</td></tr>
+    <tr><td>정확 벌점 최적해</td><td>52%</td><td>81%</td><td>58%</td><td>0.84bp</td><td>평활이 10월·11월을 서로 섞어 버림 — 호가가 실제로 갈라 주는 정보까지 깎음</td></tr>
+  </tbody>
+</table>
+
+<p>정확 최적해는 수학적으로 깔끔하지만, 평활 벌점이 <i>답 자체를</i> 이웃끼리 닮게 당기므로 호가가 분명히 구분해 주는 10월(강한 신호)과 11월(약한 신호)까지 섞습니다(81%/58%). 운영 구현은 데이터가 주는 구분은 그대로 두고, 데이터가 아무 말도 못 하는 방향에서만 벌점이 대신 답합니다(95%/36%). <b>"호가의 정보를 벌점이 깎아서는 안 된다"는 원칙의 구현</b>이며, 그 대가로 "목적함수의 정확한 최적해"라는 깔끔한 해석 하나를 포기한 것입니다. 두 방식 모두 누적(연말 내재)은 3.2% 부근으로 거의 같습니다 — 갈리는 것은 언제나 배분 쪽입니다.</p>
+
+<div class="note" style="border-left-color:var(--cad-red);">
+  <b>이 엔진으로 실무자가 매일 하는 일.</b>
+  <br>① <b>아침 확률 갱신.</b> 전일 종가 호가로 <code>fit_deltas</code>를 돌려 회의별 확률·연말 내재 수준을 갱신하고 전일 대비 변화를 봅니다.
+  <br>② <b>이벤트 소화 측정.</b> 금통위 기자회견·CPI 발표 직후, 호가 변화가 "어느 회의의 확률"로 소화됐는지 분해합니다 — 커브 전체가 아니라 회의 단위로 뉴스를 읽게 됩니다.
+  <br>③ <b>포지션 함의 점검.</b> 자기 뷰(예: 8월 동결)와 시장 확률(50%)의 간극이 클 때가 포지션의 근거 — 확률이 이미 100%면 "맞아도 벌 게 없는" 트레이드입니다.
+  <br>한국 채권 운용에서는 ①을 자동화해 두고 ②를 이벤트 날에 수동으로 보는 조합이 일반적입니다.
+</div>
+
+<!-- ================= PART 4 ================= -->
+<div class="part">
+  <div class="pn">Part 4</div>
+  <h2>실전 — 전체 워크스루와 규율</h2>
+  <p>부품은 다 만들었습니다. 하루치 산출을 처음부터 끝까지 완성하고, 그 숫자를 어떻게 읽어야 하는지의 규율과 한계, 그리고 졸업시험입니다.</p>
+</div>
+
+<h3 class="sec" id="s41"><span class="sn">4.1</span> 파이프라인 전체 조감</h3>
+<p class="lead-q">1~3부에서 만든 부품이 어떤 순서로 연결되는지, 한 장으로 접습니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 9 · 하루치 산출의 파이프라인 — 다섯 단계</div>
+    <svg viewBox="0 0 660 260" role="img" aria-label="입력에서 확률 산출까지 다섯 단계의 흐름도">
+      <!-- 단계 박스 -->
+      <g font-family="Segoe UI,sans-serif">
+        <rect x="20" y="30" width="118" height="74" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+        <text x="79" y="50" font-size="11.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">① 입력</text>
+        <text x="79" y="67" font-size="9.5" fill="#2A2A2A" text-anchor="middle">OIS 호가 7개 (MID)</text>
+        <text x="79" y="81" font-size="9.5" fill="#2A2A2A" text-anchor="middle">금통위 일정 · 기준금리</text>
+        <text x="79" y="95" font-size="9.5" fill="#6E6E6E" text-anchor="middle">§1.1–1.2</text>
+
+        <rect x="152" y="30" width="118" height="74" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+        <text x="211" y="50" font-size="11.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">② 시작점 r₀</text>
+        <text x="211" y="67" font-size="9.5" fill="#2A2A2A" text-anchor="middle">1주 호가로 캘리브레이션</text>
+        <text x="211" y="81" font-size="9.5" fill="#2A2A2A" text-anchor="middle">회의 겹치면 KOFR 폴백</text>
+        <text x="211" y="95" font-size="9.5" fill="#6E6E6E" text-anchor="middle">§2.2</text>
+
+        <rect x="284" y="30" width="118" height="74" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+        <text x="343" y="50" font-size="11.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">③ 노드 구성</text>
+        <text x="343" y="67" font-size="9.5" fill="#2A2A2A" text-anchor="middle">확정 회의 3개</text>
+        <text x="343" y="81" font-size="9.5" fill="#2A2A2A" text-anchor="middle">+ 2027 가정 노드 3개</text>
+        <text x="343" y="95" font-size="9.5" fill="#6E6E6E" text-anchor="middle">§3.1</text>
+
+        <rect x="416" y="30" width="118" height="74" fill="#FAFAFA" stroke="#0A0A0A" stroke-width="1.2"/>
+        <text x="475" y="50" font-size="11.5" font-weight="600" fill="#0A0A0A" text-anchor="middle">④ 적합</text>
+        <text x="475" y="67" font-size="9.5" fill="#2A2A2A" text-anchor="middle">fit_deltas: 가우스-뉴턴</text>
+        <text x="475" y="81" font-size="9.5" fill="#2A2A2A" text-anchor="middle">가중 · 평활 · 수축</text>
+        <text x="475" y="95" font-size="9.5" fill="#6E6E6E" text-anchor="middle">§3.3–3.4</text>
+
+        <rect x="548" y="30" width="98" height="74" fill="#FAFAFA" stroke="#C53030" stroke-width="1.4"/>
+        <text x="597" y="50" font-size="11.5" font-weight="600" fill="#C53030" text-anchor="middle">⑤ 산출</text>
+        <text x="597" y="67" font-size="9.5" fill="#2A2A2A" text-anchor="middle">Δ → P = Δ/25bp</text>
+        <text x="597" y="81" font-size="9.5" fill="#2A2A2A" text-anchor="middle">연말 내재 수준</text>
+        <text x="597" y="95" font-size="9.5" fill="#6E6E6E" text-anchor="middle">§2.1 · §4.2</text>
+      </g>
+      <!-- 화살표 -->
+      <g stroke="#0A0A0A" stroke-width="1.4">
+        <line x1="138" y1="67" x2="150" y2="67"/><line x1="270" y1="67" x2="282" y2="67"/>
+        <line x1="402" y1="67" x2="414" y2="67"/><line x1="534" y1="67" x2="546" y2="67"/>
+      </g>
+      <g fill="#0A0A0A">
+        <polygon points="152,67 146,64 146,70"/><polygon points="284,67 278,64 278,70"/>
+        <polygon points="416,67 410,64 410,70"/><polygon points="548,67 542,64 542,70"/>
+      </g>
+      <!-- 검증 루프 -->
+      <path d="M 475 106 L 475 152 L 79 152 L 79 106" fill="none" stroke="#2D7EAA" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <polygon points="79,104 75,112 83,112" fill="#2D7EAA"/>
+      <text x="277" y="145" font-family="Segoe UI,sans-serif" font-size="10" fill="#2D7EAA" text-anchor="middle">상시 검증: 1주 호가 재현(§1.4) · 적합 잔차가 잡음 규모(±1bp)인지 · 운영 공표값 대조(§4.2)</text>
+      <!-- 산출 사용처 -->
+      <line x1="597" y1="106" x2="597" y2="188" stroke="#C53030" stroke-width="1.2"/>
+      <polygon points="597,192 593,184 601,184" fill="#C53030"/>
+      <text x="597" y="207" font-family="Segoe UI,sans-serif" font-size="10" fill="#C53030" text-anchor="end">읽는 규율(§4.4): 누적은 수준으로, 배분은 방향으로</text>
+    </svg>
+    <figcaption><b>이 그림에서 볼 것.</b> 다섯 단계의 순서와, 각 단계가 이 문서 어느 절에서 만들어졌는지의 대응입니다. 파란 점선 루프가 실무의 습관입니다 — 산출을 내기 전에 1주 재현·잔차 크기를 매일 확인합니다. 1.4의 사고가 남긴 절차입니다.</figcaption>
+  </div>
+</figure>
+
+<h3 class="sec" id="s42"><span class="sn">4.2</span> 2026-08-07 하루치 완전 재현 · 셀 (f)</h3>
+<p class="lead-q">이 절의 표 두 개가 이 방법론의 최종 답안지입니다 — 그리고 마지막 줄의 True가 이 문서의 품질보증서입니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (f) · 전체 워크스루 — 운영 모형 공표값과의 대조 포함</div>
+<pre class="code"># 셀 (f) · 전체 워크스루 — 운영 모형 공표값과의 대조 포함
+print(&quot;=&quot; * 62)
+print(f&quot;기준일 {ASOF} · r0 = {r0:.3f}% (1주 호가) · 기준금리 {BASE_RATE}%&quot;)
+print(&quot;=&quot; * 62)
+print(&quot;만기    시장호가   동결경로   초과분    모형적합   잔차&quot;)
+for t, yf in zip(FIT_TENORS, fitted):
+    d_ = DAYS[t]
+    hold_t = model_rate(ASOF, d_, r0, ALL_NODES, np.zeros(len(ALL_NODES)))
+    ym = QUOTES[t]
+    print(f&quot;{t:&lt;6s} {ym:8.4f}  {hold_t:8.4f}  {(ym-hold_t)*100:+6.1f}bp&quot;
+          f&quot;  {yf:8.4f}  {(ym-yf)*100:+5.1f}bp&quot;)
+
+print(&quot;\n회의별 점프와 확률:&quot;)
+cum = BASE_RATE
+for n, d_, ph in zip(ALL_NODES, dl, IS_PH):
+    cum += d_
+    tag = &quot;(2027 가정)&quot; if ph else &quot;          &quot;
+    print(f&quot;  {n} {tag}  Δ = {d_*100:+6.2f}bp   P = {min(max(d_/0.25,0),1):5.1%}&quot;
+          f&quot;   회의 후 내재 {cum:.3f}%&quot;)
+ye = BASE_RATE + sum(d_ for n, d_, ph in zip(ALL_NODES, dl, IS_PH) if not ph)
+print(f&quot;\n연말 내재 기준금리 = {ye:.2f}%  (2026 점프 합 {sum(dl[:3])*100:+.1f}bp)&quot;)
+
+# 운영 모형(m1_step_function.py, v7)의 공표값과 대조
+REF = {&quot;2026-08-27&quot;: 12.54, &quot;2026-10-22&quot;: 23.77, &quot;2026-11-26&quot;: 9.00}
+ok = all(abs(dl[i] * 100 - REF[n.isoformat()]) &lt; 0.05
+         for i, n in enumerate(ALL_NODES[:3]))
+print(&quot;운영 모형 v7 공표값(12.54/23.77/9.00bp)과 0.05bp 내 일치:&quot;, ok)
+
+fig, (axL, axR) = plt.subplots(1, 2, figsize=(8.6, 3.3))
+xs = [DAYS[t] for t in FIT_TENORS]
+hold_c = [model_rate(ASOF, d_, r0, ALL_NODES, np.zeros(len(ALL_NODES))) for d_ in xs]
+axL.plot(xs, hold_c, color=ORANGE, ls=(0, (5, 2)), label=&quot;동결 경로&quot;)
+axL.plot(xs, fitted, color=CADBLUE, marker=&quot;o&quot;, ms=4, label=&quot;모형 적합&quot;)
+axL.scatter(xs, [QUOTES[t] for t in FIT_TENORS], s=34, color=INK, zorder=5,
+            label=&quot;시장 호가&quot;)
+axL.set_xlabel(&quot;만기 (일)&quot;); axL.set_ylabel(&quot;고정금리 (%)&quot;)
+axL.set_title(&quot;여섯 호가와 적합 결과&quot;); axL.legend(loc=&quot;upper left&quot;)
+days_grid = np.arange(0, 366)
+path = np.full(len(days_grid), r0)
+for n, d_ in zip(ALL_NODES, dl):
+    b = (n - ASOF).days
+    if b &lt; len(days_grid):
+        path[days_grid &gt;= b] += d_ * 1
+axR.step(days_grid, path, where=&quot;post&quot;, color=CADBLUE)
+for n, d_ in zip(ALL_NODES[:3], dl[:3]):
+    b = (n - ASOF).days
+    axR.annotate(f&quot;{n.strftime(&#x27;%m/%d&#x27;)}\n{d_*100:+.1f}bp&quot;,
+                 xy=(b, r0 + np.sum(dl[:ALL_NODES.index(n) + 1])),
+                 xytext=(4, -22), textcoords=&quot;offset points&quot;, fontsize=7.5,
+                 color=INK)
+axR.set_xlabel(&quot;기준일로부터 일수&quot;); axR.set_ylabel(&quot;하루짜리 금리 경로 (%)&quot;)
+axR.set_title(&quot;적합된 계단 경로 (2026 구간)&quot;)
+axR.set_xlim(0, 200)
+axR.set_ylim(2.70, 3.45)
+save(fig, &quot;10-fit-walkthrough.png&quot;)
+plt.show()</pre>
+  <div class="cell-note">파이프라인 다섯 단계를 순서대로 연결한 뒤, 마지막에 이 문서가 밑바닥부터 다시 만든 엔진이 운영 모형(m1_step_function.py) v7의 공표값(12.54/23.77/9.00bp)을 0.05bp 안에서 재현하는지 검사합니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">==============================================================
+기준일 2026-08-07 · r0 = 2.740% (1주 호가) · 기준금리 2.75%
+==============================================================
+만기    시장호가   동결경로   초과분    모형적합   잔차
+1개월      2.7700    2.7431    +2.7bp    2.7877   -1.8bp
+2개월      2.8400    2.7462    +9.4bp    2.8308   +0.9bp
+3개월      2.8900    2.7494   +14.1bp    2.8898   +0.0bp
+6개월      3.0725    2.7589   +31.4bp    3.0727   -0.0bp
+9개월      3.2050    2.7682   +43.7bp    3.2049   +0.0bp
+1년       3.3200    2.7778   +54.2bp    3.3201   -0.0bp
+
+회의별 점프와 확률:
+  2026-08-27             Δ = +12.54bp   P = 50.2%   회의 후 내재 2.875%
+  2026-10-22             Δ = +23.77bp   P = 95.1%   회의 후 내재 3.113%
+  2026-11-26             Δ =  +9.00bp   P = 36.0%   회의 후 내재 3.203%
+  2027-01-15 (2027 가정)  Δ = +17.81bp   P = 71.2%   회의 후 내재 3.381%
+  2027-04-15 (2027 가정)  Δ = +16.13bp   P = 64.5%   회의 후 내재 3.542%
+  2027-07-15 (2027 가정)  Δ = +11.15bp   P = 44.6%   회의 후 내재 3.654%
+
+연말 내재 기준금리 = 3.20%  (2026 점프 합 +45.3bp)
+운영 모형 v7 공표값(12.54/23.77/9.00bp)과 0.05bp 내 일치: True</pre></details>
+</div>
+
+<p>출력의 첫 표를 소리 내어 읽으면 이렇습니다 — "1개월 호가 2.7700%는 동결 눈금 2.7431%보다 2.7bp 높고, 모형은 2.7877%로 맞춰 잔차가 −1.8bp 남았다." 각 열의 역할: <b>동결경로</b> 열이 1.4에서 만든 눈금(아무 일도 없을 때의 기준선), <b>초과분</b>이 인상 기대의 원료(만기가 길수록 +2.7 → +54.2bp로 쌓임), <b>잔차</b>가 모형이 소화하지 않은 잡음(전부 ±2bp 안 — 3.3의 "잡음 규모까지의 적합"이 실현된 모습)입니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 10 · 8/7 적합 결과 — 여섯 호가와 계단 경로</div>
+    <img src="figs/10-fit-walkthrough.png" alt="시장 호가와 모형 적합과 동결 경로의 비교, 그리고 적합된 계단 경로">
+    <figcaption><b>이 그림에서 볼 것.</b> 왼쪽 — 검정 점(시장 호가)이 주황 점선(동결 눈금) 위로 만기를 따라 벌어지고, 파랑(모형 적합)이 그 사이를 통과합니다. 검정과 파랑이 거의 겹치는 것이 RMSE 0.81bp의 시각적 의미입니다. 오른쪽 — 그 적합이 함의하는 하루짜리 금리의 계단: 8/27 +12.5bp, 10/22 +23.8bp, 11/26 +9.0bp. 계단 높이가 곧 Δ이고, 각 높이를 25bp로 나눈 것이 확률(50% / 95% / 36%)입니다. (셀 (f) 산출)</figcaption>
+  </div>
+</figure>
+
+<p>회의별 표의 마지막 열(회의 후 내재)도 쓰임이 있습니다 — 2026년 확정 회의 세 개의 점프를 다 지나면 3.203%, 즉 <b>시장은 연말 기준금리를 3.20%로, 남은 세 회의 동안 약 1.8회의 25bp 인상으로 가격하고 있습니다.</b> 이 "누적" 숫자가 배분(50/95/36)보다 훨씬 튼튼하다는 것이 4.4의 주제입니다.</p>
+
+<h3 class="sec" id="s43"><span class="sn">4.3</span> 확률의 신뢰 폭 — 잡음과 근사 · 셀 (g)</h3>
+<p class="lead-q">"8월 50.2%"에서 소수점 아래는 물론이고 일의 자리도 다 믿어야 할까요 — 폭을 직접 잽니다.</p>
+
+<p>불확실성은 종류가 둘입니다. <b>잡음</b>은 호가의 통계적 흔들림(스프레드 안 위치, 수급)으로, 방향이 무작위입니다. <b>근사</b>는 모형 가정이 만드는 한쪽 방향의 치우침으로, 아무리 여러 번 재도 줄지 않습니다. 아래 셀은 잡음 쪽을 잽니다 — 입력 호가 일곱 개 전부에 ±1틱의 무작위 잡음을 얹어 2,000번 다시 적합하는 <b>몬테카를로</b>(무작위 추출을 반복해 분포를 그려 보는 방법)입니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 (g) · 몬테카를로 — 호가 7개(1주 포함) ±1틱 균등 잡음, 2000회 재적합</div>
+<pre class="code"># 셀 (g) · 몬테카를로 — 호가 7개(1주 포함) ±1틱 균등 잡음, 2000회 재적합
+rng = np.random.default_rng(20260807)
+N = 2000
+sims = np.zeros((N, 3))
+for it in range(N):
+    y2 = y + rng.uniform(-TICK, TICK, size=len(y))
+    r0_2 = r0 + rng.uniform(-TICK, TICK)          # 경로 시작점(1주 호가)도 잡음
+    d2, _, _, _ = fit_deltas(ASOF, days_l, y2, w, ALL_NODES, IS_PH, r0_2)
+    sims[it] = [min(max(v / 0.25, 0), 1) for v in d2[:3]]
+
+print(&quot;호가 ±1틱 잡음 하의 확률 분포 (2000회):&quot;)
+print(&quot;회의      중앙값    5%분위   95%분위   폭(90%)&quot;)
+labels = [&quot;8/27 &quot;, &quot;10/22&quot;, &quot;11/26&quot;]
+for j, lab in enumerate(labels):
+    lo, md, hi = np.percentile(sims[:, j], [5, 50, 95]) * 100
+    print(f&quot;{lab}    {md:5.1f}%   {lo:5.1f}%   {hi:5.1f}%   {hi-lo:5.1f}%p&quot;)
+
+fig, axes = plt.subplots(1, 3, figsize=(8.6, 2.9), sharey=True)
+cols = [INK, CADBLUE, ORANGE]
+for j, (ax, lab) in enumerate(zip(axes, labels)):
+    ax.hist(sims[:, j] * 100, bins=36, color=cols[j], alpha=0.85)
+    lo, hi = np.percentile(sims[:, j], [5, 95]) * 100
+    ax.axvline(lo, color=CADRED, lw=0.9, ls=(0, (2, 2)))
+    ax.axvline(hi, color=CADRED, lw=0.9, ls=(0, (2, 2)))
+    ax.set_title(f&quot;{lab} · 90% 대역 {hi-lo:.0f}%p&quot;)
+    ax.set_xlabel(&quot;P (%)&quot;)
+axes[0].set_ylabel(&quot;빈도&quot;)
+fig.suptitle(&quot;호가 ±1틱 잡음이 만드는 확률 대역&quot;, y=1.02, fontsize=10.5)
+save(fig, &quot;11-noise-band-mc.png&quot;)
+plt.show()</pre>
+  <div class="cell-note">경로 시작점을 주는 1주 호가에도 잡음을 넣는 것이 요점입니다 — r₀도 결국 호가 하나에서 왔으므로 같은 잡음을 받아야 공정한 실험입니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">호가 ±1틱 잡음 하의 확률 분포 (2000회):
+회의      중앙값    5%분위   95%분위   폭(90%)
+8/27      50.2%    48.1%    52.2%     4.0%p
+10/22     95.1%    87.2%   100.0%    12.8%p
+11/26     35.9%    25.0%    47.3%    22.4%p</pre></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 11 · 호가 ±1틱 잡음이 만드는 확률 대역</div>
+    <img src="figs/11-noise-band-mc.png" alt="세 회의 각각의 확률 분포 히스토그램과 90퍼센트 대역">
+    <figcaption><b>이 그림에서 볼 것.</b> 대역의 폭이 회의마다 판이합니다 — 8/27은 4%p(48~52%), 10/22는 13%p, 11/26은 22%p. 도표 6의 커버리지 구조가 그대로 재현된 것입니다: 전용 호가 둘이 붙드는 8월은 잡음이 못 흔들고, 여러 만기가 이웃과 섞어 보는 11월은 잡음이 배분 사이를 휘젓습니다. "뒷 회의일수록 성기게 읽어라"가 감이 아니라 측정값으로 나왔습니다. 10/22 패널의 100% 스파이크는 확률을 [0,1]로 자르는 규칙(2.4) 때문에 상단에 쌓인 질량입니다. (셀 (g) 산출)</figcaption>
+  </div>
+</figure>
+
+<p>근사 쪽은 몬테카를로로 잴 수 없으므로 가정을 바꿔 재계산해 봐야 합니다. 이미 한 번 봤습니다 — 연율화 관행 하나가 8월을 20%p 움직였습니다(1.4). 남아 있는 근사도 있습니다: 이 모형은 계약이 기준일 당일 시작한다고 두지만 실제 관행은 T+1 결제·영업일 조정이며, 이를 엄밀히 반영한 외부 교차 검증에서는 8월이 40%대 중반으로 내려갑니다. 그래서 실무 공표는 "8월 50%, 실무 범위 40~60%"의 <b>대역</b>입니다 — 대역의 주범은 잡음(±2%p)이 아니라 근사 쪽입니다.</p>
+
+<h3 class="sec" id="s44"><span class="sn">4.4</span> 읽는 규율과 정직한 한계</h3>
+<p class="lead-q">이 방법론이 잘하는 일과 못하는 일을 가르는 선은 단 하나 — "누적이냐 배분이냐"입니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 12 · 누적은 추세, 배분은 진동 — 실측 시계열</div>
+    <img src="figs/12-cumulative-vs-allocation.png" alt="연말 내재 기준금리와 8월 인상확률의 일별 시계열 비교">
+    <figcaption><b>이 그림에서 볼 것.</b> 위(연말 내재 수준)는 석 달에 걸쳐 3.0%에서 3.2%대로 추세를 그리며 움직입니다 — 하루하루의 변화가 진짜 뉴스(인상 사이클 재평가)입니다. 아래(8월 배분 확률)는 같은 기간 100%와 26% 사이를 오갑니다. 빨간 동그라미가 결정적 장면입니다 — 배분이 26%로 무너진 6/10에 누적은 오히려 기간 최고점(3.45%)이었습니다. 시장이 "연내 인상은 더 많이, 단 8월은 아니게" 재배열한 날로, 누적과 배분이 완전히 따로 노는 실례입니다. (실측: <code>_extra_figures.py</code>, 운영 모형 일별 산출)</figcaption>
+  </div>
+</figure>
+
+<p>이 그림 하나에서 사용 규율 전부가 나옵니다. 어떤 질문에 어떤 산출을 쓸지로 정리하면:</p>
+
+<table class="tbl">
+  <thead><tr><th>묻고 싶은 것</th><th>읽을 산출</th><th>왜</th></tr></thead>
+  <tbody>
+    <tr><td>연말까지 몇 회나 인상할 것으로 보는가</td><td><b>누적</b> — 연말 내재 수준 (3.20%, 약 1.8회)</td><td>여섯 호가가 함께 떠받치는 방향 — 잡음 대역이 좁고 시계열이 추세로 움직인다</td></tr>
+    <tr><td>바로 다음 회의(8/27)의 확률</td><td><b>앞 회의 배분</b> (50%, 대역 40~60%)</td><td>전용 호가 둘 + r₀가 고정 — 배분 중 유일하게 단단한 자리(도표 11)</td></tr>
+    <tr><td>두세 회의 뒤(10·11월)의 확률</td><td>배분의 <b>방향과 대략의 크기만</b></td><td>민감도가 옅어 잡음 대역이 13~22%p — 점추정을 인용하면 과신이 된다</td></tr>
+    <tr><td>오늘 뉴스가 어느 회의를 움직였나</td><td>배분의 <b>전일 대비 변화</b></td><td>수준은 잡음이 커도 하루 변화의 방향은 이벤트 해석에 유효하다</td></tr>
+    <tr><td>시장 확률이 실제로 맞아 왔는가</td><td>이 모형 밖 — 서베이·백테스트와 교차 검증</td><td>위험중립 확률의 한계(2.4). 본 리포트의 5절이 그 작업이다</td></tr>
+  </tbody>
+</table>
+
+<p>마지막으로, 이 방법론의 능력 범위를 한 표로 정직하게 갈라 둡니다.</p>
+
+<table class="tbl">
+  <thead><tr><th>잘 하는 일 ✓</th><th>못 하는 일 ✗</th></tr></thead>
+  <tbody>
+    <tr><td>연말까지의 누적 인상 기대를 일별로 계량 — 안정적이고 추세적</td><td>뒷 회의의 배분 확률을 점추정으로 확정 — 잡음 대역이 크다(도표 11)</td></tr>
+    <tr><td>바로 다음 회의의 확률을 좁은 대역으로 산출</td><td>"인상 50% + 인하 10%" 같은 양방향 분포의 분리 — Δ는 순기대치 하나다(2.4)</td></tr>
+    <tr><td>이벤트 전후 기대 변화를 회의 단위로 분해</td><td>25bp 격자 밖 시나리오(50bp 인상 등)의 식별 — 격자는 가정이다(2.4)</td></tr>
+    <tr><td>계약 명세 기반이라 재현·검증 가능 — 1주 재현, 공표값 대조</td><td>예보 확률의 제공 — 위험중립 확률이므로 서베이·실적과 교차 검증 필수</td></tr>
+    <tr><td>호가만 있으면 매일 자동 산출 — 데이터 의존이 가볍다</td><td>호가가 곧 체결가라는 보장 — MID는 실거래 없이도 움직인다. T+1·영업일 조정도 미반영(잔여 근사)</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec" id="s45"><span class="sn">4.5</span> 졸업시험 — 2026-07-15 · 셀 (h)</h3>
+<p class="lead-q">다른 날짜, 다른 상황 — 이 문서 없이 풀 수 있으면 졸업입니다.</p>
+
+<p>7월 금통위(7/16) <b>전날</b>의 실제 데이터입니다. 이날 시장이 매긴 ① 다음날(7/16) 인상확률과 ② 8/27 인상확률을 구하세요.</p>
+
+<table class="tbl">
+  <thead><tr><th>입력</th><th>값</th></tr></thead>
+  <tbody>
+    <tr><td>KOFR OIS 호가 (MID)</td><td>1주 2.775 · 1개월 2.770 · 2개월 2.830 · 3개월 2.880 · 6개월 3.005 · 9개월 3.165 · 1년 3.300</td></tr>
+    <tr><td>회의 노드</td><td><b>7/16</b> · 8/27 · 10/22 · 11/26 + 2027 가정 노드(1/15 · 4/15 · 7/15)</td></tr>
+    <tr><td>기준금리</td><td>2.50% (7/16 인상 전)</td></tr>
+    <tr><td>KOFR 7/15 공시값</td><td>2.546%</td></tr>
+  </tbody>
+</table>
+
+<p>풀기 전에 스스로 답해야 할 함정이 둘 있습니다. <b>함정 1</b> — 이날 1주 구간(7/15~7/22) 안에 회의가 있습니다. r₀를 1주 호가 2.775로 잡아도 됩니까? (2.2의 단서 조항을 떠올리세요.) <b>함정 2</b> — 만기 일수와 회의까지의 일수가 8/7 기준과 전부 다릅니다. 아래 첫 셀이 여러분의 답안지(빈 셀)이고, 둘째 셀이 정답입니다 — 정답을 보기 전에 반드시 직접 시도하세요.</p>
+
+<div class="cell">
+  <div class="cell-hd">(연습) 여러분의 답안 셀</div>
+<pre class="code"># (여기에 직접 풀어 보세요)</pre>
+  <div class="cell-note">워크북에서 이 셀에 직접 코드를 쓰고 실행해 보세요. 앞 셀들이 정의한 tenor_days · fit_deltas가 그대로 살아 있습니다.</div>
+</div>
+
+<details class="key">
+  <summary>정답 셀과 해설 — 직접 푼 뒤에 여세요</summary>
+  <div class="keybody">
+    <p><b>함정 1의 답.</b> 안 됩니다. 1주 호가 2.775%는 "회의 전 1일 + 회의 후 6일"의 평균이라 이미 인상 기대가 섞인 값입니다 — 이것을 시작점으로 쓰면 인상 기대를 r₀에 넣어 두고 다시 인상확률을 재는 순환이 됩니다. 규칙대로 KOFR 공시값 2.546%로 폴백합니다. 폴백값이 기준금리 2.50%보다 4.6bp 높다는 것 자체도 정보입니다 — 회의 전날 하루짜리 자금이 이미 살짝 위에서 거래되고 있었습니다.</p>
+    <div class="cell">
+  <div class="cell-hd">셀 (h) · 정답 — 7/15 하루치 전체 적합</div>
+<pre class="code"># 셀 (h) · 정답 — 7/15 하루치 전체 적합
+EXAM_ASOF = date(2026, 7, 15)
+EXAM_QUOTES = {&quot;1주&quot;: 2.775, &quot;1개월&quot;: 2.770, &quot;2개월&quot;: 2.830, &quot;3개월&quot;: 2.880,
+               &quot;6개월&quot;: 3.005, &quot;9개월&quot;: 3.165, &quot;1년&quot;: 3.300}
+EXAM_NODES = [date(2026, 7, 16)] + MEETINGS_2026 + NODES_2027
+EXAM_BASE, EXAM_KOFR = 2.50, 2.546
+
+# 함정 1 — r0: 1주 구간(7/15~7/22)에 7/16 회의가 들어 있다.
+# 1주 호가 2.775는 &quot;회의 결과가 섞인 평균&quot;이라 시작 수준이 될 수 없다.
+# 규칙: 이때는 KOFR 최근 공시값으로 폴백한다.
+meeting_in_week = any(EXAM_ASOF &lt; m &lt;= EXAM_ASOF + timedelta(days=7)
+                      for m in EXAM_NODES)
+exam_r0 = EXAM_KOFR if meeting_in_week else EXAM_QUOTES[&quot;1주&quot;]
+print(f&quot;1주 구간 내 회의 여부: {meeting_in_week} =&gt; r0 = {exam_r0}% (KOFR 폴백)&quot;)
+
+exam_days = [tenor_days(EXAM_ASOF, t) for t in FIT_TENORS]
+exam_y = np.array([EXAM_QUOTES[t] for t in FIT_TENORS])
+exam_ph = np.array([n.year == 2027 for n in EXAM_NODES])
+print(&quot;만기 일수:&quot;, dict(zip(FIT_TENORS, exam_days)))
+
+exam_dl, exam_rmse, exam_fit, _ = fit_deltas(
+    EXAM_ASOF, exam_days, exam_y, w, EXAM_NODES, exam_ph, exam_r0)
+print(f&quot;\n적합 결과 (가중 RMSE {exam_rmse*100:.2f}bp):&quot;)
+for n, d_, ph in zip(EXAM_NODES, exam_dl, exam_ph):
+    tag = &quot;(2027 가정)&quot; if ph else &quot;          &quot;
+    print(f&quot;  {n} {tag}  Δ = {d_*100:+6.2f}bp   P = {min(max(d_/0.25,0),1):5.1%}&quot;)
+
+p16 = min(max(exam_dl[0] / 0.25, 0), 1)
+p_aug = min(max(exam_dl[1] / 0.25, 0), 1)
+print(f&quot;\n답: 다음날(7/16) 인상확률 {p16:.0%} · 8/27 인상확률 {p_aug:.0%}&quot;)
+print(&quot;검증: 실제로 7/16 금통위는 25bp 인상(2.50 -&gt; 2.75%)을 단행했다.&quot;)
+
+fig, ax = plt.subplots(figsize=(6.8, 3.0))
+days_grid = np.arange(0, 200)
+path = np.full(len(days_grid), exam_r0)
+for n, d_ in zip(EXAM_NODES, exam_dl):
+    b = (n - EXAM_ASOF).days
+    if b &lt; len(days_grid):
+        path[days_grid &gt;= b] += d_
+ax.step(days_grid, path, where=&quot;post&quot;, color=CADBLUE)
+for n, d_ in zip(EXAM_NODES[:4], exam_dl[:4]):
+    b = (n - EXAM_ASOF).days
+    lvl = exam_r0 + sum(exam_dl[:EXAM_NODES.index(n) + 1])
+    ax.annotate(f&quot;{n.strftime(&#x27;%m/%d&#x27;)}\n{d_*100:+.1f}bp&quot;, xy=(b, lvl),
+                xytext=(4, -24), textcoords=&quot;offset points&quot;, fontsize=7.5, color=INK)
+ax.set_xlabel(&quot;2026-07-15로부터 일수&quot;); ax.set_ylabel(&quot;하루짜리 금리 경로 (%)&quot;)
+ax.set_title(&quot;졸업시험 답 — 7/15 적합 계단 경로 (회의 전날, 다음날 인상 91% 반영)&quot;)
+save(fig, &quot;13-exam-answer.png&quot;)
+plt.show()</pre>
+  <details class="out"><summary>실행 결과</summary><pre class="output">1주 구간 내 회의 여부: True =&gt; r0 = 2.546% (KOFR 폴백)
+만기 일수: {&#x27;1개월&#x27;: 31, &#x27;2개월&#x27;: 62, &#x27;3개월&#x27;: 92, &#x27;6개월&#x27;: 184, &#x27;9개월&#x27;: 274, &#x27;1년&#x27;: 365}
+
+적합 결과 (가중 RMSE 0.12bp):
+  2026-07-16             Δ = +22.72bp   P = 90.9%
+  2026-08-27             Δ = +18.34bp   P = 73.3%
+  2026-10-22             Δ =  +6.20bp   P = 24.8%
+  2026-11-26             Δ = +15.27bp   P = 61.1%
+  2027-01-15 (2027 가정)  Δ = +25.44bp   P = 100.0%
+  2027-04-15 (2027 가정)  Δ = +17.88bp   P = 71.5%
+  2027-07-15 (2027 가정)  Δ = +11.92bp   P = 47.7%
+
+답: 다음날(7/16) 인상확률 91% · 8/27 인상확률 73%
+검증: 실제로 7/16 금통위는 25bp 인상(2.50 -&gt; 2.75%)을 단행했다.</pre></details>
+</div>
+    <p><b>답.</b> 7/16 인상확률 <b>91%</b>(Δ = +22.7bp), 8/27 인상확률 <b>73%</b>(+18.3bp). 그리고 실제로 다음날 금통위는 25bp 인상을 단행했습니다 — 시장의 9할 확신이 맞았습니다.</p>
+    <p><b>한 걸음 더 ① — 공시 시점의 각주.</b> 2.2에서 봤듯 KOFR는 다음 영업일 오전에 공시됩니다. 그러므로 7/15 <i>저녁의 실시간</i> 계산이라면 7/15 값(2.546%)이 아니라 전일 7/14 값(2.574%)을 썼어야 합니다 — 이 문제와 운영 모형의 사후 재계산은 공시 완료 후의 당일 값을 씁니다. 두 값으로 각각 풀면 7/16 확률이 91% ↔ 79%로 갈리고 8/27은 73% ↔ 74%로 거의 안 변합니다. r₀의 불확실성은 이렇게 <b>바로 다음 회의에 집중적으로</b> 꽂힙니다 — 커버리지 구조(3.1)가 여기서도 답의 모양을 정합니다.</p>
+    <p><b>한 걸음 더 ② — 두 날짜를 잇는 독해.</b> 7/15의 8월 확률(73%)이 8/7의 50%보다 높습니다. 모순이 아닙니다: 7월 인상 <i>전</i>의 시장은 "7월 + 8월 연속 인상"까지 꽤 높게 가격했고, 7월 인상이 실현되자 8월 연속 인상 기대는 반반으로 내려왔습니다. 같은 엔진이 두 날짜에서 낸 답이 "확률은 정보에 따라 계속 갱신되는 값"임을 보여 줍니다 — 한 시점의 확률을 고정된 진리처럼 읽지 않는 것까지가 이 방법론의 사용법입니다.</p>
+  </div>
+</details>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 13 · 졸업시험의 답 — 7/15 적합 계단 경로</div>
+    <img src="figs/13-exam-answer.png" alt="7월 15일 기준 적합된 계단 경로. 다음날 회의의 인상이 91퍼센트 반영되어 있다">
+    <figcaption><b>이 그림에서 볼 것.</b> 첫 계단이 기준일 바로 다음날(7/16)에 +22.7bp로 서 있습니다 — 25bp의 91%가 이미 가격에 들어 있던 모습입니다. 경로의 시작점이 2.546%(KOFR 폴백)인 것도 확인하세요 — 함정 1을 통과해야만 이 그림이 그려집니다. (셀 (h) 산출)</figcaption>
+  </div>
+</figure>
+
+<!-- ================= 동반 워크북 ================= -->
+<h3 class="sec" id="wb"><span class="sn">WB</span> 동반 워크북 — 실행 방법과 본문과의 계약</h3>
+<p class="lead-q">읽어서 이해한 것과 돌려서 재현한 것은 다릅니다 — 이 문서의 결론은 전부 후자입니다.</p>
+
+<p>같은 폴더의 <a href="step_method_workbook.ipynb"><code>step_method_workbook.ipynb</code></a>가 이 문서의 짝입니다. 본문의 코드 셀 (a)~(h)는 워크북의 셀과 <b>라벨·코드·출력이 글자까지 동일</b>하고, 본문의 데이터 그림(도표 3·5·6·7·8·10·11·13)은 워크북이 실행 중에 <code>figs/</code>에 저장한 바로 그 파일입니다. 즉 워크북을 위에서 아래로 실행하면 이 문서의 모든 수치와 그림이 재현됩니다 — 문서에 적힌 결과가 지어낸 값이 아니라는 증거가 워크북입니다.</p>
+
+<p>실행 전 알아 둘 것: 외부 데이터 파일이 필요 없습니다(호가·일정은 셋업 셀에 출처와 함께 내장). 앞 셀이 정의한 함수를 뒤 셀이 쓰므로 순서대로 실행해야 합니다. 셋업 셀은 다음과 같습니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셋업 셀 · 그림 스타일 + 공용 입력 데이터</div>
+<pre class="code"># 셋업 — 그림 스타일 + 공용 입력 데이터 (수정하지 않고 실행만 합니다)
+import math
+from datetime import date, timedelta
+from pathlib import Path
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+INK, MUTE, GRID = &quot;#0A0A0A&quot;, &quot;#6E6E6E&quot;, &quot;#D6D6D6&quot;
+CADRED, CADBLUE, ORANGE = &quot;#C53030&quot;, &quot;#2D7EAA&quot;, &quot;#ED8936&quot;
+
+plt.rcParams.update({
+    &quot;font.family&quot;: [&quot;Malgun Gothic&quot;, &quot;DejaVu Sans&quot;],
+    &quot;axes.unicode_minus&quot;: False,
+    &quot;figure.dpi&quot;: 128, &quot;savefig.dpi&quot;: 128, &quot;savefig.bbox&quot;: &quot;tight&quot;,
+    &quot;figure.facecolor&quot;: &quot;white&quot;, &quot;axes.facecolor&quot;: &quot;white&quot;,
+    &quot;axes.edgecolor&quot;: INK, &quot;axes.linewidth&quot;: 0.8,
+    &quot;axes.titlesize&quot;: 10.5, &quot;axes.titlepad&quot;: 6,
+    &quot;axes.labelsize&quot;: 9, &quot;axes.labelcolor&quot;: INK,
+    &quot;axes.grid&quot;: True, &quot;grid.color&quot;: GRID, &quot;grid.linewidth&quot;: 0.6,
+    &quot;xtick.labelsize&quot;: 8, &quot;ytick.labelsize&quot;: 8,
+    &quot;xtick.color&quot;: INK, &quot;ytick.color&quot;: INK,
+    &quot;legend.fontsize&quot;: 8, &quot;legend.frameon&quot;: False,
+    &quot;lines.linewidth&quot;: 1.4,
+})
+
+FIGDIR = Path(&quot;figs&quot;); FIGDIR.mkdir(exist_ok=True)
+def save(fig, name):
+    fig.tight_layout()
+    fig.savefig(FIGDIR / name)
+    return fig
+
+# ── 입력 1 · 기준일 2026-08-07의 KOFR OIS 호가 (한국자금중개 MID, 인포맥스 수신)
+ASOF = date(2026, 8, 7)
+QUOTES = {&quot;1주&quot;: 2.740, &quot;1개월&quot;: 2.770, &quot;2개월&quot;: 2.840, &quot;3개월&quot;: 2.890,
+          &quot;6개월&quot;: 3.0725, &quot;9개월&quot;: 3.205, &quot;1년&quot;: 3.320}
+
+# ── 입력 2 · 금통위 일정 (한국은행 공표. 2027년은 미공표 → 분기 가정 노드)
+MEETINGS_2026 = [date(2026, 8, 27), date(2026, 10, 22), date(2026, 11, 26)]
+NODES_2027 = [date(2027, 1, 15), date(2027, 4, 15), date(2027, 7, 15)]
+
+# ── 입력 3 · 현재 기준금리 (2026-07-16 인상 후 2.75%)
+BASE_RATE = 2.75
+
+# ── 만기일 계산: &quot;N개월&quot;은 달력 월 가산 (8/7 + 3개월 = 11/7 → 92일)
+def add_months(d, months):
+    month = d.month - 1 + months
+    year = d.year + month // 12
+    month = month % 12 + 1
+    day = min(d.day, [31, 29 if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+                      else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1])
+    return date(year, month, day)
+
+def tenor_days(asof, tenor):
+    if tenor == &quot;1주&quot;:
+        return 7
+    n = {&quot;1개월&quot;: 1, &quot;2개월&quot;: 2, &quot;3개월&quot;: 3, &quot;6개월&quot;: 6, &quot;9개월&quot;: 9, &quot;1년&quot;: 12}[tenor]
+    return (add_months(asof, n) - asof).days
+
+FIT_TENORS = [&quot;1개월&quot;, &quot;2개월&quot;, &quot;3개월&quot;, &quot;6개월&quot;, &quot;9개월&quot;, &quot;1년&quot;]
+DAYS = {t: tenor_days(ASOF, t) for t in FIT_TENORS}
+print(&quot;기준일:&quot;, ASOF, &quot;· 기준금리:&quot;, BASE_RATE, &quot;%&quot;)
+print(&quot;만기 일수:&quot;, DAYS)
+print(&quot;회의 노드:&quot;, [m.isoformat() for m in MEETINGS_2026 + NODES_2027])</pre>
+  <div class="cell-note">이 셀만은 본문에서 해설하지 않았습니다 — 그림 스타일 상수와, 1~4부에서 표로 이미 본 입력 데이터(호가·회의일·기준금리)를 코드 형태로 담고 있을 뿐입니다. tenor_days("N개월")가 달력 월 가산 방식(8/7 + 3개월 = 11/7 → 92일)이라는 것만 기억해 두세요 — 졸업시험 함정 2가 여기서 나왔습니다.</div>
+  <details class="out"><summary>실행 결과</summary><pre class="output">기준일: 2026-08-07 · 기준금리: 2.75 %
+만기 일수: {&#x27;1개월&#x27;: 31, &#x27;2개월&#x27;: 61, &#x27;3개월&#x27;: 92, &#x27;6개월&#x27;: 184, &#x27;9개월&#x27;: 273, &#x27;1년&#x27;: 365}
+회의 노드: [&#x27;2026-08-27&#x27;, &#x27;2026-10-22&#x27;, &#x27;2026-11-26&#x27;, &#x27;2027-01-15&#x27;, &#x27;2027-04-15&#x27;, &#x27;2027-07-15&#x27;]</pre></details>
+</div>
+
+<table class="tbl">
+  <thead><tr><th>워크북 셀</th><th>본문 위치</th><th>생산하는 그림</th><th>한 줄 요약</th></tr></thead>
+  <tbody>
+    <tr><td>셋업</td><td>WB (이 절)</td><td>—</td><td>스타일 + 내장 입력 데이터</td></tr>
+    <tr><td>셀 (a)</td><td>§1.4</td><td>도표 3</td><td>연율화 두 관행 — 1주 호가가 심판</td></tr>
+    <tr><td>셀 (b)</td><td>§2.3</td><td>도표 5</td><td>가격 함수 model_rate + 2개월 손계산 56%</td></tr>
+    <tr><td>셀 (c)</td><td>§3.1</td><td>도표 6</td><td>민감도 행렬 — 문제의 지도</td></tr>
+    <tr><td>셀 (d)</td><td>§3.2</td><td>도표 7</td><td>특이성(rank 5) + 1틱 → 10배 증폭</td></tr>
+    <tr><td>셀 (e)</td><td>§3.4</td><td>도표 8</td><td>실전 엔진 + 세 변형 대조 + λ 훑기</td></tr>
+    <tr><td>셀 (f)</td><td>§4.2</td><td>도표 10</td><td>8/7 전체 워크스루, 공표값 재현 True</td></tr>
+    <tr><td>셀 (g)</td><td>§4.3</td><td>도표 11</td><td>몬테카를로 잡음 대역</td></tr>
+    <tr><td>빈 셀 + 셀 (h)</td><td>§4.5</td><td>도표 13</td><td>졸업시험과 정답</td></tr>
+  </tbody>
+</table>
+
+</div><!-- /content -->
+
+<div class="panel-rail">
+<aside class="tool-panel nav-panel">
+<div class="p-head">— Contents · 목차 —</div>
+<div class="p-grp">1부 · 재료</div>
+<a href="#s11"><span class="nl-n">1.1</span><span>하루짜리 금리</span></a>
+<a href="#s12"><span class="nl-n">1.2</span><span>OIS 계약의 해부</span></a>
+<a href="#s13"><span class="nl-n">1.3</span><span>호가 = 경로의 평균</span></a>
+<a href="#s14"><span class="nl-n">1.4</span><span>연율화 관행 · 셀 (a)</span></a>
+<div class="p-grp">2부 · 계단 하나</div>
+<a href="#s21"><span class="nl-n">2.1</span><span>계단 경로</span></a>
+<a href="#s22"><span class="nl-n">2.2</span><span>시작점 r₀</span></a>
+<a href="#s23"><span class="nl-n">2.3</span><span>2개월 손계산 · 셀 (b)</span></a>
+<a href="#s24"><span class="nl-n">2.4</span><span>확률의 정체</span></a>
+<div class="p-grp">3부 · 연립</div>
+<a href="#s31"><span class="nl-n">3.1</span><span>민감도 행렬 · 셀 (c)</span></a>
+<a href="#s32"><span class="nl-n">3.2</span><span>특이성과 증폭 · 셀 (d)</span></a>
+<a href="#s33"><span class="nl-n">3.3</span><span>가중·평활·수축</span></a>
+<a href="#s34"><span class="nl-n">3.4</span><span>가우스-뉴턴 · 셀 (e)</span></a>
+<div class="p-grp">4부 · 실전</div>
+<a href="#s41"><span class="nl-n">4.1</span><span>파이프라인 조감</span></a>
+<a href="#s42"><span class="nl-n">4.2</span><span>8/7 완전 재현 · 셀 (f)</span></a>
+<a href="#s43"><span class="nl-n">4.3</span><span>신뢰 폭 · 셀 (g)</span></a>
+<a href="#s44"><span class="nl-n">4.4</span><span>규율과 한계</span></a>
+<a href="#s45"><span class="nl-n">4.5</span><span>졸업시험 · 셀 (h)</span></a>
+<a href="#wb" class="grp-link"><span class="nl-n">WB</span><span>동반 워크북</span></a>
+</aside>
+<aside class="tool-panel formula-panel">
+<div class="p-head" id="fpHead">— §1.1 하루짜리 금리 —</div>
+
+<div class="fcard" data-sec="s11">
+ <div class="fblock">
+  <div class="fb-note"><b>KOFR</b> — 국채·통안증권 담보 하루짜리 레포의 실거래 가중평균 금리. 기준금리를 따라다니는 "거래되는 하루 금리".</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">기준금리</span><span class="d">— 금통위가 정하는 정책 수준, 지금 2.75%</span></div>
+  <div class="fv"><span class="s">bp</span><span class="d">— 0.01%p. 인상 한 번 = 25bp</span></div>
+  <div class="fv"><span class="s">금통위</span><span class="d">— 연 8회, 기준금리 결정 회의</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s12">
+ <div class="fblock">
+  <div class="fb-eq">\[\text{변동다리 배율}=\prod_{i=1}^{D}\Big(1+\tfrac{r_i}{365}\Big)\]</div>
+  <div class="fv-h">변수 · 용어</div>
+  <div class="fv"><span class="s">\(K\)</span><span class="d">— 고정다리 금리 = 호가 (연율 %)</span></div>
+  <div class="fv"><span class="s">\(r_i\)</span><span class="d">— i번째 날의 KOFR</span></div>
+  <div class="fv"><span class="s">\(D\)</span><span class="d">— 만기까지 일수</span></div>
+  <div class="fv"><span class="s">MID</span><span class="d">— 매수·매도 호가의 중간값</span></div>
+  <div class="fv"><span class="s">틱</span><span class="d">— 호가 최소 단위 0.25bp</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s13">
+ <div class="fblock">
+  <div class="fb-note">딜러의 균형 호가: <b>고정이자 = 변동이자의 기대값</b>. 그래서 K는 미래 KOFR 경로의 확률가중 평균 요약이다.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">위험중립 확률</span><span class="d">— 가격 책정에 쓰이는, 위험 보상이 섞인 확률 (§2.4)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s14">
+ <div class="fblock">
+  <div class="fb-eq">\[K=\tfrac{365}{D}\Big[\prod_{i=1}^{D}\big(1+\tfrac{r_i}{365}\big)-1\Big]\times 100\]</div>
+  <div class="fv-h">변수 · 용어</div>
+  <div class="fv"><span class="s">Act/365 단리</span><span class="d">— KRX 명세: 복리 이자를 단순 비례로 연율화</span></div>
+  <div class="fv"><span class="s">유효연율</span><span class="d">— 구판의 오류: 동결 눈금이 평평해져 8월 확률 −20%p</span></div>
+  <div class="fv"><span class="s">검증</span><span class="d">— 동결 경로가 1주 호가 2.740을 재현해야 한다</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s21">
+ <div class="fblock">
+  <div class="fb-eq">\[r(s)=r_0+\sum_k \Delta_k\,\mathbf{1}\{s\ge m_k\}\]</div>
+  <div class="fv-h">변수</div>
+  <div class="fv"><span class="s">\(r_0\)</span><span class="d">— 경로 시작 수준 (§2.2)</span></div>
+  <div class="fv"><span class="s">\(m_k,\ \Delta_k\)</span><span class="d">— k번째 회의까지 일수 · 그 회의의 점프</span></div>
+ </div>
+ <div class="fblock">
+  <div class="fb-eq">\[\Delta = P\times 25\text{bp}\;\Rightarrow\; P=\tfrac{\Delta}{25\text{bp}}\]</div>
+  <div class="fv-h">해석</div>
+  <div class="fv"><span class="s">\(\Delta\)</span><span class="d">— 그 회의의 기대 점프 (인상·동결의 확률가중)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s22">
+ <div class="fblock">
+  <div class="fb-note">r₀ = <b>1주 OIS 호가</b> (2.740%). 같은 상품군이라 베이시스가 시작점에 흡수된다. <b>1주 안에 회의가 있으면 KOFR 공시값으로 폴백</b>.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">베이시스</span><span class="d">— KOFR와 기준금리 사이의 상시 괴리 (담보 수급)</span></div>
+  <div class="fv"><span class="s">폴백</span><span class="d">— 1순위를 못 쓸 때의 예비 규칙 — 졸업시험의 함정</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s23">
+ <div class="fblock">
+  <div class="fb-eq">\[P=\frac{K_{\text{시장}}-K_{\text{동결}}}{K_{\text{인상}}-K_{\text{동결}}}\]</div>
+  <div class="fv-h">8/7의 2개월 값</div>
+  <div class="fv"><span class="s">\(K_{\text{동결}}\)</span><span class="d">— 2.7462%</span></div>
+  <div class="fv"><span class="s">\(K_{\text{인상}}\)</span><span class="d">— 2.9150% (차이 16.9bp = 25bp × 41/61)</span></div>
+  <div class="fv"><span class="s">\(K_{\text{시장}}\)</span><span class="d">— 2.8400% → P ≈ 56%</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s24">
+ <div class="fblock">
+  <div class="fb-note">P는 ① <b>25bp 격자</b> 가정 위의 값, ② <b>위험중립</b>(예보 아님), ③ [0,1] 밖은 <b>클리핑</b>. Δ(bp)와 P(%)를 항상 병기한다.</div>
+  <div class="fv-h">기억할 것</div>
+  <div class="fv"><span class="s">음의 Δ</span><span class="d">— 인하 기대: −Δ/25bp가 인하확률</span></div>
+  <div class="fv"><span class="s">양방향 분포</span><span class="d">— Δ 하나로는 분리 불가 (해상도 한계)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s31">
+ <div class="fblock">
+  <div class="fb-eq">\[\frac{\partial K_D}{\partial \Delta_k}\approx\frac{D-m_k}{D}\quad(m_k&lt;D)\]</div>
+  <div class="fv-h">읽기</div>
+  <div class="fv"><span class="s">민감도</span><span class="d">— 만기 내 "회의 뒤 날수"의 비중</span></div>
+  <div class="fv"><span class="s">예</span><span class="d">— 3개월×10/22 = 16/92 = 0.174 → 25bp가 4.3bp로만 전달</span></div>
+  <div class="fv"><span class="s">자코비안</span><span class="d">— 이 민감도들을 모은 6×6 행렬</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s32">
+ <div class="fblock">
+  <div class="fb-note">특이값 여섯째 = 0 → <b>계수(rank) 5</b>: 정확해가 유일하지 않다. 유효 조건수 45, 1틱 잡음 → Δ 최대 ±2.4bp(<b>10배 증폭</b>), 이웃 회의는 시소.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">특이값</span><span class="d">— 행렬이 각 방향을 구분하는 세기. 0이면 그 방향은 안 보임</span></div>
+  <div class="fv"><span class="s">최소노름 해</span><span class="d">— 무한한 해 중 크기가 가장 작은 것 (lstsq)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s33">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\min_{\Delta}\;&(y-K(\Delta))^{\!\top}W(y-K(\Delta))\\&+\lambda\lVert D\Delta\rVert^2+\Delta^{\!\top}T\Delta\end{aligned}\]</div>
+  <div class="fv-h">세 처방</div>
+  <div class="fv"><span class="s">\(W\)</span><span class="d">— 가중 1/1/1/0.9/0.8/0.7 (뒷 만기 오염)</span></div>
+  <div class="fv"><span class="s">\(\lambda=2{\times}10^{-3}\)</span><span class="d">— 이웃 점프 차이 벌점 (시소 겨냥)</span></div>
+  <div class="fv"><span class="s">\(T\)</span><span class="d">— 수축: 확정 2×10⁻⁴ · 2027 가정 10⁻³ (5배)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s34">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\Delta\leftarrow\Delta+\big(J^{\top}WJ&+\lambda D^{\top}D+T\big)^{-1}\\ \times\;&J^{\top}W(y-K(\Delta))\end{aligned}\]</div>
+  <div class="fv-h">구현의 실제</div>
+  <div class="fv"><span class="s">8회 반복</span><span class="d">— 거의 선형이라 첫 걸음이 대부분</span></div>
+  <div class="fv"><span class="s">벌점 = 감쇠</span><span class="d">— 우변에 없음: 보이는 곳은 데이터, 안 보이는 곳은 벌점이 채움</span></div>
+  <div class="fv"><span class="s">정확 최적해</span><span class="d">— 10·11월을 섞어 버림 (81/58%) → 채택 안 함</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s41">
+ <div class="fblock">
+  <div class="fb-note">① 입력(호가 7·일정) → ② r₀(1주) → ③ 노드(확정 3 + 2027 가정 3) → ④ fit_deltas → ⑤ Δ→P·연말 내재. 매일 <b>1주 재현·잔차 점검</b>을 먼저 돌린다.</div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s42">
+ <div class="fblock">
+  <div class="fb-note">2026-08-07 결과 — RMSE 0.81bp, 운영 공표값과 0.05bp 내 일치.</div>
+  <div class="fv-h">회의별 Δ → P</div>
+  <div class="fv"><span class="s">8/27</span><span class="d">— +12.54bp → 50.2%</span></div>
+  <div class="fv"><span class="s">10/22</span><span class="d">— +23.77bp → 95.1%</span></div>
+  <div class="fv"><span class="s">11/26</span><span class="d">— +9.00bp → 36.0%</span></div>
+  <div class="fv"><span class="s">연말 내재</span><span class="d">— 3.20% (약 1.8회 인상)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s43">
+ <div class="fblock">
+  <div class="fb-note">±1틱 몬테카를로 90% 대역 — 8/27 <b>4%p</b> · 10/22 <b>13%p</b> · 11/26 <b>22%p</b>. 커버리지 구조 그대로.</div>
+  <div class="fv-h">구분</div>
+  <div class="fv"><span class="s">잡음</span><span class="d">— 무작위 흔들림, 몬테카를로로 잰다</span></div>
+  <div class="fv"><span class="s">근사</span><span class="d">— 가정의 치우침(연율화·T+1), 가정을 바꿔 재계산해야 보인다 — 8월 실무 범위 40~60%의 주범</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s44">
+ <div class="fblock">
+  <div class="fb-note"><b>누적은 수준으로, 배분은 방향으로.</b> 배분이 26%로 무너진 날(6/10) 누적은 기간 최고점(3.45%) — 둘은 따로 논다.</div>
+  <div class="fv-h">질문 → 산출</div>
+  <div class="fv"><span class="s">연말 몇 회?</span><span class="d">— 누적 (3.20%)</span></div>
+  <div class="fv"><span class="s">다음 회의?</span><span class="d">— 앞 배분 (50%, 40~60%)</span></div>
+  <div class="fv"><span class="s">두세 회의 뒤?</span><span class="d">— 방향·크기만</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s45">
+ <div class="fblock">
+  <div class="fb-note">졸업시험 (7/15) — 함정: 1주 구간에 회의 → r₀는 <b>KOFR 2.546% 폴백</b>. 답: 7/16 <b>91%</b> · 8/27 <b>73%</b>. 다음날 실제로 인상.</div>
+  <div class="fv-h">확인</div>
+  <div class="fv"><span class="s">73% vs 50%</span><span class="d">— 7월 인상 실현 후 8월 기대가 반반으로 갱신</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="wb">
+ <div class="fblock">
+  <div class="fb-note">워크북 = 이 문서의 <b>재현 증명</b>. 셀 (a)~(h) 코드·출력·그림이 본문과 글자·픽셀까지 동일. 순서대로 실행할 것.</div>
+  <div class="fv-h">파일</div>
+  <div class="fv"><span class="s">ipynb</span><span class="d">— step_method_workbook.ipynb</span></div>
+  <div class="fv"><span class="s">figs/</span><span class="d">— 도표 3·5·6·7·8·10·11·13의 원본</span></div>
+ </div>
+</div>
+</aside>
+</div>
+</div><!-- /with-layer-panel -->
+
+<!-- ================= 참고문헌 ================= -->
+<div class="refs" id="refs">
+  <h2>참고문헌 · 출처</h2>
+  <ol>
+    <li id="fn1">KOFR 산출·공시와 KOFR OIS 표준 명세(고정금리 Act/365 단리 연율화 — §1.4의 근거). 한국예탁결제원·한국거래소, KOFR 공식 사이트: <a class="src" href="https://www.kofr.kr">kofr.kr</a></li>
+    <li id="fn2">KOFR OIS 호가 데이터 — 한국자금중개 고시 매수·매도의 중간값(MID), 연합인포맥스 단말 수신 (2026-08-07 · 2026-07-15 기준).</li>
+    <li id="fn3">금융통화위원회 일정 공표 — 한국은행: <a class="src" href="https://www.bok.or.kr">bok.or.kr</a> (2026년 정례회의 8회. 2027년 일정은 미공표 — 본문 §3.1의 분기 가정 노드).</li>
+    <li id="fn4">같은 원리의 원조 — CME Group, "FedWatch Tool Methodology" (페드펀드 선물로 FOMC 확률 산출): <a class="src" href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html">cmegroup.com/…/cme-fedwatch-tool</a>. 한국은 회의 구간별 선물이 없어 누적형 OIS를 회의별로 분해하는 본 문서의 방식이 필요하다.</li>
+    <li id="fn5">본 방법론의 운영 구현 — <code>model/scripts/m1_step_function.py</code> (같은 저장소). 본 문서의 셀 (e)·(f)가 이 구현의 공표값을 0.05bp 내 재현함을 확인.</li>
+    <li id="fn6">결과의 활용·검증 리포트 — <code>model/report.html</code> (같은 저장소): 통안·국고·DNS-VAR·서베이 교차 렌즈, 2013~2026 백테스트 124회, 국면 층화 분석. 이 학습 문서가 "어떻게 계산하나"라면 리포트는 "그 숫자를 믿어도 되나"를 다룬다.</li>
+    <li id="fn7">연율화 관행 오류(§1.4)의 발견 경위 — 동일 문제를 독립 구현한 타 분석과의 교차 감사 기록: <code>model/codex_claude 비교.md</code> (같은 저장소).</li>
+  </ol>
+</div>
+
+<div class="disclaimer">
+  <b>검증 및 고지.</b> 본문 코드 셀 (a)~(h)와 셋업 셀, 접이식 실행 결과, 데이터 그림 8장(도표 3·5·6·7·8·10·11·13)은 동반 워크북 <code>step_method_workbook.ipynb</code>를 검증 환경(Python 3.14 · numpy 2.4 · matplotlib 3.10)에서 처음부터 끝까지 실행해 산출한 것과 동일합니다. 실측 그림 2장(도표 1·12)은 보조 스크립트 <code>_extra_figures.py</code>가 프로젝트 원데이터(ECOS·kofr.kr·인포맥스)와 운영 모형의 일별 산출로 생성했습니다. 도표 2·4·9는 개념도입니다. 입력 호가는 한국자금중개 고시 호가의 중간값으로 실제 체결가와 다를 수 있습니다. 본 문서의 확률은 시장가격에 내재된 위험중립 확률로서 예보가 아니며, 문서 전체는 교육 목적으로 작성되어 투자 자문이 아닙니다. 수식 영역 클릭 시 LaTeX 소스가 클립보드에 복사됩니다.
+</div>
+
+<footer>Korea Rate Pricing Model · Method School 01 — KOFR OIS 계단함수 · 2026-08-08</footer>
+
+</div>
+
+<script>
+/* ── 수식: data-tex → 렌더 + 클릭 복사 ── */
+function showToast(){
+  var t=document.getElementById('toast');
+  t.style.opacity='1'; clearTimeout(t._tmo);
+  t._tmo=setTimeout(function(){t.style.opacity='0';},1300);
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.top='-1000px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+function copyTeX(el){
+  var tex=el.getAttribute('data-tex');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(tex).then(showToast,function(){fallbackCopy(tex);showToast();});
+  }else{fallbackCopy(tex);showToast();}
+}
+document.querySelectorAll('.eq').forEach(function(el){
+  el.textContent='\\['+el.getAttribute('data-tex')+'\\]';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+document.querySelectorAll('.eqi').forEach(function(el){
+  el.textContent='\\('+el.getAttribute('data-tex')+'\\)';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+</script>
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+  svg:{fontCache:'global'},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}
+};
+</script>
+<script src="mathjax-tex-svg-full.js" id="MathJax-script"></script>
+
+<script>
+(function(){
+  var links={};
+  document.querySelectorAll('.nav-panel a').forEach(function(x){
+    links[x.getAttribute('href').slice(1)]=x;
+  });
+  var fcards={};
+  document.querySelectorAll('.fcard').forEach(function(c){
+    fcards[c.getAttribute('data-sec')]=c;
+  });
+  var fpHead=document.getElementById('fpHead');
+  var secName={s11:'§1.1 하루짜리 금리',s12:'§1.2 OIS 계약',s13:'§1.3 호가 = 평균',
+    s14:'§1.4 연율화 관행',s21:'§2.1 계단 경로',s22:'§2.2 시작점 r₀',
+    s23:'§2.3 2개월 손계산',s24:'§2.4 확률의 정체',s31:'§3.1 민감도 행렬',
+    s32:'§3.2 특이성·증폭',s33:'§3.3 세 가지 처방',s34:'§3.4 가우스-뉴턴',
+    s41:'§4.1 파이프라인',s42:'§4.2 8/7 재현',s43:'§4.3 신뢰 폭',
+    s44:'§4.4 규율과 한계',s45:'§4.5 졸업시험',wb:'동반 워크북'};
+  var cur=null;
+  function activate(id){
+    if(!links[id]||cur===id)return;
+    if(cur&&links[cur])links[cur].classList.remove('active');
+    links[id].classList.add('active');cur=id;
+    for(var k in fcards){fcards[k].classList.toggle('fc-on',k===id);}
+    if(fpHead)fpHead.textContent='— '+(secName[id]||'참조')+' —';
+  }
+  if(fcards.s11)fcards.s11.classList.add('fc-on');
+  var targets=['s11','s12','s13','s14','s21','s22','s23','s24','s31','s32','s33','s34','s41','s42','s43','s44','s45','wb']
+    .map(function(id){return document.getElementById(id);}).filter(Boolean);
+  function spy(){
+    var line=window.innerHeight*0.2,best=null;
+    targets.forEach(function(t){
+      if(t.getBoundingClientRect().top<line)best=t.id;
+    });
+    if(best)activate(best);
+  }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  window.addEventListener('load',spy);
+  if(window.MathJax&&MathJax.startup&&MathJax.startup.promise){
+    MathJax.startup.promise.then(spy);
+  }
+  spy();
+})();
+</script>
+<div class="lightbox" id="lightbox"><img src="" alt=""></div>
+<script>
+/* 라이트박스 — 그림 클릭 확대, 오버레이 클릭·Esc로 닫기 */
+(function(){
+  var ov=document.getElementById('lightbox');
+  var im=ov.querySelector('img');
+  function close(){ov.classList.remove('on');}
+  ov.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  document.querySelectorAll('.fig img').forEach(function(g){
+    g.addEventListener('click',function(){im.src=g.getAttribute('src');im.alt=g.alt||'';ov.classList.add('on');});
+  });
+})();
+</script>
+
+</body>
+</html>

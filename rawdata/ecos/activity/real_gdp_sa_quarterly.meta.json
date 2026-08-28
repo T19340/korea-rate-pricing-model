@@ -1,0 +1,23 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/200Y104/Q/1960Q1/2026Q3/1400",
+  "query": {
+    "slug": "real_gdp_sa_quarterly",
+    "category": "activity",
+    "stat_code": "200Y104",
+    "cycle": "Q",
+    "start_time": "1960Q1",
+    "items": [
+      "1400"
+    ],
+    "description": "계절조정 실질 GDP",
+    "end_time": "2026Q3"
+  },
+  "row_count": 266,
+  "first_time": "1960Q1",
+  "last_time": "2026Q2",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

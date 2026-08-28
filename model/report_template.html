@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시장은 다음 인상을 얼마나 담아 놓았나 — 8·10·11월 금통위 내재 인상확률</title>
+<!-- 완전 자립형: 외부 CDN·웹폰트 의존 없음. 수식은 사전 렌더된 벡터(SVG)로 내장 -->
+<style>
+:root{
+  --navy-900:#0E2A47; --navy-700:#16487E; --navy-500:#2E6FB5;
+  --gold:#C0A062; --gold-d:#8F7332; --teal:#00838F;
+  --red-d:#A52A2A; --green-d:#2E7D32;
+  --ink:#1A1A1A; --ink-2:#4A4A4A; --gray-1:#6E6E6E; --gray-2:#9E9E9E;
+  --rule:#D6D6D6; --bg:#FFFFFF; --bg-soft:#F7F7F4; --bg-navy:#0E2A47;
+  --font-sans:'Segoe UI','Malgun Gothic','Apple SD Gothic Neo',system-ui,sans-serif;
+  --font-serif:Georgia,'Batang','AppleMyungjo',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);font-size:16px;line-height:1.75;color:var(--ink);background:var(--bg)}
+.report-container{max-width:920px;margin:0 auto;padding:0 60px}
+p{margin:0 0 16px}
+strong{font-weight:600}
+
+/* ---------- cover ---------- */
+.cover{margin-bottom:64px}
+.cover-band{height:14px;background:var(--bg-navy);margin:0 -60px}
+.cover-content{padding-top:56px}
+.cover-category{font-size:12px;letter-spacing:.18em;color:var(--gray-1);font-weight:600;margin-bottom:22px}
+.cover-title{font-family:var(--font-serif);font-size:40px;font-weight:600;line-height:1.28;color:var(--navy-900);margin-bottom:14px}
+.cover-subtitle{font-size:18px;color:var(--ink-2);line-height:1.6;margin-bottom:30px;max-width:720px}
+.cover-rule{width:64px;height:3px;background:var(--gold);margin-bottom:30px}
+.cover-meta{display:flex;gap:48px;flex-wrap:wrap}
+.cover-meta div{display:flex;flex-direction:column;gap:2px}
+.cover-meta span{font-size:11px;letter-spacing:.1em;color:var(--gray-2);text-transform:uppercase}
+.cover-meta strong{font-size:14px;color:var(--ink);font-weight:600}
+
+/* ---------- executive summary ---------- */
+.executive-summary{background:var(--bg-soft);padding:38px 42px;margin-bottom:70px;border-top:3px solid var(--navy-900)}
+.es-title{font-size:13px;letter-spacing:.16em;color:var(--navy-900);font-weight:700;margin-bottom:18px}
+.es-lead{font-size:17.5px;line-height:1.8;color:var(--ink);margin-bottom:26px}
+.headline-probs{display:flex;gap:14px;margin:26px 0 30px;flex-wrap:wrap}
+.hp-card{flex:1;min-width:170px;background:#fff;border:1px solid var(--rule);border-top:3px solid var(--navy-700);padding:16px 18px}
+.hp-meeting{font-size:12px;letter-spacing:.08em;color:var(--gray-1);font-weight:600;margin-bottom:6px}
+.hp-prob{font-size:32px;font-weight:700;color:var(--navy-900);line-height:1.1}
+.hp-detail{font-size:12.5px;color:var(--gray-1);margin-top:6px;line-height:1.5}
+.key-takeaways{border-top:1px solid var(--rule);padding-top:20px}
+.kt-label{font-size:11px;letter-spacing:.16em;color:var(--gold-d);font-weight:700;margin-bottom:12px}
+.key-takeaways ol{padding-left:22px}
+.key-takeaways li{margin-bottom:10px;font-size:15.5px;line-height:1.65}
+
+/* ---------- sections ---------- */
+.section{margin:74px 0}
+.section-number{font-size:62px;font-weight:300;color:var(--rule);letter-spacing:-.02em;line-height:1;margin-bottom:6px}
+.section-title{font-size:25px;font-weight:600;color:var(--navy-700);margin-bottom:14px}
+.section-lead{font-size:17.5px;color:var(--gray-1);line-height:1.7;margin-bottom:26px}
+h3{font-size:18px;font-weight:600;color:var(--navy-900);margin:34px 0 12px}
+hr.rule{border:0;border-top:1px solid var(--rule);margin:40px 0}
+
+/* ---------- components ---------- */
+.key-insight{border-left:4px solid var(--teal);background:var(--bg-soft);padding:18px 24px;margin:28px 0}
+.ki-label{font-size:11px;letter-spacing:.14em;color:var(--teal);font-weight:700;margin-bottom:8px}
+.key-insight p{margin:0;font-size:15.5px}
+.sidebar-stat{float:right;width:200px;margin:6px 0 18px 28px;padding:18px 20px;background:var(--bg-soft);border-top:3px solid var(--gold)}
+.stat-number{font-size:28px;font-weight:700;color:var(--navy-900);line-height:1.15}
+.stat-label{font-size:13px;color:var(--gray-1);margin-top:6px;line-height:1.5}
+.stat-source{font-size:11px;color:var(--gray-2);margin-top:8px}
+.explain-box{background:var(--bg-soft);border:1px solid var(--rule);padding:22px 26px;margin:28px 0}
+.explain-box .eb-label{font-size:11px;letter-spacing:.14em;color:var(--navy-700);font-weight:700;margin-bottom:10px}
+.explain-box p{font-size:14.5px;line-height:1.75;color:var(--ink-2)}
+.explain-box p:last-child{margin-bottom:0}
+
+/* ---------- exhibits ---------- */
+.exhibit{margin:34px 0}
+.exhibit-label{font-size:11px;letter-spacing:.16em;color:var(--gold-d);font-weight:700}
+.exhibit-title{font-size:16px;font-weight:600;color:var(--ink);margin:4px 0 2px}
+.exhibit-subtitle{font-size:12.5px;color:var(--gray-1);margin-bottom:6px}
+.exhibit-read{font-size:13.5px;color:var(--navy-700);margin-bottom:10px;padding-left:14px;text-indent:-14px}
+.exhibit-read::before{content:'▸ ';color:var(--gold-d);font-weight:700}
+
+/* ---------- reading guide & glossary ---------- */
+.reading-guide{border:1px solid var(--rule);border-top:3px solid var(--gold);padding:26px 30px;margin:0 0 60px}
+.rg-label{font-size:11px;letter-spacing:.16em;color:var(--gold-d);font-weight:700;margin-bottom:12px}
+.reading-guide p{font-size:14.5px;color:var(--ink-2)}
+.glossary{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:16px}
+.glossary div{font-size:13.5px;line-height:1.6;color:var(--ink-2);padding-left:14px;text-indent:-14px}
+.glossary b{color:var(--navy-900)}
+.glossary div::before{content:'· ';color:var(--gold-d);font-weight:700}
+@media print{.reading-guide{page-break-inside:avoid}}
+.exhibit-chart{border:1px solid var(--rule);padding:14px 10px;background:#fff;overflow-x:auto}
+.exhibit-chart svg{width:100%;height:auto;display:block}
+.exhibit-chart svg text{font-family:'Segoe UI','Malgun Gothic',sans-serif !important}
+.equation svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.exhibit-source{font-size:11.5px;color:var(--gray-2);margin-top:8px;line-height:1.5}
+
+/* ---------- tables ---------- */
+table.data{width:100%;border-collapse:collapse;margin:22px 0;font-size:14px}
+table.data th{background:var(--navy-900);color:#fff;font-weight:600;padding:9px 12px;text-align:right;font-size:12.5px;letter-spacing:.02em}
+table.data th:first-child{text-align:left}
+table.data td{padding:8px 12px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums}
+table.data td:first-child{text-align:left;font-weight:500}
+table.data tr.hl td{background:#F0F4F9;font-weight:600}
+.neg{color:var(--red-d)} .pos{color:var(--green-d)}
+.tbl-note{font-size:11.5px;color:var(--gray-2);margin-top:-14px;margin-bottom:20px;line-height:1.5}
+
+/* ---------- equations ---------- */
+.equation{cursor:pointer;padding:16px 24px;margin:22px 0;border-left:3px solid var(--rule);background:var(--bg-soft);position:relative;transition:border-color .2s,background .2s}
+.equation:hover{border-left-color:var(--navy-700);background:#F0F2F5}
+.equation::after{content:'⧉ Copy LaTeX';position:absolute;top:8px;right:14px;font-size:10px;color:var(--gray-2);letter-spacing:.06em;text-transform:uppercase;opacity:0;transition:opacity .2s}
+.equation:hover::after{opacity:1}
+.equation.copied::after{content:'✓ Copied';color:var(--green-d);opacity:1}
+
+/* ---------- sources & disclaimer ---------- */
+.sources{margin-top:80px;padding-top:28px;border-top:2px solid var(--navy-900)}
+.sources h2{font-size:15px;letter-spacing:.1em;color:var(--navy-900);margin-bottom:16px}
+.sources ul{list-style:none}
+.sources li{font-size:13px;color:var(--ink-2);margin-bottom:8px;padding-left:16px;text-indent:-16px;line-height:1.6}
+.disclaimer{margin:44px 0 30px;font-size:11px;color:var(--gray-2);line-height:1.6}
+.page-footer{border-top:1px solid var(--rule);padding:14px 0 40px;display:flex;justify-content:space-between;font-size:11px;color:var(--gray-2)}
+
+@page{size:A4;margin:20mm 18mm}
+@media print{
+  body{background:#fff}
+  .report-container{padding:0;max-width:100%}
+  .section,.exhibit,.explain-box,.key-insight{page-break-inside:avoid}
+  .equation::after{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="report-container">
+
+<!-- ================= COVER ================= -->
+<div class="cover">
+  <div class="cover-band"></div>
+  <div class="cover-content">
+    <div class="cover-category">FIXED INCOME STRATEGY · 금리</div>
+    <h1 class="cover-title">시장은 다음 인상을<br>얼마나 담아 놓았나</h1>
+    <p class="cover-subtitle">KOFR OIS로 읽은 2026년 8·10·11월 금통위 인상확률, 그리고 8월에 실제로 올리면 만기별 금리가 얼마나 움직이는가</p>
+    <div class="cover-rule"></div>
+    <div class="cover-meta">
+      <div><span>Publication Date</span><strong>2026년 8월 10일 (v16 개정판)</strong></div>
+      <div><span>Data As Of</span><strong>2026-08-07 장중</strong></div>
+      <div><span>Author</span><strong>FI Strategy Research</strong></div>
+      <div><span>Report ID</span><strong>KRP-2026-0807-R16</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EXECUTIVE SUMMARY ================= -->
+<section class="executive-summary">
+  <div class="es-title">EXECUTIVE SUMMARY</div>
+  <p class="es-lead">
+    시장은 연말까지 약 두 번의 인상을 이미 가격에 반영해 놓았다. KOFR OIS(미래 하루짜리 금리의
+    평균을 맞바꾸는 계약) 커브를 금통위 날짜 단위로 분해한 회의별 확률이 아래 세 칸이고, 연말
+    기준금리로 환산하면 3.20%다. 다만 프리미엄을 걷어낸 순수한 기대는 3.0~3.1%로, 3.20%는 상단으로
+    읽어야 한다(3절·5절). 이 리포트는 이 숫자들을 어떻게 계산했고, 어디까지 믿어도 되며, 8월에
+    실제로 올리면(혹은 동결하면) 무엇이 움직이는지를 답한다.
+  </p>
+  <div class="headline-probs">
+    <div class="hp-card"><div class="hp-meeting">8월 27일 금통위</div><div class="hp-prob">50%</div><div class="hp-detail">내재 인상폭 +12.5bp (= 25bp × 50%)<br>인상·동결이 정확히 반반</div></div>
+    <div class="hp-card"><div class="hp-meeting">10월 22일 금통위</div><div class="hp-prob">95%</div><div class="hp-detail">내재 인상폭 +23.8bp<br>1회 인상에 거의 근접</div></div>
+    <div class="hp-card"><div class="hp-meeting">11월 26일 금통위</div><div class="hp-prob">36%</div><div class="hp-detail">내재 인상폭 +9.0bp<br>2027년 초 회의와 배분이 섞여 식별이 약함</div></div>
+  </div>
+  <p class="tbl-note" style="margin:-16px 0 24px">개정 고지: v7은 교차 감사에서 확인된 OIS 고정금리 연율화 오류(KRX 명세의 Act/365 단리 대신 유효연율 사용)를 교정한 판이다. 교정으로 곡선 적합 오차가 1.5→0.8bp로 절반이 됐고, 8월 확률이 30%에서 50%로 올라섰다. 상세는 부록 B·C.</p>
+  <div class="key-takeaways">
+    <div class="kt-label">KEY TAKEAWAYS</div>
+    <ol>
+      <li><strong>10월은 사실상 기정사실(95%), 8월은 정확히 반반(50%), 11월은 3분의 1이다.</strong> 시장이 연말까지 반영한 누적 인상폭은 +45bp(내재 연말 기준금리 3.20%)다.</li>
+      <li><strong>모형은 실전 검증을 이미 한 번 통과했다.</strong> 7월 서베이 발표일(7/14) 기준 모형 74% 대 서베이 66%, 회의 전일에는 91%까지 상승했고, 실제로 인상됐다. 다만 실전 사례는 아직 한 번이며, 체계적 근거는 2013년 이후 124회 백테스트다 — 서베이는 안정기에, 시장가격은 인하 전환점에서 강했다.</li>
+      <li><strong>8월에 올라도, 동결해도 시장금리는 12bp 안팎만 움직인다.</strong> 확률이 반반이므로 서프라이즈는 어느 쪽이든 ±12.5bp로 대칭이다. 통안 3개월 ±12bp의 파급을 추정하고, 국고 3년은 평균 ±5bp이지만 과거 국면에 따라 0~14bp로 가변적이다(5절) — 당일 장기물은 결정 숫자보다 점도표·회견이 지배한다.</li>
+      <li><strong>무엇을 볼 것인가.</strong> 8월 27일의 관전 변수는 결정 자체보다 K-점도표다(연내 두 번째 인상을 시사하면 11월 36%가 급재가격된다). 방향이 반반이므로 단기물은 방향 베팅보다 ±12bp의 변동성 노출이 본질이고, 상시 신호로는 서베이-시장내재 괴리를 보라 — 벌어지면 그것이 뉴스다.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= READING GUIDE ================= -->
+<div class="reading-guide">
+  <div class="rg-label">이 리포트를 읽는 법</div>
+  <p>
+    시간이 없으면 위의 요약과 3절 첫 번째 표만 보면 된다. 숫자가 어디서 왔는지 궁금하면 2절이
+    계산 원리를 그림 하나(Exhibit 1)로 설명한다. "이 숫자를 믿어도 되나"가 궁금하면 5절로 바로
+    가면 된다 — 이 모형이 과거 13년간 언제 맞고 언제 틀렸는지를 성적표로 공개했다. 직접 검산하고
+    싶으면 부록에 계산 절차와 중간값이 전부 있다. 본문에 반복해서 나오는 용어는 일곱 개뿐이다.
+  </p>
+  <div class="glossary">
+    <div><b>bp(베이시스포인트)</b> — 0.01%p. 25bp 인상 = 기준금리 0.25%p 인상.</div>
+    <div><b>KOFR OIS</b> — 앞으로 일정 기간의 하루짜리 금리(KOFR) 평균을 고정금리와 맞바꾸는 계약. 그 고정금리 호가가 "시장이 보는 미래 평균 금리"다.</div>
+    <div><b>계단함수</b> — 기준금리는 금통위 날에만 바뀌므로, 미래 금리 경로를 계단 모양으로 놓고 계단 높이(회의별 인상폭)를 역산하는 방법.</div>
+    <div><b>기간프리미엄</b> — 만기가 긴 채권을 들고 가는 위험의 대가로 금리에 얹히는 웃돈. 이것 때문에 시장금리를 "순수한 기대"로 바로 읽으면 안 된다.</div>
+    <div><b>서프라이즈</b> — 실제 결정에서 시장이 미리 반영한 부분을 뺀 나머지. 가격을 움직이는 것은 결정 자체가 아니라 이 나머지다.</div>
+    <div><b>브라이어 점수</b> — 확률 예보의 채점법. "비 올 확률 70%"라 했는데 비가 왔으면 오차 (1−0.7)²=0.09. 낮을수록 정확하고 0이면 만점이다. 이 리포트의 실제 채점은 인상·동결·인하 세 확률 각각에 이 계산을 해 더하므로 눈금이 더 크다.</div>
+    <div><b>K-점도표</b> — 금통위원 각자가 전망하는 향후 기준금리 수준을 점으로 찍어 공개하는 자료(미 연준 점도표의 한국판, 2026년 2월 도입). 8월처럼 경제전망이 함께 나오는 회의에서 연 4회 발표된다.</div>
+  </div>
+</div>
+
+<!-- ================= SECTION 01 ================= -->
+<section class="section">
+  <div class="section-number">01</div>
+  <h2 class="section-title">왜 이 방법인가 — 한국은행이 먼저 썼다</h2>
+  <p class="section-lead">
+    "국고채금리에 어떤 기준금리 기대가 반영되어 있는가"를 모형으로 추출하는 일은
+    이미 한국은행의 공식 업무 방식이다. 이 리포트는 같은 틀을 빌려 회의별 확률까지 한 층 더 내려간다.
+  </p>
+  <div class="section-body">
+    <p>
+      미국에는 CME FedWatch가 있다. 연방기금선물 가격에서 FOMC 회의별 인상·인하 확률을 실시간으로
+      계산해 주는 도구다. 한국에는 그런 공개 도구가 없다. 그래서 "시장이 8월 인상을 얼마나 보고 있느냐"는
+      질문에 지금까지는 서베이 기사나 애널리스트의 감으로 답해 왔다.
+    </p>
+    <p>
+      그러나 방법론 자체는 이미 국내에서 공인되어 있다. 한국은행은 2023년 3월 공식 블로그에서 국고채
+      3년물 금리에 반영된 기준금리 기대 경로를 제시하며 <strong>"국고채금리 내재 기대는 AFNS 모형을 활용한
+      자체 추정 결과"</strong>라고 명시했다. 같은 달 국회에 제출한 통화신용정책보고서 참고 I-2에서는 같은
+      모형으로 장단기금리차를 '기대'와 '프리미엄'으로 분해해, 당시 금리차 축소의 75%가 기대 하락에서
+      왔다는 수치까지 보고했다(2022.11~2023.1월, 3년물−기준금리 축소 136bp 중 102bp). 시장가격에서
+      정책 기대를 추출하는 일은 중앙은행 스스로가 국회 보고에 쓰는 표준 절차라는 뜻이다.
+    </p>
+    <p>
+      AFNS(무재정 넬슨-시겔 모형)는 수익률곡선 전체를 다루는 도구라서 "1~2년 뒤 기대 기준금리 수준"을
+      답하는 데 강하다. 다만 "8월 27일 회의에서 올릴 확률"처럼 특정 회의 단위의 질문에는 더 뾰족한 도구가
+      필요하다. 마침 재료가 생겼다. 한국자금중개가 호가하는 <strong>KOFR OIS</strong>(무위험지표금리 KOFR를
+      주고받는 금리스왑)가 2022년부터 일별로 쌓여 있고, 2025년 10월 KRX 중앙청산 개시 이후 시장이 실질적으로
+      형성되고 있다. OIS는 미국 FedWatch가 쓰는 연방기금선물과 정보 구조가 같은 상품이다.
+    </p>
+    <p>
+      그래서 이 리포트는 분석을 두 층으로 나눈다. <strong>단기 구간(다음 1~3회의)은 KOFR OIS 계단함수
+      모형</strong>으로 회의별 확률을 직접 계산하고, <strong>중기 구간(1~2년)은 한국은행의 방법론
+      그대로 — AFNS를 우리 데이터에 직접 추정해</strong> 기대 경로와 기간프리미엄을 분해한다(일별
+      재실행·백테스트에는 같은 계열의 2단계 근사인 DNS-VAR를 병행한다). 한은이 국회에 보고한
+      2022년 말~2023년 초의 분해를 우리 추정이 재현하는지도 §3에서 대조했다. 여기에 통안증권
+      커브·국고 단기 스트립·금투협 서베이, 그리고 실무 관행의 잣대인 CD-IRS 스트립을 교차검증 장치로
+      붙인다. 서로 다른 원리의 여섯 도구가 같은 방향을 가리키면 믿고, 갈라지면 그 폭이 곧 불확실성의
+      크기다.
+    </p>
+  </div>
+</section>
+
+<!-- ================= SECTION 02 ================= -->
+<section class="section">
+  <div class="section-number">02</div>
+  <h2 class="section-title">방법론 — 여섯 개의 렌즈</h2>
+  <p class="section-lead">
+    핵심 아이디어는 하나다. 기준금리는 금통위에서만 바뀌므로, 하루짜리 금리의 미래 경로는 계단 모양이다.
+    계단의 위치(회의 날짜)는 알고 있으니, 시장가격에서 계단의 높이만 역산하면 된다.
+  </p>
+  <div class="section-body">
+
+    <h3>렌즈 ① — KOFR OIS 계단함수: 회의별 확률의 본체</h3>
+    <p>
+      OIS의 고정금리는 계약 기간 동안 매일의 KOFR(하루짜리 무위험금리)를 복리로 평균한 값과 교환된다.
+      즉 <strong>3개월 OIS 금리는 "앞으로 3개월간 하루짜리 금리가 평균 얼마일 것인가"에 대한 시장의
+      합의값</strong>이다. 그런데 하루짜리 금리는 기준금리에 붙어 다니고, 기준금리는 금통위 날짜에만 점프한다.
+      따라서 만기가 다른 OIS 여러 개를 나란히 놓으면 각 회의에서 몇 bp 점프를 반영했는지 풀 수 있다.
+    </p>
+    <div class="equation" data-latex="F(T)\;\approx\;\frac{1}{T}\sum_{s=1}^{T} r(s),\qquad r(s)=r_0+\sum_{k}\Delta_k\,\mathbf{1}\{s\ge m_k\}">
+      <!--SVG:eq1_ois.svg-->
+    </div>
+    <p>
+      <i>F</i>(<i>T</i>)는 만기 <i>T</i>일짜리 OIS 금리, <i>r</i>(<i>s</i>)는 미래 <i>s</i>일째의
+      하루짜리 금리, <i>m</i><sub>k</sub>는 금통위 날짜, Δ<sub>k</sub>가 풀어야 할 회의별 점프
+      폭이다(실제 계산은 복리). 경로의 시작점 <i>r</i><sub>0</sub>는 1주일 OIS 호가로 고정한다. 1주일
+      안에는 회의가 없으므로 이 호가가 곧 현재 수준이기 때문이다. 만기 1개월~1년의 호가 6개에
+      최소자승법을 적용해 Δ<sub>k</sub>를 구하고, 확률로 바꾼다.
+    </p>
+    <div class="equation" data-latex="P_k=\min\!\Big(\max\!\Big(\tfrac{\Delta_k}{25\mathrm{bp}},\,0\Big),\,1\Big)">
+      <!--SVG:eq2_prob.svg-->
+    </div>
+    <p>
+      간단한 예로 확인해 보자. 오늘(8/7) 2개월 OIS 창(8/7~10/7)에는 금통위가 8월 27일 딱 한 번 들어
+      있다. 시작점 2.74%가 두 달 내내 유지된다면 2개월 고정금리는 2.746%(복리 누적을 계약 관행인
+      연 365일 단리로 환산한 값)가 되고, 인상이 확실하다면 창 61일 중 41일이 회의 뒤이므로 여기에
+      25bp × (41/61) ≈ 16.9bp가 더 붙어야 한다. 실제 호가 2.84%는 동결 경로보다 9.4bp 높은 지점에 있다.
+      이 비율 9.4/16.9, 약 56%가 2개월 호가 혼자 말하는 8월 인상확률이고, 호가 6개를 함께 푼 전체
+      적합값이 50%다. 모형은 이 논리를 모든 만기에 동시에 적용할 뿐이다. Exhibit 1이 이 논리를 한
+      장에 담았다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 1</div>
+      <h4 class="exhibit-title">한 장으로 보는 계단함수의 논리 — 2개월 OIS가 8월 확률을 말하는 방식</h4>
+      <div class="exhibit-subtitle">2026-08-07 기준. 하루짜리 금리의 두 갈래 경로와, 그 확률가중 평균으로서의 OIS 호가</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 금색 점선(시장이 실제로 매긴 호가)이 위(인상)·아래(동결) 두 경로의 중간쯤에 있다 — "8월은 반반"을 그림으로 옮기면 이것이다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_concept.svg--></div>
+      <div class="exhibit-source">개념도. 수치는 본문 예시와 동일(복리 환산 반영). Source: FI Strategy Research.</div>
+    </div>
+
+    <div class="explain-box">
+      <div class="eb-label">왜 (통안 1년 − 기준금리) ÷ 25bp로 나누면 안 되나</div>
+      <p>
+        실무에서 흔히 쓰는 지름길은 1년물 금리와 기준금리의 차이를 25bp로 나눠 "선반영 인상 횟수"라
+        부르는 것이다. 이 지표는 방향은 맞지만 크기를 체계적으로 깎아 먹는다. 1년물 금리는 미래 경로의
+        <strong>평균</strong>이기 때문이다. 예를 들어 1년에 걸쳐 4회(100bp) 인상이 고르게 반영되어 있으면
+        1년물은 기준금리보다 100bp가 아니라 약 절반인 50bp만 높다. 지름길로는 "2회 반영"으로 잘못 읽는다.
+        계단함수 모형은 각 회의가 만기 창에서 차지하는 날짜 비중으로 정확히 가중하므로 이 왜곡이 없다.
+      </p>
+    </div>
+
+    <h3>렌즈 ② — 통안증권 스트립: 다른 시장의 같은 질문</h3>
+    <p>
+      같은 계단함수를 통안증권 91일·6개월·1년물에도 적용한다. 통안은 OIS와 투자자 기반과 수급이 다른
+      현물시장이므로 독립적인 2차 의견이 된다. 다만 현물 채권에는 유동성 프리미엄이 섞여 있어, 정책 변경
+      기대가 옅던 구간 — 다음 회의가 동결로 실현되고 1년물이 기준금리 ±12bp 안에 머물던 2015~2024년의
+      710영업일 — 의 중위 스프레드를 먼저 차감했다(91일물 0.8bp, 1년물 3.9bp — 부록 B).
+    </p>
+
+    <h3>렌즈 ③ — 국고 단기 스트립: 가장 깊은 시장의 같은 질문</h3>
+    <p>
+      같은 계단함수의 세 번째 적용 대상은 잔존 1년 이내 국고채(3·6·9개월·1년, 민평)다. 국고는 유동성이
+      가장 깊은 시장이지만, 잔존 1년 안쪽 물건은 대부분 지표물에서 밀려난 경과물이라 통안과 반대
+      방향의 유동성 디스카운트(금리가 높게)를 받는다. 회의별 배분은 민평 커브의 잔물결에 흔들려
+      식별되지 않으므로, 이 렌즈는 연말 누적치만 읽는다(3절 교차검증 표).
+    </p>
+
+    <h3>렌즈 ④ — AFNS·DNS-VAR 분해: 한국은행 방법론의 재현과 실무 근사</h3>
+    <p>
+      렌즈 ①~③이 1년 안쪽의 계단을 세었다면, 네 번째 렌즈는 곡선 전체로 시야를 넓힌다.
+      수익률곡선(월말 무이표, 3개월~10년)을 수준·기울기·곡률 세 요인으로 요약하고, 요인의 시계열
+      동학으로 미래 단기금리의 기대 경로를 추정한다. 곡선의 실제 금리에서 이 기대를 빼면 남는 것이
+      기간프리미엄이다. 이번 개정에서는 이 렌즈를 두 겹으로 만들었다. <strong>본 재현은 한국은행이
+      쓰는 AFNS 그 자체</strong> — Christensen-Diebold-Rudebusch(2011) 무재정 넬슨-시겔을 칼만필터
+      최우추정으로 우리 월말 커브 164개(2013.1~2026.8)에 적합했다(요인 충격은 독립, P-동학은 상관
+      행렬로 자유 — 적합 RMSE 4.2bp, 세부는 부록 E). 병행하는 <strong>DNS-VAR는 같은 계열의 2단계
+      통계 근사</strong>로, 무재정 제약 없이 빠르게 돌릴 수 있어 백테스트와 일별 재실행에 쓴다.
+      이 렌즈는 회의별 확률이 아니라 "시장이 보는 1~2년 뒤 기준금리 수준"을 답하며, 렌즈 ①의 결과가
+      프리미엄에 오염됐는지 가려내는 역할이다. 두 겹이 같은 답을 주는지 자체가 §3의 검증 항목이다.
+    </p>
+    <div class="equation" data-latex="y_t(\tau)=L_t+S_t\,\frac{1-e^{-\lambda\tau}}{\lambda\tau}+C_t\Big(\frac{1-e^{-\lambda\tau}}{\lambda\tau}-e^{-\lambda\tau}\Big)">
+      <!--SVG:eq3_dns.svg-->
+    </div>
+    <p>
+      <i>L</i>, <i>S</i>, <i>C</i>가 각각 수준·기울기·곡률 요인이고, <i>τ</i>는 만기다. 월말 곡선
+      164개(2013.1~2026.8)로 추정했다(<i>λ</i>=0.55, 평균 적합 오차 4.7bp — 세부는 부록 E).
+    </p>
+
+    <h3>렌즈 ⑤ — 금투협 BMSI 서베이: 사람에게 직접 물은 값</h3>
+    <p>
+      다섯 번째 렌즈는 가격이 아니라 사람에게 직접 묻는다.
+      금융투자협회가 금통위 직전 발표하는 채권시장지표(BMSI)에서 채권 종사자 약 100명에게 인상·동결·인하
+      전망을 묻는다(회의와 떨어진 달에는 이 문항이 빠지기도 한다). 시장가격이 아니라 사람의 답이므로
+      프리미엄이 없고, 대신 조사 시점 이후의 뉴스를 반영하지 못한다. 2013년부터의 138회분 발표를 수집해
+      모형의 검증 기준으로 쓴다.
+    </p>
+
+    <h3>렌즈 ⑥ — CD-IRS 스트립: 시장 관행의 잣대</h3>
+    <p>
+      국내 실무에서 "몇 회 인상 반영"을 어림하는 가장 오래된 관행은 CD 연동 IRS를 읽는 것이다.
+      마지막 렌즈는 이 관행을 그대로 형식화한다 — IRS 제로커브 3·6·9개월·1년물에 같은 계단함수를
+      적합하되, 경로의 시작점은 준거금리인 CD 91일물로 잡는다(CD와 기준금리의 웨지는 기간 중 일정하다고
+      가정). 다만 이 렌즈를 맨 뒤에 둔 데에는 이유가 있다. CD는 은행 조달 스프레드가 섞인 고시금리라
+      움직임이 굼뜨고, 스프레드는 정책과 무관하게 요동친다 — 5절의 백테스트에서 이 잣대는 모든 국면에서
+      무정보 기준선보다 나빴다(124회 Brier 0.38 대 0.35). 회의별 배분도 식별되지 않으므로(렌즈 ③과
+      같은 이유), 3절 교차검증 표에서 연말 누적치만 참고로 읽는다.
+    </p>
+  </div>
+</section>
+
+<!-- ================= SECTION 03 ================= -->
+<section class="section">
+  <div class="section-number">03</div>
+  <h2 class="section-title">결과 — 시장이 담아 놓은 것</h2>
+  <p class="section-lead">
+    10월 인상은 사실상 가격에 반영돼 있다(95%). 논쟁은 "첫 인상이 8월이냐 10월이냐"에 걸려 있고,
+    시장은 8월에 정확히 반반(50%)을 걸었다. 여섯 도구를 교차하면 프리미엄을 걷어낸 순수 기대는
+    연말 3.0~3.1%로, OIS의 3.20%는 상단이다.
+  </p>
+  <div class="section-body">
+
+    <aside class="sidebar-stat">
+      <div class="stat-number">3.20%</div>
+      <div class="stat-label">OIS 내재 연말 기준금리<br>(현재 2.75% + 누적 45bp)</div>
+      <div class="stat-source">2026-08-07 장중 호가 기준</div>
+    </aside>
+    <p>
+      오늘 커브에 계단함수를 적합(fit)시킨 결과가 Exhibit 2와 아래 표다. 회의별 숫자는 표가 다 들고
+      있으니, 본문에서는 모양만 읽자. 계단이 가장 크게 뛰는 곳은 10월이고(1회 인상에 거의 근접한
+      95%), 8월은 정확히 반반, 11월은 3분의 1이다. 셋을 쌓으면 연말 내재 기준금리 3.20% — 남은 세
+      회의에 약 1.8회의 인상을 넣어 둔 셈이다. 오른쪽 그림이 보여주듯 이 경로 하나로 1개월부터
+      1년까지 호가 6개가 평균 0.8bp 오차로 설명된다. 시장의 단기 커브가 실제로 "금통위 계단"의
+      논리로 움직이고 있다는 뜻이다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 2</div>
+      <h4 class="exhibit-title">오늘의 OIS 커브가 그리는 기준금리 경로</h4>
+      <div class="exhibit-subtitle">2026-08-07 기준. (a) 회의별 내재 경로와 인상확률, (b) 시장 호가 대 모형 적합</div>
+      <div class="exhibit-read">이 그림에서 볼 것: (a) 계단이 가장 크게 뛰는 곳이 10월이다. (b) 여섯 개의 파란 점(시장 호가)이 금색 선(모형)에 붙어 있는가만 보면 된다 — 붙어 있을수록 이 분해를 믿을 수 있다.</div>
+      <div class="exhibit-chart"><!--SVG:ex3_snapshot.svg--></div>
+      <div class="exhibit-source">Source: 연합인포맥스(한국자금중개 KOFR OIS 호가), 한국은행. 2027년 회의 일정은 미공표로 분기 노드 가정. FI Strategy Research 추정.</div>
+    </div>
+
+    <table class="data">
+      <tr><th>금통위</th><th>내재 인상폭</th><th>25bp 인상확률</th><th>회의 후 내재 기준금리</th></tr>
+      <tr class="hl"><td>2026-08-27</td><td>+12.5bp</td><td>50%</td><td>2.88%</td></tr>
+      <tr><td>2026-10-22</td><td>+23.8bp</td><td>95%</td><td>3.11%</td></tr>
+      <tr><td>2026-11-26</td><td>+9.0bp</td><td>36%</td><td>3.20%</td></tr>
+      <tr><td>2027-01(가정)</td><td>+17.8bp</td><td>71%</td><td>3.38%</td></tr>
+      <tr><td>2027-04(가정)</td><td>+16.1bp</td><td>65%</td><td>3.54%</td></tr>
+      <tr><td>2027-07(가정)</td><td>+11.1bp</td><td>45%</td><td>3.65%</td></tr>
+    </table>
+    <p class="tbl-note">2027년 행은 일정 미공표에 따른 분기 노드 가정치이며, 뒤에서 설명하는 기간프리미엄이 섞여 있어 액면 그대로의 확률로 읽으면 안 된다. 내재 인상폭이 25bp를 넘는 경우 확률은 100%로 절단하고, 초과분은 50bp 인상 가능성 또는 소폭의 프리미엄으로 읽는다(6절 참조). Source: FI Strategy Research 추정.</p>
+
+    <p>
+      표를 처음 보는 독자를 위해 첫 행 하나만 소리 내어 읽어 보면 이렇다. "시장은 8월 27일 회의에
+      평균 +12.5bp의 인상을 가격에 넣어 두었다. 인상하면 +25bp이므로, 이것은 인상 확률 50%와
+      같은 말이다. 그 50%가 현실이 되면 기준금리는 2.75%에서 3.00%가 되지만, 시장이 매기는 '확률을
+      반영한 평균값'은 2.88%다." 아래 행으로 갈수록 이 평균값이 쌓여 연말 3.20%에 이른다 — 요약의
+      헤드라인 숫자들은 전부 이 표 하나에서 나온 것이다.
+    </p>
+
+    <h3>확률은 어떻게 쌓여 왔나 — 그리고 어디까지 믿을 것인가</h3>
+    <p>
+      Exhibit 3은 이 모형의 강점과 약점을 함께 보여준다. 왼쪽이 잘 식별되는 양, 즉 연말까지의
+      누적 반영이다. 매파적이었던 5월 28일 금통위(결정은 동결, 회견이 예상 밖으로 강경)를 지나며
+      내재 연말 기준금리가 이틀에 걸쳐 13bp 뛰었고(3.03→3.16%), 6월의 오버슈팅과 7월의 되돌림(고점
+      3.45%, 저점 3.11%)을 거쳐 지금 3.20%에 서 있다. 5월 말의 재가격이 수준의 중심을 정했고,
+      그 뒤의 등락은 결국 그 언저리로 회귀한 셈이다.
+    </p>
+    <p>
+      오른쪽은 그 누적을 회의별로 쪼갠 배분이다. 이 배분은 하루 단위로 크게 출렁인다.
+      8월 확률은 7월 말 100%까지 치솟았다가 열흘 만에 56%로 되돌아왔다. 이웃한 두 회의(8월과
+      10월)의 몫을 나누는 일은 만기 격자가 성긴 구간에서 원리적으로 노이즈가 크기 때문이다. 그래서
+      읽는 규율은 명확하다. <strong>누적치는 수준 그대로 믿고, 회의별 배분은 최근 수렴값(50 / 95 /
+      36%)과 변화 방향으로 읽는다.</strong>
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 3</div>
+      <h4 class="exhibit-title">누적 반영은 완만하게, 회의별 배분은 크게 움직인다</h4>
+      <div class="exhibit-subtitle">(a) 내재 연말 기준금리(2026.5.4~8.7), (b) 회의별 인상확률 배분(7월 이후)</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 왼쪽 선은 5월 말에 한 번 크게 뛰고 이후 큰 흐름이 유지된다. 오른쪽 세 선은 서로 몫을 주고받으며 출렁인다 — 왼쪽(합계)은 믿고, 오른쪽(배분)은 참고만 하라는 뜻이다.</div>
+      <div class="exhibit-chart"><!--SVG:ex2_target_meetings.svg--></div>
+      <div class="exhibit-source">Source: 연합인포맥스, 한국은행. FI Strategy Research 추정.</div>
+    </div>
+
+    <h3>모형은 믿을 만한가 — 서베이·실제 결정과의 대조</h3>
+    <p>
+      Exhibit 4가 이 리포트에서 가장 중요한 그림이다. 모형이 계산한 "다음 회의 인상확률"(선)을 금투협
+      BMSI 서베이의 인상 응답 비율(다이아몬드)과 실제 금통위 결정(상단 마커) 위에 겹쳤다.
+      세 검증 지점을 모두 통과했다. 4월 서베이 6% 대 모형 30% — 동결. 5월 서베이 1% 대 모형 7% —
+      동결. 그리고 7월 14일 서베이 66% 대 모형 74% — 이틀 뒤 실제 인상. 서로 독립적인 두 잣대(사람의
+      답과 시장의 가격)가 같은 방향을 가리켰고, 현실이 그것을 확인해 줬다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 4</div>
+      <h4 class="exhibit-title">다음 금통위 인상확률 — 모형, 서베이, 실제 결정</h4>
+      <div class="exhibit-subtitle">2026년 1월 ~ 8월 7일. 선: 모형 내재확률, 다이아몬드: BMSI 인상 응답, 상단 마커: 금통위 결정</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 금색 다이아몬드(사람의 답)와 파란 선(시장의 가격)이 4월·5월에는 둘 다 낮은 쪽에, 7월에는 둘 다 인상 쪽에 서 있다 — 세 번 모두 판정이 일치했고, 7월에는 실제 인상(▲)으로 이어졌다.</div>
+      <div class="exhibit-chart"><!--SVG:ex1_next_meeting.svg--></div>
+      <div class="exhibit-source">Source: 연합인포맥스, 금융투자협회(BMSI), 한국은행. FI Strategy Research 추정.</div>
+    </div>
+
+    <div class="key-insight">
+      <div class="ki-label">KEY INSIGHT</div>
+      <p>
+        8월 확률 50%의 해석: 시장은 "8월 선제 인상"과 "8월 동결 + 점도표 예고 + 10월 인상" 두
+        시나리오를 정확히 반반으로 들고 있다. 따라서 8월 27일의 진짜 변수는 금리 결정 자체보다 함께
+        발표되는 K-점도표다. 점도표가 연내 두 번째 인상까지 시사하면 11월 확률 36%가 급히 재가격될
+        것이다.
+      </p>
+    </div>
+
+    <h3>교차검증 — 여섯 렌즈는 얼마나 일치하나</h3>
+    <p>
+      연말 기준금리로 환산해 여섯 렌즈를 나란히 놓으면 아래와 같다. 표는 두 번째 열만 세로로 훑으면
+      된다 — 가격·모형 다섯 도구가 2.96%와 3.34% 사이에 퍼져 있고(서베이는 8월분 미발표), 그 순서 자체가
+      각 시장의 프리미엄 구조를 말해 준다. 통안 스트립은 가장 온건하다(연말 0.8회). 통안은 RP 담보와
+      은행 규제자산 수요 때문에 원래부터 OIS보다 낮은 금리에 거래되는 채권이라, 이 온건함의 절반 이상은
+      "인상을 덜 믿는 태도"가 아니라 상시적인 강세 프리미엄이다 — 셈의 전체는 5절에서 보인다. v7
+      개정에서 추가한 <strong>국고 단기 스트립(렌즈 ③)은 반대로 가장 매파적이다(연말 3.27%, 약 2.1회)</strong>. 잔존 1년
+      안쪽 국고는 대부분 지표물에서 밀려난 경과물이라 통안과 반대 방향의 유동성 디스카운트(금리가
+      높게)를 받기 때문으로, 상단이 다소 부풀려져 있다. 이번 개정에서 추가한 <strong>관행 잣대
+      CD-IRS 스트립(렌즈 ⑥)은 그보다도 위인 3.34%(약 2.4회)</strong>를 가리키는데, 여기에는 인상
+      기대만이 아니라 은행 조달 스프레드(현재 CD-기준금리 웨지 18bp)의 유지·확대 기대까지 실려 있어
+      여섯 렌즈 중 상단 왜곡이 가장 크다. 통안(하단 왜곡)과 국고·IRS(상단 왜곡)가
+      OIS(3.20%)를 사이에 두는 배열 자체가 프리미엄 구조의 증거다. 프리미엄을 제거한 기대는
+      <strong>한은 방법론을 재현한 AFNS로 연말 3.07%, 2단계 근사인 DNS-VAR로 3.01%</strong> — 두 겹이
+      사실상 같은 답을 준다(아래 소절). 종합하면 <strong>순수한 기대는 연말 3.0~3.1%(상단에 무게),
+      OIS의 3.20%는 기대에 약간의 프리미엄이 얹힌 상단</strong>으로 읽는 것이 균형 잡힌 해석이다.
+    </p>
+
+    <table class="data">
+      <tr><th>렌즈</th><th>연말 내재/기대 기준금리</th><th>남은 3회의 환산 인상 횟수</th><th>성격</th></tr>
+      <tr><td>① KOFR OIS 계단함수</td><td>3.20%</td><td>1.8회</td><td>가격(프리미엄 포함)</td></tr>
+      <tr><td>② 통안 스트립</td><td>2.96%</td><td>0.8회</td><td>가격(강세 프리미엄으로 하단 왜곡)</td></tr>
+      <tr><td>③ 국고 단기 스트립</td><td>3.27%</td><td>2.1회</td><td>가격(경과물 디스카운트로 상단 왜곡)</td></tr>
+      <tr><td>④ AFNS 기대 경로 (한은 방법론 재현)</td><td>3.07%</td><td>1.3회</td><td>기대(무재정·프리미엄 제거)</td></tr>
+      <tr><td>④′ DNS-VAR 기대 경로 (2단계 근사)</td><td>3.01%</td><td>1.0회</td><td>기대(프리미엄 제거)</td></tr>
+      <tr><td>⑤ BMSI 서베이</td><td>8월분 미발표(8월 말 공표 예정)</td><td>—</td><td>사람의 전망</td></tr>
+      <tr><td>⑥ CD-IRS 스트립 (관행 잣대)</td><td>3.34%</td><td>2.4회</td><td>가격(CD 조달 스프레드로 상단 왜곡 최대 — 참고용)</td></tr>
+    </table>
+    <p class="tbl-note">②·③·⑥의 회의별 배분은 시작점 차이와 커브 모양에 민감해 누적치만 제시한다(③·⑥은 배분이 식별되지 않을 정도로 진동 — 부록 F의 m9·m11 산출물 참조). ⑥은 IRS 커브 최근일인 2026-08-06 종가 기준. Source: FI Strategy Research 추정.</p>
+
+    <p>
+      렌즈 ④의 분해를 만기별로 펼치면 Exhibit 5다. 만기마다 실제 금리(파란 점)와 기대 단기금리
+      평균(금색 점)의 간격이 곧 기간프리미엄이다. 1년 이내 구간은 간격이 작고, 2~3년으로 갈수록
+      +41~+71bp로 벌어진다. "짧은 만기의 확률은 쓸 만하고, 긴 시계일수록 프리미엄을 걷어내고 읽어야
+      한다"는 이 리포트의 규율을 그림 하나로 요약한 셈이다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 5</div>
+      <h4 class="exhibit-title">만기별 분해 — 실제 금리와 기대의 간격이 기간프리미엄이다</h4>
+      <div class="exhibit-subtitle">2026년 8월 기준, DNS-VAR 분해. 통안·국고 민평 무이표 기준</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 만기가 길수록 파란 점(실제 금리)과 금색 점(기대)의 간격 — 기간프리미엄 — 이 커진다. 1년 안쪽은 −16~+22bp로 작고(3개월은 기대가 오히려 위), 2~3년에서 +41~+71bp로 커진다. 단기 확률은 믿을 만하고 먼 확률은 에누리해야 하는 이유다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_decomposition.svg--></div>
+      <div class="exhibit-source">Source: 금융투자협회 채권정보센터(민평), 한국은행. FI Strategy Research 추정.</div>
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 6</div>
+      <h4 class="exhibit-title">OIS 내재 경로 대 DNS-VAR 기대 경로</h4>
+      <div class="exhibit-subtitle">실제 기준금리(2025~), OIS 계단 경로, 프리미엄을 제거한 기대 경로의 비교</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 파란 계단(OIS가 말하는 경로)과 금색 점선(프리미엄을 걷어낸 기대)의 높이 차이다. 올가을까지는 거의 겹치다가 연말 20bp 안팎, 2027년으로 갈수록 60bp 이상 벌어진다 — 벌어지는 만큼이 "먼 확률은 부풀려져 있다"의 크기다.</div>
+      <div class="exhibit-chart"><!--SVG:ex4_expected_paths.svg--></div>
+      <div class="exhibit-source">Source: 연합인포맥스, 금융투자협회 채권정보센터(민평), 한국은행. FI Strategy Research 추정.</div>
+    </div>
+
+    <h3>한국은행 방법론의 재현 — AFNS가 말하는 순수 기대</h3>
+    <p>
+      "한은과 같은 계열"이라는 말에 기대지 않도록, 이번 개정에서는 <strong>한국은행이 명시한 그
+      방법론(AFNS)을 우리 데이터에 직접 추정했다.</strong> Christensen-Diebold-Rudebusch(2011)의
+      무재정 넬슨-시겔을 칼만필터 최우추정으로 월말 무이표 커브 164개(2013.1~2026.8, 만기
+      3개월~10년)에 적합한 것으로, 곡선 적합 오차는 4.2bp다(사양·모수는 부록 E). 부산물 하나가
+      먼저 눈에 띈다 — AFNS가 DNS에 더하는 무재정 보정항(볼록성 조정)은 한국 표본에서 3년 0.9bp,
+      10년 7.5bp로 작다. 즉 <strong>2년 안쪽 구간에서는 2단계 근사(DNS-VAR)가 무재정 모형을 몇 bp
+      안에서 대신할 수 있다는 것을 무재정 모형 스스로 확인해 준 셈</strong>이다.
+    </p>
+    <p>
+      재현의 시금석은 한국은행이 국회에 보고한 바로 그 분해다. 통화신용정책보고서(2023.3) 참고
+      I-2는 2022.11~2023.1월중 국고 3년-기준금리 격차 축소 136bp 가운데 102bp가 순기대단기금리
+      하락(이 중 52bp가 실현된 인상을 뺀 순수 기대 하락 — 원문 각주 7)이라고 보고했다. 같은 창을
+      우리 AFNS로 분해하면 — 격차 축소 <strong>137bp(한은 136bp), 순기대 몫 115bp(한은 102bp),
+      순수 기대 65bp(한은 52bp)</strong>. 표본과 만기 구성이 다른 독립 추정임을 감안하면, 방향과
+      규모 모두에서 한은의 공표 분해가 재현된다. (우리 상태·모수는 전체 표본으로 추정한 사후
+      분해이며, 월말 무이표 기준이라는 차이는 남는다.)
+    </p>
+    <p>
+      재현이 성공했다는 말은 이 방법론이 만능이라는 뜻이 아니다 — 오히려 직접 돌려 보니 <strong>한은
+      방법론이 어디까지 답하고 어디서 멈추는지</strong>가 정확해졌다. 첫째, AFNS는 회의를 모른다.
+      입력이 월말 커브이고 상태가 수준·기울기·곡률이라는 매끄러운 요인이라, 금통위 날짜라는 제도
+      정보가 모형 어디에도 없다. 산출물은 부드러운 기대 "경로"일 뿐, "8월이냐 10월이냐"라는 배분
+      질문에는 원리적으로 답할 수 없다. 둘째, 해상도가 거칠다. 합성 데이터 실험 기준 연말 기대의
+      추정 잡음이 ±0.1~0.2%p다 — 25bp 격자 한 칸이 통째로 잡음 안에 들어가므로, 이 도구로 회의별
+      확률을 만드는 것은 애초에 무리다. 셋째, 느리다. 월말 데이터로 전체 표본을 다시 추정하는
+      구조라, 금통위 다음 날 시장이 무엇을 소화했는지 읽는 용도가 아니다. 넷째, 기대와 프리미엄의
+      경계가 모형 사양에 의존한다 — 요인 동학의 상관을 허용하느냐만 바꿔도 연말 기대가 2.77%에서
+      3.07%로 30bp 움직였다(부록 E). 이 네 가지가 정확히 OIS 계단함수가 메우는 자리다. 계단함수는
+      회의 날짜를 모형 안에 박아 넣어 배분을 식별하고, 일별 호가로 다음 날 아침 재계산되며, 1년
+      안쪽에서는 프리미엄이 작아 모형 의존도 얕다. 거꾸로 계단함수는 1년 너머를 보지 못하고
+      프리미엄을 스스로 걷어내지 못하는데, 그 자리는 AFNS가 맡는다. 두 방법은 경쟁자가 아니라
+      <strong>시계(時界)로 역할을 나눈 한 벌</strong>이다.
+    </p>
+    <table class="data">
+      <tr><th></th><th>AFNS (한은 방법론)</th><th>KOFR OIS 계단함수 (본 리포트)</th></tr>
+      <tr><td>답하는 질문</td><td>1~2년 뒤 기대 수준과 기간프리미엄</td><td>다음 1~3회의의 회의별 확률</td></tr>
+      <tr><td>회의 일정 정보</td><td>없음 — 매끄러운 요인 경로</td><td>모형에 내장 — 계단의 위치</td></tr>
+      <tr><td>데이터 주기</td><td>월말 커브, 전체 표본 재추정</td><td>일별 호가, 다음 날 재계산</td></tr>
+      <tr><td>해상도</td><td>연말 기대 ±0.1~0.2%p (합성 실험, 부록 E)</td><td>호가 1틱 민감도 수 bp (확률 대역은 부록 B)</td></tr>
+      <tr><td>프리미엄 처리</td><td>모형이 분해 (사양 의존 30bp — 부록 E)</td><td>1년 안쪽 무보정(작음), 장기는 못 다룸</td></tr>
+    </table>
+    <p class="tbl-note">역할 분담 — 한은 방법론이 멈추는 곳(회의 단위·적시성)에서 계단함수가 시작되고, 계단함수가 멈추는 곳(장기 시계·프리미엄 분리)에서 AFNS가 시작된다. Source: FI Strategy Research.</p>
+    <p>
+      그래서 오늘의 질문에 대한 답은 이렇다. Exhibit 7의 왼쪽 — 프리미엄을 걷어낸 기대 기준금리
+      경로는 AFNS와 DNS-VAR가 거의 포개진다(연말 시점 기대 단기금리 차이는 1bp 남짓 — 헤드라인
+      3.07% 대 3.01%의 차이 대부분은 모형이 아니라 시작점 웨지 처리에서 온다). 그림은 앞쪽
+      10개월만 보인다 — 그 너머의 경로는 오늘의 시장 정보가 아니라 모형이 표본에서 배운 평균회귀
+      성질(장기 균형 약 2.3%를 향한 감쇠)이 지배하므로, "몇 년 뒤 인하"로 읽으면 과잉 해석이
+      된다(부록 E). 합성 데이터 복원
+      실험 기준으로 이 계열 방법의 연말 기대 추정 잡음 자체가 ±0.1~0.2%p이므로(부록 E), 두 수치를
+      가르는 것은 의미가 없고 <strong>"순수 기대는 3.0~3.1% 부근"이라는 구간이 이 방법이 지원하는
+      해상도</strong>다. 오른쪽 — 기간프리미엄은 1년 이내 ±20bp 안에서 두 모형이 일치하고
+      (3개월의 −16bp는 시장이 요구한 음의 보상이 아니라 모형의 시작점 웨지와 짧은 끝 적합 잔차가
+      프리미엄 항목으로 떨어진 것이라 0 부근으로 읽는다 — 초단기 채권의 담보 수요가 만드는 소폭의
+      강세까지 감안하면 더욱 그렇다), 2~3년에서 AFNS가 다소 낮게(3년 51bp 대 71bp), 10년에서는
+      140bp까지 커진다. 어느 쪽으로 읽어도
+      결론은 같다: <strong>OIS의 3.20%는 기대 3.0~3.1%에 프리미엄이 얹힌 상단이고, AFNS는 그것을
+      한은의 잣대로 재확인해 준다.</strong>
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 7</div>
+      <h4 class="exhibit-title">한국은행 방법론(AFNS)의 재현 — 기대 경로와 기간프리미엄</h4>
+      <div class="exhibit-subtitle">2026-08-07 기준. (a) 기대 기준금리 경로 앞 10개월: OIS 내재 vs AFNS vs DNS-VAR, (b) 만기별 기간프리미엄</div>
+      <div class="exhibit-read">이 그림에서 볼 것: (a) 파란 선(AFNS)과 금색 점선(DNS-VAR)이 거의 포개져 있고, 회색 계단(OIS)만 그 위에 떠 있다 — "프리미엄을 걷어내면 두 방법 모두 3.0~3.1%"의 그림판이다. 10개월 너머는 일부러 자르고 보이지 않는다(그 구간은 모형의 평균회귀 성질이 지배 — 본문). (b) 1년 안쪽에서는 두 모형의 프리미엄이 일치한다 — 이 리포트가 쓰는 단기 확률 구간에서는 어느 모형을 써도 같은 답이다. 3개월의 음수는 경제적 프리미엄이 아니라 시작점 웨지·짧은 끝 적합 잔차이니 0 부근으로 읽는다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_afns.svg--></div>
+      <div class="exhibit-source">Source: 금융투자협회 채권정보센터(민평), 한국은행. AFNS: CDR(2011) 사양(요인 충격 독립·P-동학 상관)의 칼만 ML. FI Strategy Research 추정.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 04 ================= -->
+<section class="section">
+  <div class="section-number">04</div>
+  <h2 class="section-title">8월에 올리면 무엇이 움직이나 — 충격 분석</h2>
+  <p class="section-lead">
+    시장을 움직이는 것은 인상 자체가 아니라 인상 중 미리 가격에 없던 부분이다.
+    50%가 이미 반영됐으므로, 8월의 유효 충격은 인상이든 동결이든 ±12.5bp로 대칭이다.
+  </p>
+  <div class="section-body">
+    <p>
+      이 절의 논리는 이벤트 스터디의 고전(Kuttner 2001)을 따른다. 발표 직전까지 확률 <i>P</i>가
+      가격에 있었다면, 인상 발표의 서프라이즈는 (1−<i>P</i>)×25bp, 동결 발표의 서프라이즈는
+      −<i>P</i>×25bp다. 오늘 <i>P</i>=50%이므로 <strong>인상 시 +12.4bp, 동결 시 −12.6bp</strong> —
+      드물게도 두 방향의 충격이 거의 대칭인 회의다. 이 단기 충격이 만기별로 얼마나 번지는지를,
+      계열이 다른 <strong>두 개의 방법론 트랙</strong>으로 추정했다. (1) DNS 계열 — 이벤트 회귀
+      베타와 기울기충격 전파로 발표 당일의 반응을 잰다. (2) PCA 계열 — 부서에서 병행한 독립
+      재추정으로, 같은 당일 반응을 다른 요인 분해와 다른 서프라이즈 자로 검증하고, 이 리포트가
+      다루지 않던 1주·1개월의 시간 전개까지 연장한다. 두 트랙이 같은 그림을 주는지가 이 절의
+      검증 장치다.
+    </p>
+
+    <h3>충격 전파 (1) — DNS 계열: 이벤트 베타와 기울기충격 전파</h3>
+    <p>
+      <strong>첫째는 실증이다.</strong> 2011년 이후 금통위 150회 중 발표일에 통안 91일물이 1bp 이상 움직인
+      67회를 골라, 그날의 만기별 금리 변화를 단기 서프라이즈에 회귀했다. <strong>둘째는 구조 모형이다.</strong>
+      보험금융연구에 실린 태현욱 외(2019)의 접근 — 금리 충격을 DNS 요인의 충격으로 번역해 만기별로
+      전파 — 을 원용했다. 인상 서프라이즈는 커브의 짧은 끝만 밀어 올리고 긴 끝은 거의 건드리지 않는
+      충격이므로, 2절의 세 요인 중 기울기(<i>S</i>)의 충격으로 번역하는 것이 자연스럽다(이 매핑은
+      이 리포트의 설계다). 그 충격이 만기 <i>τ</i>에 얼마나 실리는지는 아래 식의 만기별
+      계수(적재함수)가 정한다.
+    </p>
+    <div class="equation" data-latex="\Delta y(\tau)=\Delta S\cdot\frac{1-e^{-\lambda\tau}}{\lambda\tau},\qquad \lambda=0.55">
+      <!--SVG:eq4_shock.svg-->
+    </div>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 8</div>
+      <h4 class="exhibit-title">단기 서프라이즈 1bp의 만기별 파급 — 실증 대 구조 모형</h4>
+      <div class="exhibit-subtitle">막대: 금통위 이벤트 회귀 베타(2011~2026, 유효 67회) 대 DNS 기울기충격 전파(λ=0.55)</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 단기에서 장기로 가며 반응이 대체로 줄어들되, 파란 막대(실증 베타)는 3년 이후 0.4 안팎에서 평평하고 금색 막대(DNS 전파)는 계속 줄어든다. 5년에서 실증이 DNS를 앞지르기 시작해(5.8 대 4.5bp) 10년부터는 두 배를 넘는다(5.3 대 2.4bp) — 장기 구간 추정이 그만큼 불확실하다는 경고다(국고 2년의 움푹 꺼짐은 짧은 표본 탓이니 추세로 읽지 말 것).</div>
+      <div class="exhibit-chart"><!--SVG:ex5_passthrough.svg--></div>
+      <div class="exhibit-source">Source: 한국은행 ECOS, 금융투자협회 채권정보센터. 방법론: 태현욱·노건엽·김병준·장봉규·박경국(2019), Kuttner(2001). FI Strategy Research 추정.</div>
+    </div>
+
+    <p>
+      두 방법의 간격은 장기에서만 나는 것이 아니다. DNS 전파는 6개월~2년 배(belly) 구간에서
+      실증보다 체계적으로 높고(6개월 11.7 대 8.8bp), 5년을 지나며 실증 아래로 떨어진다 — 매끄러운
+      적재함수 하나로 배와 장기를 동시에 맞출 수 없기 때문이다. 장기 쪽 간격이 특히 크다.
+      순수한 기울기 충격(DNS)은 10년물에 2.4bp만 전달하지만, 실증 베타는 5.3bp를 보인다. 과거의 인상 서프라이즈가 단순한 단기 충격이 아니라
+      "긴축 사이클 전체에 대한 재평가"(수준 요인 이동)를 동반했기 때문이다. 8월 회의는 인상 사이클
+      초입인 데다 K-점도표가 함께 나오는 회의라, 경로 재평가가 실리기 쉬운 쪽 — 즉 실증 베타 쪽에
+      무게를 둔다.
+    </p>
+
+    <p>
+      아래 표는 그 결과다. 읽는 법은 간단하다 — 자기 포트폴리오의 주력 만기 행을 찾아, 인상 시
+      기둥과 동결 시 기둥의 두 숫자를 비교하면 그 만기가 8월 27일 하루에 노출된 위험의 폭이다.
+      두 추정 방법(실증 베타, DNS 전파)이 다른 값을 주는 만기는 그만큼 불확실성이 크다는 뜻이다.
+    </p>
+
+    <table class="data">
+      <tr><th>만기</th><th colspan="2">인상 시 (+12.4bp 서프라이즈)</th><th colspan="2">동결 시 (−12.6bp 서프라이즈)</th></tr>
+      <tr><th></th><th>실증 베타</th><th>DNS 전파</th><th>실증 베타</th><th>DNS 전파</th></tr>
+      <tr><td>통안 3개월</td><td>+12.4bp</td><td>+12.4bp</td><td class="neg">-12.6bp</td><td class="neg">-12.6bp</td></tr>
+      <tr><td>통안 6개월</td><td>+8.8bp</td><td>+11.7bp</td><td class="neg">-8.8bp</td><td class="neg">-11.7bp</td></tr>
+      <tr><td>통안 1년</td><td>+6.3bp</td><td>+10.2bp</td><td class="neg">-6.4bp</td><td class="neg">-10.3bp</td></tr>
+      <tr><td>국고 2년*</td><td>+3.2bp</td><td>+8.1bp</td><td class="neg">-3.2bp</td><td class="neg">-8.1bp</td></tr>
+      <tr class="hl"><td>국고 3년</td><td>+5.0bp</td><td>+6.5bp</td><td class="neg">-5.0bp</td><td class="neg">-6.6bp</td></tr>
+      <tr><td>국고 5년</td><td>+5.8bp</td><td>+4.5bp</td><td class="neg">-5.9bp</td><td class="neg">-4.6bp</td></tr>
+      <tr class="hl"><td>국고 10년</td><td>+5.3bp</td><td>+2.4bp</td><td class="neg">-5.3bp</td><td class="neg">-2.4bp</td></tr>
+      <tr><td>국고 20년</td><td>+5.4bp</td><td>+1.2bp</td><td class="neg">-5.4bp</td><td class="neg">-1.2bp</td></tr>
+      <tr><td>국고 30년</td><td>+3.4bp</td><td>+0.8bp</td><td class="neg">-3.5bp</td><td class="neg">-0.8bp</td></tr>
+    </table>
+    <p class="tbl-note">* 국고 2년은 표본이 짧아(2013~) 베타의 신뢰도가 낮다. 실증 베타는 일중이 아닌 일간 변화 기준이므로 같은 날 기자회견·점도표 효과가 일부 섞여 있을 수 있고, 서프라이즈는 통안 91일물 일간 변화를 대용치로 쓴 값이다. DNS 전파는 3개월 만기의 반응이 서프라이즈와 일치하도록 기울기 충격을 정규화했다. Source: FI Strategy Research 추정.</p>
+
+    <p>
+      같은 표를 커브 모양으로 그리면 Exhibit 9이다. 위쪽 선이 인상 시, 아래쪽 선이 동결 시 발표
+      당일의 예상 반응이고, 두 선 사이의 폭이 8월 27일 하루가 안고 있는 금리 변동의 범위다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 9</div>
+      <h4 class="exhibit-title">8월 27일, 두 갈래의 커브 — 인상 시와 동결 시의 만기별 예상 반응</h4>
+      <div class="exhibit-subtitle">실증 베타 × 서프라이즈(인상 +12.4bp / 동결 −12.6bp), 발표 당일 기준</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 위 선(인상 시)과 아래 선(동결 시) 사이의 세로 폭이다. 폭이 단기 구간에서 가장 넓고 위쪽으로 치우쳐 있다 — 8월의 리스크가 단기물에, 그리고 인상 방향으로 쏠려 있다는 뜻이다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_scenario_curve.svg--></div>
+      <div class="exhibit-source">Source: 한국은행 ECOS, 금융투자협회 채권정보센터. FI Strategy Research 추정.</div>
+    </div>
+
+    <div class="key-insight">
+      <div class="ki-label">KEY INSIGHT</div>
+      <p>
+        확률가중 기대값은 0에 가깝도록 가격이 이미 맞춰져 있고, 이번에는 조건부 손익도 거의
+        대칭이다(단기물 ±9~13bp). 즉 8월 27일의 단기물 포지션은 방향 베팅이 아니라 변동성
+        노출이다 — 어느 쪽으로든 12bp 안팎이 움직인다. 3년 이상 구간은 발표 자체(±3~7bp)보다
+        점도표와 기자회견이 만드는 경로 재평가가 지배할 것이다.
+      </p>
+    </div>
+
+    <p>
+      이 표의 성격을 분명히 해 둔다. 과거 평균 통과계수에 기반한 <strong>위험 시나리오 산술</strong>이지
+      당일 변동의 예측치가 아니다. 같은 틀을 과거 회의에 적용해 국면별로 채점한 결과가 5절의 세 번째
+      질문인데, 결론부터 말하면 단기물의 방향 정보는 국면을 가리지 않고 유효했지만 장기물은 국면에
+      따라 통하기도(완화·인하기), 완전히 무너지기도(급속 인상기) 했다. 표의 장기물 숫자는 국면들의
+      평균이므로 점 추정이 아니라 폭넓은 범위로 읽어야 한다.
+    </p>
+
+    <h3>충격 전파 (2) — PCA 계열: 요인 구조, 프로파일 검증, 그리고 그 후 한 달</h3>
+    <p>
+      두 번째 트랙은 부서에서 병행한 <strong>PCA 재추정</strong>이다. 위 산술이 방법 선택에 얼마나
+      기대는지 재는 독립 검증이자, 당일 너머로 시야를 넓히는 연장이다. 설계가 트랙 (1)과 체계적으로
+      다르다 — 요인을 모형(DNS 적재함수)이 아니라 데이터에서 뽑는다. 국고 제로커브 15개
+      만기(3개월~30년)의 일별 변화에 상관 PCA를 걸면 수준·기울기·곡률 세 주성분이 나오고(설명력
+      75.6%+11.5%+5.9% = 93%), 각 거래일의 요인 점수를 금통위 전후로 누적해 서프라이즈에 원점
+      회귀한다. 서프라이즈도 시장가격이 아니라 <strong>결정일 전일 컨센서스(폴 평균) 대비
+      결정값</strong>으로 재고, |서프라이즈| 5bp 이상인 금통위 24회(2012~2025)만 쓴다. +25bp
+      시나리오를 요인 점수로 예측한 뒤 적재함수로 만기별 bp에 되돌리는 구조다. Exhibit 10(a)가
+      그 적재 구조다 — 수준 요인은 전 만기를 고르게(1점당 0.2~1.2bp), 기울기 요인은 단기와 장기를
+      반대 방향으로, 곡률은 배(belly)를 미는, DNS와 같은 문법이 데이터에서 저절로 나온다.
+      서프라이즈의 자가 다르므로 절대 크기는 직접 비교할 수 없다 — 컨센서스 자로는 25bp
+      서프라이즈에 3개월물이 +7.9bp만 반응하는데, 부분 선반영과 측정 잡음이 통과율을 누르기
+      때문이다. 그래서 트랙 간 비교는 <strong>프로파일(3개월물=1 정규화)</strong>로 한다 —
+      Exhibit 10(b)와 아래 표가 그 대조다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 10</div>
+      <h4 class="exhibit-title">PCA 재추정의 구조 — 요인별 전파와 당일 프로파일 대조</h4>
+      <div class="exhibit-subtitle">(a) 요인 점수 1점당 만기별 반응(bp), 상관 PCA·국고 제로커브 15개 만기 (b) 발표 당일 반응 프로파일(3개월물=1): 실증 베타 vs DNS 전파 vs PCA 재추정</div>
+      <div class="exhibit-read">이 그림에서 볼 것: (b)에서 파랑(실증)과 청록(PCA) — 데이터로 잰 두 잣대 — 가 1년 이내에서 거의 겹치고, 금색(DNS)만 6개월~2년 배 구간에서 홀로 높다(적재함수의 형태가 만든 값). 3년 너머에서는 청록이 파랑과 금색 사이에 앉는다 — 장기 서술("순수 기울기 충격보다 크고 실증 평균보다 작다")을 제3의 방법이 지지한다는 뜻이다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_pca_structure.svg--></div>
+      <div class="exhibit-source">Source: 부서 병행 PCA 분석(2026-08, rawdata\PCA), FI Strategy Research(실증 베타·DNS 전파). 서프라이즈 자 — PCA: 전일 컨센서스(폴 평균), 실증 베타: 통안91 일간 변화.</div>
+    </div>
+    <table class="data">
+      <tr><th>만기</th><th>실증 베타 (본 리포트)</th><th>DNS 전파 (본 리포트)</th><th>PCA 재추정 (병행)</th></tr>
+      <tr><td>6개월</td><td>0.70</td><td>0.94</td><td>0.65</td></tr>
+      <tr><td>1년</td><td>0.51</td><td>0.82</td><td>0.56</td></tr>
+      <tr><td>2년</td><td>0.26</td><td>0.65</td><td>0.33</td></tr>
+      <tr class="hl"><td>3년</td><td>0.40</td><td>0.52</td><td>0.28</td></tr>
+      <tr><td>5년</td><td>0.47</td><td>0.36</td><td>0.29</td></tr>
+      <tr class="hl"><td>10년</td><td>0.43</td><td>0.19</td><td>0.27</td></tr>
+      <tr><td>20년</td><td>0.43</td><td>0.10</td><td>0.33</td></tr>
+      <tr><td>30년</td><td>0.28</td><td>0.07</td><td>0.31</td></tr>
+    </table>
+    <p class="tbl-note">발표 당일 반응의 만기 프로파일(3개월물=1). 방법 대조 — 실증 베타: 통안91 일간 변화를 서프라이즈 자로 쓴 이벤트 회귀(67회, 2011~2026) / DNS 전파: 기울기 충격의 적재함수(구조 모형) / PCA 재추정: 전일 컨센서스 자·상관 PCA 요인 회귀(24회, 2012~2025, 국고 제로커브). Source: FI Strategy Research, 부서 병행 PCA 분석(2026-08, rawdata\PCA).</p>
+    <p>
+      Exhibit 10(b)와 표가 함께 말해 주는 것은 두 가지다. 첫째, <strong>데이터로 잰 두 잣대 —
+      실증 베타와 PCA — 는 1년 이내에서 사실상 겹친다</strong>(6개월 0.70 대 0.65, 1년 0.51 대
+      0.56). 구조 모형인 DNS만 6개월~2년 배 구간에서 홀로 높은데(6개월 0.94, 2년 0.65), 이는
+      데이터가 아니라 적재함수의 매끄러운 감쇠 형태가 정한 값이다. 즉 단기 위험 산술은 <strong>데이터
+      잣대 기준으로는</strong> 방법 선택에 둔감하다. 둘째, 장기 구간에서 PCA(10년 0.27)는 실증 베타(0.43)와 DNS 전파(0.19)
+      사이에 앉는다 — "장기물의 당일 반응은 순수 기울기 충격보다 크고, 사이클 재평가가 얹힌 실증
+      평균보다는 작다"는 이 절의 서술을 제3의 방법이 지지한다. 부수 확인 하나: PCA의 당일 회귀에서
+      설명력이 가장 높은 요인도 기울기였다(R² 0.52 — 수준 0.16, 곡률 0.18). 서프라이즈를 기울기
+      충격으로 번역한 이 절의 설계 가정이 다른 요인 분해에서도 재확인된 셈이다.
+    </p>
+    <p>
+      병행 추정의 진짜 부가가치는 이 리포트가 다루지 않던 <strong>당일 이후의 시간 전개</strong>다.
+      Exhibit 11이 그 결과다. +25bp 컨센서스 서프라이즈 기준, 10년물 반응은 당일 +2.1bp → 1주
+      +5.0bp → <strong>1개월 +9.9bp</strong>로 커지고 20년물은 +10.2bp까지 간다. 반면 3개월물은
+      +7.9 → +9.3bp로 거의 그대로다. 즉 <strong>충격의 무게중심이 한 달에 걸쳐 단기에서 장기로
+      이동</strong>한다 — 위 KEY INSIGHT의 "장기물은 점도표·회견의 경로 재평가가 지배한다"가
+      시간축에서 실현되는 모습이고, 5절 국면 층화의 완화·재인상기 발견(장기물 재평가 베타 2.76)과도
+      맞물린다. 운용 함의: 발표 당일 장기물이 조용했다고 안전한 것이 아니며, 1개월 기준
+      10년(+9.9bp)이 3년(+6.9bp)보다 크게 움직여 <strong>기계적인 3/10년 플래트닝 베팅은 오히려
+      스티프닝 방향의 위험</strong>을 진다. 다만 이 숫자들은 에누리해 읽어야 한다. 1주·1개월 구간은
+      미국 금리·수급 등 동시 충격이 통제되지 않았고(당일 기울기 외의 회귀 설명력은 0 부근), Exhibit
+      11의 회색 대역 — 1개월 부트스트랩 95% 구간 — 은 대부분 0을 포함한다(10년 −3.5~+23.1bp).
+      인과 추정이 아니라 <strong>"의미 있는 서프라이즈 국면에서 관찰된 평균적 후속
+      재가격화"</strong> — 위험 시나리오의 중심값으로만 쓴다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 11</div>
+      <h4 class="exhibit-title">충격 그 후 한 달 — 만기별 반응의 시간 전개와 불확실성</h4>
+      <div class="exhibit-subtitle">+25bp 컨센서스 서프라이즈 시 만기별 반응(bp): 당일 → 1주 → 1개월 누적, 음영은 1개월 95% 부트스트랩 구간</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 파란 선(당일)은 왼쪽(단기)이 높고 오른쪽으로 갈수록 낮아지는데, 청록 선(1개월)은 오른쪽 끝이 들려 올라간다 — 한 달 사이 충격의 무게중심이 단기에서 장기로 옮겨 간다. 단, 음영(95% 구간)이 0선을 품을 만큼 넓다는 것까지가 이 그림의 정보다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_pca_horizon.svg--></div>
+      <div class="exhibit-source">Source: 부서 병행 PCA 분석(2026-08, rawdata\PCA). |서프라이즈| 5bp 이상 금통위 24회(2012~2025), 원점 OLS, 부트스트랩 신뢰구간. FI Strategy Research 편집.</div>
+    </div>
+
+    <h3>국면이 모양을 바꾼다 — 세 잣대의 국면별 대조</h3>
+    <p>
+      트랙 (1)·(2)의 프로파일은 어디까지나 전표본 '평균'이다. 마지막으로 그 평균을 국면별로 쪼개
+      세 잣대를 같은 화면에 놓는다(Exhibit 12). 결과는 이 절의 숫자를 어떻게 읽어야 하는지에 대한
+      마지막 규율이다. <strong>실증 프로파일은 국면마다 수준이 아니라 모양 자체가 바뀐다</strong> —
+      완만기(2013~19.6)에는 전 만기가 3개월물과 같은 폭으로 움직이는 평행이동(≈1)이었고, 급속
+      인상기(2021.8~23.1)에는 1년부터 음수로 꺾였으며(인상 서프라이즈가 장기물에는 경기 하강
+      뉴스), 완화·재인상기(2024.10~)에는 3년에서 2.7배로 솟는 증폭 혹이 선다(서프라이즈 하나가
+      사이클 재평가의 방아쇠 — 5절 질문 셋의 국면 층화와 같은 발견이다). DNS는 국면이라는 개념이
+      없어 세 화면 모두 같은 곡선 하나이고, PCA 잣대는 국면으로 쪼개면 표본이 무너져
+      완만기(13회)에서만 유효하다(급속 인상기 4회는 부호만, 완화·재인상기 3회는 계산 불가).
+      즉 <strong>국면 비교가 성립하는 범위 자체가 실증(세 국면) &gt; PCA(한 국면) &gt; DNS(불변)의
+      계단</strong>이다. 위 시나리오 표의 장기물 숫자를 점이 아니라 국면 조건부 범위로 읽어야 하는
+      이유가 이 한 장에 요약돼 있다 — 전표본 0.43(10년)은 이 세 세계의 서프라이즈² 가중
+      혼합이며, 그 가중치의 절반 이상이 2022년 한 해에 있다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 12</div>
+      <h4 class="exhibit-title">국면이 모양을 바꾼다 — 발표 당일 프로파일의 국면별 대조</h4>
+      <div class="exhibit-subtitle">당일 반응 프로파일(3개월물=1), 국면별 원점 회귀. 실증(통안91 자) vs PCA(컨센서스 자) vs DNS(구조 곡선, 국면 불변). 2013년 이후, 원자료 9개 만기</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 파란 선(실증)의 모양이 세 화면에서 완전히 다르다 — 평평(①), 음수로 꺾임(②), 3년 봉우리(③). 금색 선(DNS)은 세 화면 모두 같은 곡선이다. 오른쪽 화면(현재 국면)에서 파란 선이 금색과 전표본 평균(10년 0.43)을 모두 크게 웃돈다는 것 — 이것이 "장기물 숫자는 범위로 읽어라"의 실체다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_regime_profiles.svg--></div>
+      <div class="exhibit-source">Source: 한국은행 ECOS, 금융투자협회 채권정보센터(민평), 부서 병행 PCA 분석(컨센서스). FI Strategy Research 추정(m12). ②의 PCA(4회)는 소표본이라 부호만 참고, ③의 PCA는 컨센서스 오차 5bp 이상 이벤트가 3회뿐이라 측정 불가.</div>
+    </div>
+
+    <table class="data">
+      <tr><th>만기</th><th>DNS (국면 불변)</th><th>실증 완만기 (27회)</th><th>PCA 완만기 (13회)</th><th>실증 급속인상 (9회)</th><th>실증 완화·재인상 (6회)</th></tr>
+      <tr><td>6개월</td><td>0.94</td><td>1.06</td><td>1.38</td><td>0.60</td><td>0.99</td></tr>
+      <tr><td>1년</td><td>0.82</td><td>1.06</td><td>0.91</td><td>0.11</td><td>1.40</td></tr>
+      <tr><td>2년</td><td>0.65</td><td>1.19</td><td>0.74</td><td>−0.11</td><td>2.35</td></tr>
+      <tr class="hl"><td>3년</td><td>0.52</td><td>1.25</td><td>0.67</td><td>−0.20</td><td>2.73</td></tr>
+      <tr><td>5년</td><td>0.36</td><td>1.27</td><td>0.56</td><td>−0.10</td><td>2.56</td></tr>
+      <tr class="hl"><td>10년</td><td>0.19</td><td>1.19</td><td>0.37</td><td>−0.10</td><td>2.37</td></tr>
+      <tr><td>30년</td><td>0.07</td><td>1.00</td><td>0.39</td><td>−0.01</td><td>1.92</td></tr>
+    </table>
+    <p class="tbl-note">발표 당일 프로파일(3개월물=1), 국면별 원점 회귀. 실증 이벤트 필터는 통안91 변화 ≥1bp, PCA는 컨센서스 오차 ≥5bp. 2013년 이후(6개월물 민평 가용 시점)라 4절 전표본 베타(2011~, 절편 포함)와 기준이 소폭 다르다. 근거 수치는 m12_regime_profiles.csv. Source: FI Strategy Research.</p>
+  </div>
+</section>
+
+<!-- ================= SECTION 05 ================= -->
+<section class="section">
+  <div class="section-number">05</div>
+  <h2 class="section-title">검증 세 가지 — 통안의 온건함, 확률의 성적, 충격의 성적</h2>
+  <p class="section-lead">
+    앞 절들이 남긴 세 의문에 답한다. 통안의 온건함은 절반 이상이 프리미엄이고, 확률 모형은 13년
+    백테스트에서 역할이 확인되며, 충격 산술은 표본외 검증에서 뚜렷한 한계를 드러낸다.
+  </p>
+  <div class="section-body">
+
+    <h3>질문 하나 — 현물시장은 정말 인상을 덜 믿는가</h3>
+    <p>
+      아니다, 적어도 보이는 만큼은 아니다. OIS와 통안의 금리 격차는 이번 인상 국면에서 생긴 것이
+      아니라 상시 존재하는 구조다. 2022년 4월 이후 전 표본에서 통안은 같은 만기 OIS보다 중위값
+      기준 6개월 13.5bp, 1년 8bp 낮게 거래됐다. 통안은 RP 담보와 은행 규제자산, 단기자금의 매수
+      수요를 등에 업은 채권이라 파생상품보다 늘 비싸게(낮은 금리로) 거래되기 때문이다. 오늘의
+      격차(6개월 15.8bp, 1년 7.5bp)는 그 상시 수준에서 몇 bp 벗어난 정도다.
+    </p>
+    <p>
+      남는 몇 bp의 정체는 반응 속도다. Exhibit 13을 보면 매파 재가격 국면마다 격차가 뛰었다가
+      되돌아온다. 5월 28일 매파 동결 직후 6개월 격차는 하루 만에 10bp에서 14bp로 뛰고 6월 중순
+      23.8bp까지 벌어졌다가, 약 6주에 걸쳐 상시 수준(13~14bp)으로 되돌아왔고, 1년물도 같은 모양새다. 브로커 호가(OIS)가 먼저 뛰고 현물과 민평이
+      따라오는 구조다. 즉 통안의 온건함은 "인상을 안 믿는 태도"라기보다 <strong>상시 프리미엄에
+      반응 지연이 얹힌 것</strong>이다. 구조적 프리미엄을 되돌려 비교하면 통안 내재 연말 금리도 3.1%
+      안팎으로 올라와, OIS(3.20%)와의 실질 기대 격차는 절반 이하로 줄어든다. 3절의 "순수 기대
+      3.0~3.1%" 밴드에서 하단보다 상단에 무게를 두는 근거다. 참고로 2절의 통안 프리미엄
+      φ(1년 3.9bp)는 기준금리 대비·동결 확신 구간의 값이고, 여기의 8bp는 OIS 대비·전 표본의 값이라
+      다른 물음에 대한 답이다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 13</div>
+      <h4 class="exhibit-title">통안의 온건함은 대부분 구조적이다 — OIS-통안 6개월 격차</h4>
+      <div class="exhibit-subtitle">2022년 4월 ~ 2026년 8월 일별, 격차 = KOFR OIS 6개월(MID) − 통안 6개월(민평)</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 파란 선이 0이 아니라 금색 점선(+13.5bp, 전 표본 중위값) 주위를 맴돈다는 사실 자체다. 통안은 원래 OIS보다 비싸게 거래되며, 지금이 특별히 더 비싼 것이 아니다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_gap.svg--></div>
+      <div class="exhibit-source">Source: 연합인포맥스, 금융투자협회 채권정보센터. FI Strategy Research 추정.</div>
+    </div>
+
+    <h3>질문 둘 — 과거 사이클에서는 맞았나</h3>
+    <p>
+      2013년 2월부터 2026년 7월까지 정례 금통위 124회(2020년 3월 임시회의 제외) 전부에 대해, 회의
+      전일 데이터만으로 확률을 산출해 채점했다. 채점 방식은 앞의 용어 박스에서 소개한 브라이어
+      점수다. 다시 말하면 일기예보 채점법이다 — "인상 확률 70%"라고 말한 회의에서 실제로 인상되면
+      오차가 작고, 동결되면 오차가 크다. 이 오차를 124회 평균한 값이니 낮을수록 정확하고, 모형 없이
+      결과의 실현 빈도만 찍는 "무정보 예측"보다 낮아야 존재 가치가 있다. 한 가지 미리 말해 두면,
+      표의 KOFR OIS 열이 대부분 비어 있는 것은 2022~2023년 OIS 호가가 거래를 반영하지 못한 채 사실상
+      고정 스프레드로 움직인 구간이라, 시장이 실제로 형성된 2024년 10월 이후만 채점하기 때문이다.
+    </p>
+
+    <table class="data">
+      <tr><th>기간</th><th>회의</th><th>통안 스트립</th><th>KOFR OIS</th><th>BMSI 서베이</th><th>무정보(빈도)</th></tr>
+      <tr><td>2013~2016 인하기(2.75→1.25%)</td><td>47</td><td>0.22</td><td>—</td><td>0.15</td><td>0.22</td></tr>
+      <tr><td>2017~2019.6 인상기(→1.75%)</td><td>20</td><td>0.06</td><td>—</td><td>0.03</td><td>0.18</td></tr>
+      <tr><td>2019.7~2021.7 인하기(→0.50%)</td><td>17</td><td>0.31</td><td>—</td><td>0.16</td><td>0.29</td></tr>
+      <tr class="hl"><td>2021.8~2023.1 인상기(→3.50%)</td><td>12</td><td>0.77</td><td>—*</td><td>0.20</td><td>0.28</td></tr>
+      <tr><td>2023.2~2024.9 동결기</td><td>13</td><td>0.37</td><td>—*</td><td>0.03</td><td>0.00</td></tr>
+      <tr class="hl"><td>2024.10~2026.5 인하기(→2.50%)</td><td>14</td><td>0.33</td><td>0.26</td><td>0.19</td><td>0.41</td></tr>
+      <tr><td>2026.7 인상 재개</td><td>1</td><td>0.00</td><td>0.02</td><td>0.23</td><td>0.00</td></tr>
+      <tr><td>전체(2013.2~2026.7)</td><td>124</td><td>0.29</td><td>—</td><td>0.13</td><td>0.35</td></tr>
+    </table>
+    <p class="tbl-note">3분류 브라이어 점수, 낮을수록 정확(0=완벽, 무작위 3분류≈0.67). v7 교정 가격엔진으로 전 표본 재산출. BMSI 열도 124회 전부 채점했다(범주 일부만 보도된 회차의 잔여 확률 배분 규칙은 부록 E). "무정보(빈도)"는 채점 대상 기간의 실현 빈도를 그대로 확률로 쓰는 사후 기준이다 — 국면 행은 그 국면의, 전체 행은 전 표본의 빈도를 쓰므로 도구에 불리한 보수적 비교선이며, 동결기·2026 행의 0.00은 그 부산물이다. * OIS는 2022~2023년 호가가 지표성(고정 스프레드)이라 2024년 10월 이후만 유효표본으로 본다. 유효표본 15회에서 OIS 0.24, 통안 0.31, BMSI 0.20, 무정보 0.48. Source: FI Strategy Research 추정.</p>
+
+    <p>
+      표가 말하는 것은 세 가지다. <strong>첫째, 전 기간 채점의 1등은 서베이다.</strong> 동결이 잦은
+      한국에서 서베이는 동결에 극단적 확신(99~100%)을 부여하고 대체로 맞았다. 시장내재 확률은 프리미엄과
+      배분 노이즈 탓에 확신이 무뎌 채점에서 밀린다. <strong>둘째, 시장내재의 실패 국면이 분명하다.</strong>
+      2021~22년 급속 인상기의 통안 성적(0.77)은 무정보보다 나빴다. 50bp 스텝이 25bp 격자를 깨고, 빠른
+      사이클에서 회의별 배분이 무너지며, 2022년 가을 자금경색이 단기물 금리를 왜곡한 결과다. 2023년
+      동결기에도 통안은 오지 않은 인하를 계속 반영했다(0.37 대 무정보 0.00). 한국은행이 당시 블로그에서 지적한 "국고채
+      금리의 과도한 인하 기대 반영"이 채점으로 재확인된 셈이다. <strong>셋째, 시장의 부가가치는 사이클 전환점에
+      있고, 인하 쪽에서 가장 뚜렷하다.</strong> 실제 결정에 부여한 확률로 시장(통안)이 서베이를 크게
+      앞선 회의를 위에서부터 세면 — 인하 초입 네 번(2024-11 +52%p, 2024-10 +36%p, 2019-07 +28%p,
+      2015-03 +23%p)에 인상 회의 두 번(2026-07 +34%p, 2022-01 +26%p)이 섞여 있다. 반대로 서베이가
+      앞선 인상 전환은 2017-11과 2021-08(첫 인상) 두 번이다. 요컨대 인하 전환에서의 시장 선제성은
+      일관되게 관찰되지만, 인상 쪽은 회의마다 엇갈린다 — 이전 판의 "인상 전환은 매번 서베이 우위"
+      서술은 2026-07(통안 100%·OIS 91% 대 서베이 66%)이 반례가 되어 철회한다. 채권 매수세가 완화를
+      선제적으로 가격에 넣는 경향 자체는 데이터가 지지하는 사실이다.
+    </p>
+
+    <table class="data">
+      <tr><th>회의</th><th>실제 결정</th><th>통안 스트립</th><th>KOFR OIS</th><th>BMSI 서베이</th></tr>
+      <tr><td>2021-08-26</td><td>인상(첫)</td><td>23%</td><td>—</td><td>33%</td></tr>
+      <tr><td>2022-07-13</td><td>인상(50bp)</td><td>27%</td><td>—*</td><td>99%</td></tr>
+      <tr><td>2024-10-11</td><td>인하(첫)</td><td>100%</td><td>79%</td><td>64%</td></tr>
+      <tr class="hl"><td>2024-11-28</td><td>인하("깜짝")</td><td>69%</td><td>15%</td><td>17%</td></tr>
+      <tr><td>2025-01-16</td><td>동결(깜짝)</td><td>75%</td><td>20%</td><td>60%</td></tr>
+      <tr><td>2025-05-29</td><td>인하</td><td>69%</td><td>94%</td><td>69%</td></tr>
+      <tr class="hl"><td>2026-07-16</td><td>인상</td><td>100%</td><td>91%</td><td>66%</td></tr>
+    </table>
+    <p class="tbl-note">각 칸은 회의 전일 기준 "실제로 나온 결정"에 부여한 확률(v7 교정 엔진 재산출). * 지표성 호가 구간 제외. 요약·Exhibit 4의 "모형 74%"는 서베이 발표일(7/14) 기준이고 이 표의 91%(OIS)·100%(통안)는 회의 전일(7/15) 기준이다 — 마지막 이틀 사이 시장의 확신이 더 올라갔다. Source: FI Strategy Research 추정.</p>
+
+    <p>
+      백미는 2024년 11월 28일이다. 언론과 서베이에는 "깜짝 인하"였지만(서베이 인하 응답 17%), 통안
+      스트립은 전일 이미 69%를 인하에 걸고 있었다. 깜짝은 사람들에게였지 가격에는 아니었다. 반대로
+      2025년 1월 16일(원화 급락 속 동결)은 OIS 혼자 인하 80%로 크게 틀렸고, 통안(동결 75%)과
+      서베이(동결 60%)는 맞는 쪽에 서 있었다 — 한 도구만 보지 말아야 하는 이유다. Exhibit 14가
+      13년 전체를 한 장에 담았다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 14</div>
+      <h4 class="exhibit-title">13년의 채점표 — 회의 전일의 내재 순확률과 실제 결정</h4>
+      <div class="exhibit-subtitle">2013~2026년 정례 금통위 124회. 순확률 = 인상확률 − 인하확률, 회의 전일 기준</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 실제 변경(위 ▲, 아래 ▼)이 있던 자리에서 점들이 그쪽으로 미리 쏠려 있었는가다. 2024년 말 인하 국면에서는 파란 점(시장)이 금색(서베이)보다 먼저, 더 깊이 아래로 내려가 있다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_backtest.svg--></div>
+      <div class="exhibit-source">Source: 한국은행 ECOS, 금융투자협회(민평·BMSI), 연합인포맥스. FI Strategy Research 추정.</div>
+    </div>
+
+    <h3>곁가지 하나 — 서베이는 인상 직전에도 늘 60%대만 찍는가</h3>
+    <p>
+      7월의 "인상 응답 66%"를 보고 이런 의문이 생길 수 있다. 서베이는 원래 소심해서, 인상이 뻔한
+      날에도 60%대만 찍는 것 아닌가. 데이터로 확인하면 <strong>아니다 — 서베이의 확신은 사이클의
+      위치를 따라간다.</strong> 2021년 이후 사이클에서 실제 인상 직전의 인상 응답률은 뚜렷이 두 무리로
+      갈린다. 첫 인상·재개 시점에는 33~66%에 머물고(2021년 8월 첫 인상 33%, 이번 7월 66%), 궤도에
+      오르면 90~100%로 치솟는다(2021년 11월 90%, 2022년 5~11월 94~100%). 인하 쪽도 비슷해서, 서베이가
+      동결을 보던 깜짝 인하는 8~30%(2024년 11월 17% 포함), 예고된 인하는 50~82%였다. 예외도 있다 —
+      2017~18년 인상기는 소통이 충분해 첫 인상부터 79~82%였고, 사이클의 마지막 인상(2023년 1월)은
+      67%로 다시 낮아졌다.
+    </p>
+    <p>
+      함의는 두 가지다. 첫째, 7월의 66%는 서베이의 소심함이 아니라 <strong>전환점 특유의 진짜
+      불확실성</strong>이었다 — 시장(74%)도 같은 방향으로 기울어 있었다. 둘째, 8월 27일에
+      실제로 인상이 이뤄지고 사이클이 "궤도"로 인식되면, 다음 서베이의 인상 응답은 과거 패턴상 90%대로
+      점프할 공산이 크다. 8월 말 발표될 BMSI가 60%대에 머무느냐 90%대로 뛰느냐 자체가 시장이 이
+      사이클을 어떻게 규정하는지 보여주는 관전 포인트다.
+    </p>
+
+    <div class="key-insight">
+      <div class="ki-label">KEY INSIGHT</div>
+      <p>
+        운용 함의: 서베이와 시장내재를 항상 나란히 보되, 둘이 갈라지는 순간을 신호로 삼아라.
+        과거 13년에서 그 괴리는 대부분 사이클 전환점이었고, 인하 쪽에서는 맞은 쪽이 시장가격이었다.
+        7월에는 둘이 같은 방향이었다(74% 대 66%) — 8월 말 서베이가 나왔을 때 시장의 50%와 얼마나
+        벌어져 있는지가 다음 관전 포인트다.
+      </p>
+    </div>
+
+    <p class="tbl-note" style="margin-top:8px">참고: CD 연동 IRS 스트립(렌즈 ⑥)도 같은 방식으로 채점했으나 모든 국면에서 무정보 기준선보다 나빴다(124회 전체 0.38 대 무정보 0.35). 준거금리 CD의 경직성과 자금경색기 신용 스프레드가 신호를 압도하기 때문으로, 이 리포트가 IRS를 회의별 확률 도구가 아니라 연말 누적의 참고(3절 교차검증 표)로만 쓰는 이유다.</p>
+
+    <h3>질문 셋 — 4절의 충격 산술은 과거에 통했나</h3>
+    <p>
+      부분적으로만 통했고, 그 한계가 어디인지가 정보다. 검증 설계는 미래 정보를 쓰지 않도록 짰다.
+      통과계수 베타는 2011~2019년 회의(유효 41회)로만 추정하고, 2020년 1월~2026년 7월의 정례 금통위
+      53회에 적용했다. 각 회의의 서프라이즈는 "실제 결정 − 전일 통안 스트립 내재 인상폭"으로 계산했고,
+      베타 × 서프라이즈가 예측한 당일 금리 변동을 실제 당일 변동과 대조했다.
+    </p>
+    <p>
+      53회를 한 번에 계산한 전체 상관만 보면 "단기(통안 3개월 +0.72)는 통하고 장기(국고 3년 −0.21,
+      국고 10년 −0.20)는 안 통한다"로 끝난다. 그런데 전체 평균은 서로 다른 국면을 뭉갠다. 그래서 검증 표본을 네 국면 —
+      완화·동결(2020.1~21.7), 급속 인상(2021.8~23.1), 동결(2023.2~24.9), 인하(2024.10~) — 으로 갈라
+      다시 채점했다. Exhibit 15의 색 구분이 그 결과이고, 이야기가 훨씬 선명해진다.
+    </p>
+
+    <table class="data">
+      <tr><th>국면 (검증 회의 수)</th><th colspan="2">통안 3개월</th><th colspan="2">국고 3년</th><th colspan="2">국고 10년</th></tr>
+      <tr><th></th><th>상관</th><th>부호 적중</th><th>상관</th><th>부호 적중</th><th>상관</th><th>부호 적중</th></tr>
+      <tr><td>완화·동결 2020.1~21.7 (13회)</td><td>+0.71</td><td>78%</td><td>+0.52</td><td>78%</td><td>+0.32</td><td>67%</td></tr>
+      <tr class="hl"><td>급속 인상 2021.8~23.1 (12회)</td><td>+0.82</td><td>67%</td><td>−0.48</td><td>25%</td><td>−0.41</td><td>25%</td></tr>
+      <tr><td>동결 2023.2~24.9 (13회)</td><td>+0.17</td><td>50%</td><td>+0.15</td><td>50%</td><td>+0.06</td><td>50%</td></tr>
+      <tr><td>인하 2024.10~26.5 (14회)</td><td>+0.35</td><td>62%</td><td>+0.41</td><td>69%</td><td>+0.29</td><td>62%</td></tr>
+      <tr><td>전체 풀링 (53회)</td><td>+0.72</td><td>62%</td><td>−0.21</td><td>56%</td><td>−0.20</td><td>51%</td></tr>
+    </table>
+    <p class="tbl-note">부호 적중은 |서프라이즈| ≥ 3bp인 회의 기준. 국면당 12~14회의 소표본이라 상관의 표준오차가 ±0.3 안팎이다 — 정밀한 수치가 아니라 방향으로 읽을 것. Source: FI Strategy Research 추정.</p>
+
+    <p>
+      세 가지가 보인다. <strong>첫째, 단기물의 방향 신호는 금리가 움직이던 모든 국면에서 살아
+      있다</strong>(완화기 +0.71, 급속 인상기 +0.82, 인하기 +0.35 — 동결기는 애초에 움직임이 없어
+      채점 대상이 아니다). <strong>둘째, 장기물의 실패는 급속 인상기 한 국면에 집중돼 있다.</strong>
+      국고 3년의 상관은 완화기 +0.52, 인하기 +0.41로 약하지만 양(+)인데, 2021~22년에 −0.48로
+      무너진다. <strong>국고 10년도 정확히 같은 무늬다</strong> — 완화 +0.32·인하 +0.29의 약한
+      양(+)이 급속 인상기에만 −0.41로 뒤집힌다. 4절 국면 대조(Exhibit 12)에서 실증 프로파일이
+      국면마다 모양을 바꾸던 것과 같은 발견이 표본외 채점에서도 재현되는 셈이다. 전체 풀링의
+      −0.21(3년)·−0.20(10년)은 이 세 국면의 평균이 만든 착시에 가깝다. 50bp 스텝과 소통 지배가
+      겹친 급속 사이클이 문제였지, "장기물은 원래 안 된다"가 아니다. <strong>셋째, 크기의 과대 추정만은
+      전 국면 공통이다</strong> — 어느 국면에서도 모형의 예측 오차가 "변동 없음" 예측보다 컸다.
+    </p>
+    <p>
+      원인의 층위도 국면으로 정리된다. 서프라이즈 측정오차(3절의 배분 노이즈)와 경로 뉴스의
+      지배(2025-01-16: 매파 서프라이즈 +6.3bp의 상승 예측에 총재의 인하 예고로 전 만기 하락 — 자산가격은
+      결정 자체보다 경로 소통에 반응한다는 고빈도 연구(Gürkaynak-Sack-Swanson 2005)와 같은 구조)는
+      상수이고, 베타의 국면 의존이 변수다.
+      국고 3년 통과계수는 2011~19년 1.12에서 급속 인상기 사실상 0(−0.22, n=9)으로 무너졌다가,
+      2024~26년 인하기에는 2.76(n=6)으로 오히려 증폭됐다 — 서프라이즈가 사이클 전체 재평가의
+      방아쇠가 된 것이다. 결론: <strong>단기물 산술은 국면 불문 그대로 쓰고, 장기물은 "지금이 어느
+      과거와 닮았는가"를 먼저 정하라.</strong> 2011~19형 정상 사이클이면 8월 인상 시 3년물 +14bp,
+      2021~22형 소통 지배면 0에 가깝고, 4절 표의 +5bp는 그 사이의 평균일 뿐이다.
+    </p>
+
+    <div class="exhibit">
+      <div class="exhibit-label">EXHIBIT 15</div>
+      <h4 class="exhibit-title">충격 산술의 표본외 성적 — 실패는 한 국면(급속 인상기)에 집중돼 있다</h4>
+      <div class="exhibit-subtitle">2020.1~2026.7 정례 금통위 53회, 국면별 색 구분. 예측 = 2011~2019 추정 베타 × (실제 결정 − 전일 내재 인상폭)</div>
+      <div class="exhibit-read">이 그림에서 볼 것: 가운데(국고 3년)와 오른쪽(국고 10년)의 흩어진 구름을 색으로 가르면, 대각선을 거스르는 점은 두 만기 모두 금색 세모(2021~22 급속 인상기)에 몰려 있다. 회색(완화기)·파란색(인하기) 점들은 대각선 방향을 따른다 — 전체 평균이 뭉갰던 구조이고, 장기물일수록 구름이 넓어질 뿐 무늬는 같다.</div>
+      <div class="exhibit-chart"><!--SVG:ex_shock_validation.svg--></div>
+      <div class="exhibit-source">Source: 한국은행 ECOS, 금융투자협회 채권정보센터. FI Strategy Research 추정.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 06 ================= -->
+<section class="section">
+  <div class="section-number">06</div>
+  <h2 class="section-title">한계 — 이 숫자를 읽는 규율</h2>
+  <p class="section-lead">모형의 숫자는 정밀해 보이지만, 여섯 가지 전제 위에 서 있다. 앞의 셋은 모형의 가정에서, 뒤의 셋은 데이터의 성질에서 온다.</p>
+  <div class="section-body">
+    <p>
+      <strong>첫째, 모든 확률은 "인상하면 25bp" 가정 위의 환산값이다.</strong> 시장이 50bp 가능성을 조금이라도
+      반영하면 확률은 과대 계산된다. <strong>둘째, OIS 호가에도 기간프리미엄이 있다.</strong> 선물가격조차 순수한
+      기대가 아니라는 것이 정설(Piazzesi-Swanson 2008)이며, 시계가 길수록 커진다. 다음 1~2회의 확률은
+      쓸 만하지만 2027년 구간은 상단 편의가 있다 — 실제로 프리미엄을 제거한 기대(AFNS 재현 3.07%·
+      DNS-VAR 3.01%)는 OIS보다 연말 기준 13~19bp 낮았다. <strong>셋째, 2027년 금통위 일정은 아직 없다.</strong> 분기 노드로 가정했고, 이 가정은
+      2026년 세 회의의 확률에는 거의 영향을 주지 않지만 2027년 수치의 신뢰도는 낮다.
+    </p>
+    <p>
+      나머지 셋은 데이터의 성질에서 온다. <strong>넷째, KOFR OIS는 브로커 호가다.</strong> 체결가·청산가가
+      아니므로 호가가 시장을 늦게 따라올 수 있다. 또한 가격식은 거래일 당일 시작을 가정하며 T+1
+      효력발생·영업일 조정은 반영하지 않았다 — 교차 감사 기준으로 이를 엄격히 반영하면 8월 중심치가
+      40%대 중반까지 수 %p 낮아질 수 있어, 실무 범위는 40~60%로 잡는 것이 방어적이다. 이를 보정하기
+      위해 통안 스트립과 서베이를 상시 병행한다. <strong>다섯째, 통안과 OIS가 다르게 말한다.</strong> 다만 5절의 분해가 보였듯 격차의 절반
+      이상은 통안의 구조적 강세 프리미엄이므로, 우리는 순수 기대를 구간(3.0~3.1%, 상단에 무게)으로
+      읽고 OIS 3.20%를 프리미엄 포함 상단으로 둔다. <strong>여섯째, 이벤트 베타는 일간 창과 표본 선택
+      규칙에 의존한다.</strong> 회견 효과의 혼입과 표본 선택은 베타를 키우는 쪽으로, 서프라이즈
+      대용치의 측정오차는 줄이는 쪽으로 작용한다 — 특히 장기물 베타는 방향이 정해진 편의가 아니라
+      불확실 폭이 큰 값으로 읽어야 한다.
+    </p>
+    <p>
+      그래서 사용 규율은 하나로 요약된다. <strong>확률의 수준보다 변화를 믿어라.</strong> 수준에는 두
+      겹의 불확실성이 붙는다. 입력 호가 일곱 개에 ±1틱(0.25bp)의 잡음을 얹어 2,000회 재적합한
+      몬테카를로 90% 대역이 8월 ±2%p, 10월 ±6%p, 11월 ±11%p다(뒤 회의일수록 식별이 옅어 대역이
+      넓다 — 부록 B). 여기에 그와 별개로, 넷째 한계의 결제·연율화 관행 근사가 만드는 한 방향
+      편의(8월 실무 범위 40~60%)가 얹힌다. 반면 일간 변화의 방향은 모수·관행 선택에 거의 둔감하므로,
+      수준보다 변화를 읽는 것이 안전하다.
+    </p>
+  </div>
+</section>
+
+<!-- ================= APPENDIX ================= -->
+<section class="section">
+  <div class="exhibit-label">APPENDIX</div>
+  <h2 class="section-title">부록 — 계산 명세와 재현 절차</h2>
+  <p class="section-lead">
+    본문의 모든 수치는 아래 명세로 재계산할 수 있다. 원자료에는 출처·조회조건·해시가 담긴 메타 파일이,
+    모델 산출물에는 회의·만기 단위의 CSV가 붙어 있다.
+  </p>
+  <div class="section-body">
+
+    <h3>A. 데이터 명세</h3>
+    <table class="data">
+      <tr><th>시리즈</th><th>출처·코드</th><th>표본</th><th>쓰인 곳</th></tr>
+      <tr><td>KOFR OIS 1주~1년 (MID)</td><td>연합인포맥스 IRSKM5KRW* (한국자금중개 호가)</td><td>2022.2.24~, 일별</td><td>모델 1 본체, 백테스트</td></tr>
+      <tr><td>통안 91일·1년·2년</td><td>ECOS 817Y002 (010400000·010400001·010400002)</td><td>91일 2006.9~, 일별</td><td>모델 1 교차검증, 백테스트, 서프라이즈 지표</td></tr>
+      <tr><td>통안 6개월 (민평 5사 평균)</td><td>채권정보센터 시가평가 (종류 4000000, 테너 0006)</td><td>2013.1~, 일별</td><td>모델 1 교차검증, 격차 분석</td></tr>
+      <tr><td>콜(1일)·CD 91일·KOFR</td><td>ECOS 817Y002 (010101000·010502000·010901000)</td><td>일별</td><td>앵커, IRS 준거</td></tr>
+      <tr><td>국고 1·2·3·5·10·20·30년</td><td>ECOS 817Y002 일별 + 채권정보센터 민평 매트릭스</td><td>일별 / 월말</td><td>충격 분석, DNS-VAR 커브</td></tr>
+      <tr><td>기준금리·금통위 일정</td><td>ECOS 722Y001 + 한국은행 의사일정·변경 이력</td><td>1999.5~</td><td>결과 판정, 계단 노드</td></tr>
+      <tr><td>KRW IRS 제로커브</td><td>연합인포맥스 IRS0__KRWKRW</td><td>2011.1~, 일별</td><td>렌즈 ⑥ 연말 누적(m11), 백테스트 잣대(부적합 판정)</td></tr>
+      <tr><td>국고 제로커브 15개 만기 + 결정일 컨센서스(폴 평균)</td><td>부서 병행 PCA 분석 (rawdata\PCA)</td><td>2012.9~2026.8, 일별 / 결정일별</td><td>4절 PCA 대조, 충격 후 1주·1개월 전개</td></tr>
+      <tr><td>BMSI 기준금리 문항</td><td>금투협 보도자료·언론 보도 138회분(출처 URL 보존)</td><td>2013.1~2026.7</td><td>벤치마크, 프리미엄 추정 창</td></tr>
+    </table>
+
+    <h3>B. 모델 1 — 계단함수의 절차와 모수 (v7 교정)</h3>
+    <p>
+      절차: ① 경로 시작점 <i>r</i><sub>0</sub> = 1주 OIS 호가(향후 7일 내 회의가 있으면 최근 KOFR로
+      대체) ② 계단 노드 = 향후 370일의 정례 금통위 + 2027년 분기 가정 노드(1/15·4/15·7/15) ③ 각 만기의
+      이론값 = 변동분 일별 복리 누적을 <strong>KRX 계약 명세의 Act/365 단리로 연율화한 par 고정금리</strong>
+      — v7에서 교정된 부분으로, 교정 전에는 유효연율을 써서 동결 경로가 전 만기 2.778%로 같아지는
+      오류가 있었다(교정 후 곡선 적합 RMSE 1.5→0.8bp) ④ 가우스-뉴턴 반복(8회)으로 모든 후보 점프 경로를
+      동일한 비선형 가격식으로 재가격하며 Δ<sub>k</sub>를 풂. 인접 노드 평활 페널티와 수축은 각 반복의
+      정규방정식 곡률(좌변)에만 두는 <strong>감쇠형</strong>이다 — 호가가 강하게 식별하는 방향은 데이터가
+      그대로 결정하고, 어떤 만기도 보지 못하는 방향(예: 2027년 끝 노드)만 페널티가 0 근처에 붙든다.
+      따라서 "가중 최소자승 + 페널티" 목적함수의 정확한 최적해와는 회의별 배분이 다를 수 있다(정확
+      최적해로 풀면 평활이 이웃 회의를 섞어 10월 81%·11월 58%가 되며, 누적 연말 내재는 동일하다).
+      호가가 실제로 갈라 주는 이웃 회의 정보를 페널티가 뭉개지 않게 하려는 구현 선택이다 ⑤ 확률 =
+      Δ<sub>k</sub>/25bp를 [0, 1]로 절단 ⑥ 통안·국고판은 앵커를 콜금리로 바꾸고 프리미엄 φ를 차감.
+      단위테스트: 평탄한 <i>r</i><sub>0</sub> 경로가 1주 par 호가를 0.1bp 내로 재현함을 확인했다.
+      남은 근사: 거래일 당일 시작(T+1·영업일 조정 미반영)과 3개월 초과 계약의 분기 지급 생략 — 후자는
+      1년물 기준 3~4bp로 개산되나 동결 경로와 적합 경로에 거의 같은 크기로 실려 회의별 배분에 미치는
+      순효과는 그보다 훨씬 작다.
+    </p>
+    <table class="data">
+      <tr><th>모수</th><th>값</th><th>비고</th></tr>
+      <tr><td>만기 가중치 (1M/2M/3M/6M/9M/1Y)</td><td>1.0 / 1.0 / 1.0 / 0.9 / 0.8 / 0.7</td><td>단기일수록 회의 식별력 높음</td></tr>
+      <tr><td>평활 페널티 λ<sub>s</sub> (인접 Δ 차이²)</td><td>0.002</td><td>통안판·백테스트는 0.004</td></tr>
+      <tr><td>수축 (2026 노드 / 2027 가정 노드)</td><td>0.0002 / 0.001</td><td>통안판은 2~4배 강화</td></tr>
+      <tr><td>통안 프리미엄 φ (91일/6개월/1년)</td><td>0.8 / 1.1 / 3.9bp</td><td>2015~2024년 중 다음 회의가 동결로 실현되고 1년물이 기준금리 ±12bp 안이던 710영업일의 중위 스프레드</td></tr>
+    </table>
+    <p class="tbl-note">모수 민감도: 입력 호가 7개(1주 포함)에 ±1틱(0.25bp) 균등 잡음을 얹은 2,000회 재적합의 90% 대역은 8월 4%p·10월 13%p·11월 22%p. 평활 λ<sub>s</sub>를 절반·두 배(0.001·0.004)로 바꾸면 8월 50%는 그대로, 11월은 35~40% 안에서 움직인다. 6절의 확률 대역이 여기서 온다. Source: FI Strategy Research.</p>
+
+    <h3>C. 오늘 적합의 워크스루 (2026-08-07, <i>r</i><sub>0</sub>=2.740%, v7 교정 엔진)</h3>
+    <table class="data">
+      <tr><th>만기</th><th>시장 호가</th><th>동결 경로값</th><th>초과분</th><th>모형 적합</th><th>잔차</th></tr>
+      <tr><td>1개월</td><td>2.770</td><td>2.743</td><td>+2.7bp</td><td>2.788</td><td>−1.8bp</td></tr>
+      <tr><td>2개월</td><td>2.840</td><td>2.746</td><td>+9.4bp</td><td>2.831</td><td>+0.9bp</td></tr>
+      <tr><td>3개월</td><td>2.890</td><td>2.749</td><td>+14.1bp</td><td>2.890</td><td>+0.0bp</td></tr>
+      <tr><td>6개월</td><td>3.073</td><td>2.759</td><td>+31.4bp</td><td>3.073</td><td>−0.0bp</td></tr>
+      <tr><td>9개월</td><td>3.205</td><td>2.768</td><td>+43.7bp</td><td>3.205</td><td>+0.0bp</td></tr>
+      <tr><td>1년</td><td>3.320</td><td>2.778</td><td>+54.2bp</td><td>3.320</td><td>−0.0bp</td></tr>
+    </table>
+    <p class="tbl-note">동결 경로값이 만기마다 다른 것이 올바른 관행이다 — 교정 전에는 전부 2.778로 같았고, 그것이 v7 교정의 핵심이다. 잔차 최대는 1개월(−1.8bp): 1개월 호가 단독으로는 8월 확률이 약 30%로, 2개월 단독으로는 약 56%로 읽히지만, 여섯 호가의 결합 적합이 50%를 만든다. 가중 RMSE 0.8bp. Source: FI Strategy Research.</p>
+
+    <h3>D. 이벤트 회귀 통과계수 (모델 4·7)</h3>
+    <table class="data">
+      <tr><th>만기</th><th>β (2011~2026 전체)</th><th>표준오차</th><th>R²</th><th>n</th><th>β (2011~2019만)</th></tr>
+      <tr><td>통안 3개월</td><td>1.000 (정의상 고정)</td><td>—</td><td>—</td><td>67</td><td>1.000</td></tr>
+      <tr><td>통안 6개월</td><td>0.703</td><td>0.065</td><td>0.69</td><td>55</td><td>1.077</td></tr>
+      <tr><td>통안 1년</td><td>0.510</td><td>0.080</td><td>0.39</td><td>67</td><td>1.026</td></tr>
+      <tr><td>국고 2년</td><td>0.256</td><td>0.157</td><td>0.05</td><td>55</td><td>1.227</td></tr>
+      <tr><td>국고 3년</td><td>0.400</td><td>0.140</td><td>0.11</td><td>67</td><td>1.117</td></tr>
+      <tr><td>국고 5년</td><td>0.467</td><td>0.134</td><td>0.16</td><td>67</td><td>1.155</td></tr>
+      <tr><td>국고 10년</td><td>0.426</td><td>0.128</td><td>0.15</td><td>67</td><td>1.033</td></tr>
+      <tr><td>국고 20년</td><td>0.431</td><td>0.108</td><td>0.20</td><td>67</td><td>0.943</td></tr>
+      <tr><td>국고 30년</td><td>0.277</td><td>0.115</td><td>0.09</td><td>59</td><td>0.996</td></tr>
+    </table>
+    <p class="tbl-note">회귀: 발표일 만기별 금리 변화 = α + β × (발표일 통안 91일 변화), 유효 이벤트 = |통안 91일 변화| ≥ 1bp. Source: FI Strategy Research.</p>
+
+    <h3>D-2. 국면별 통과계수 (모델 8)</h3>
+    <table class="data">
+      <tr><th>국면 (유효 이벤트)</th><th>통안 1년</th><th>국고 3년</th><th>국고 10년</th></tr>
+      <tr><td>2011~2019 (41회)</td><td>1.03 (±0.05)</td><td>1.12 (±0.10)</td><td>1.03 (±0.15)</td></tr>
+      <tr class="hl"><td>2021.8~2023.1 급속 인상 (9회)</td><td>0.09 (±0.27)</td><td>−0.22 (±0.51)</td><td>−0.09 (±0.41)</td></tr>
+      <tr><td>2024.10~2026.7 완화·재인상 (6회)</td><td>1.38 (±0.14)</td><td>2.76 (±0.29)</td><td>2.44 (±0.45)</td></tr>
+    </table>
+    <p class="tbl-note">괄호는 표준오차. 국면 구분의 단위는 유효 이벤트(|통안 91일 변화| ≥ 1bp) 수라서 5절 표의 회의 수와 다르고, 마지막 창에는 2026-07 인상 이벤트가 포함된다. 소표본(6~9회) 국면의 값은 점 추정이 아니라 국면 간 차이의 방향으로 읽을 것. 전체 표본 β(위 표)는 이 세 국면의 혼합 평균이다 — 5절 질문 셋. Source: FI Strategy Research.</p>
+
+    <h3>E. AFNS·DNS-VAR·백테스트·격차 분석의 규칙</h3>
+    <p>
+      <strong>AFNS(모델 10, 한은 방법론 재현).</strong> CDR(2011)의 무재정 넬슨-시겔을 칼만필터
+      최우추정으로 적합했다. 사양: 요인 충격은 독립(대각 Σ — CDR의 완전 상관요인 사양은 삼각 Σ까지
+      풀며, 그 경우 수익률조정항에 교차항이 추가된다), P-동학은 상관 행렬 K로 자유(17개 모수),
+      측정오차는 만기 공통 σ_e(CDR 원문은 만기별 — 단순화 제약). 표본: 월말 무이표 3개월~10년
+      8개 만기 × 164개월(2013.1~2026.8; 20·30년은 초장기 수급 왜곡으로 제외). 추정치: λ=0.456,
+      적합 RMSE 4.2bp, σ_e=5.0bp, 무재정 보정항 3년 0.9bp·10년 7.5bp. 독립요인 P-동학 대비
+      우도비 27.4(자유도 6)로 상관 동학이 유의하며, K의 고유값에 복소쌍이 있어 기대 경로는
+      2027년 중반 봉우리(3.3%대) 후 장기균형(약 2.3%)으로 감쇠 진동한다 — 단조 수렴이 아니다.
+      검증: ① 수익률조정항 폐형식을 정의 적분과 수치 대조(오차 10⁻⁶bp 미만), ② 합성 데이터
+      복원(시드 3개) — 연말(4개월) 기대의 복원 오차 −18~+4bp: 이 계열 방법의 연말 기대는
+      ±0.1~0.2%p 해상도로 읽어야 하며, AFNS 3.07 대 DNS 3.01의 차이는 그 안에 있다(차이의
+      대부분은 웨지 처리 — AFNS 9.7bp, DNS 14.6bp). ③ 한은 공표 창 재현은 §3 본문. 상태·모수는
+      전체 표본 기준의 사후 분해다.
+      <br><strong>DNS-VAR(모델 3).</strong> 월말 민평 par 금리를 반기 복리로 부트스트랩해 무이표 곡선을 만들고(1년
+      미만은 무이표 간주, 3개월~30년), 감쇠모수는 0.15~1.50 그리드에서 단면 적합 오차 최소값(0.55)을 택했다. 요인
+      동학은 중심화 VAR(1), 기대 기준금리 = 기대 단기금리 − 현재 웨지(14.6bp). 표본 2013.1~2026.8,
+      164개월. 알려진 한계: VAR(1)의 소표본 편의는 요인 지속성을 낮춰 잡는 방향이라 기대 경로가 평균으로
+      너무 빨리 회귀할 수 있다 — 기간프리미엄(+41~+71bp)과 "OIS가 기대보다 13~19bp 위" 서술은 과대 쪽
+      편의 가능성을 안고 있고(ML로 추정한 AFNS도 같은 계열의 편의를 공유한다), 웨지를 상수로 둔 것도
+      같은 계열의 근사다. 3절이 순수 기대 밴드에서 "상단에 무게"를 두는 이유 중 하나다.
+      <strong>백테스트(5절).</strong> 각 회의의 성적 = 인상·동결·인하 세 확률과 실제 결과의 제곱오차 합(3분류
+      브라이어). 회의 전 최근 영업일(최대 7일 전) 데이터만 사용. 2020-03-16 임시회의 제외. BMSI는
+      보도된 응답 비율을 그대로 확률로 쓴다 — 발표들이 124회 전 회의를 커버했다. 두 범주가 보도된
+      회차는 잔여 확률을 미보도 범주에 주고, 한 범주만 보도된 회차는 잔여를 — 우세 범주가 동결이
+      아니면 동결에, 동결이면 인하에 — 몰아 배분했다(근사 규칙이므로 1등 성적의 강건성 점검 대상이다). 무정보 벤치마크 = 채점 대상
+      기간의 실현 빈도(사후 기준, 표 각주 참조). OIS는 2024년 10월 이후를 유효표본으로 본다.
+      <strong>격차 분석(질문 하나).</strong> 격차 = 같은 만기 OIS MID − 통안 민평, 구조적 프리미엄 =
+      2022.4 이후 전 표본 중위값.
+    </p>
+
+    <h3>F. 재현 절차</h3>
+    <table class="data">
+      <tr><th>스크립트</th><th>산출물</th><th>본문 대응</th></tr>
+      <tr><td>m1_step_function.py</td><td>m1_snapshot / m1_timeseries / m1_fit_detail / m1_msb_crosscheck</td><td>2~3절, Exhibit 2~4</td></tr>
+      <tr><td>m3_dns_expectation.py</td><td>m3_expected_path / m3_decomposition / m3_meta</td><td>3절, Exhibit 5~6</td></tr>
+      <tr><td>m4_event_study.py</td><td>m4_betas / m4_scenarios / m4_events</td><td>4절, Exhibit 8~9</td></tr>
+      <tr><td>m5_backtest.py (+extra_stats)</td><td>m5_backtest_meetings / m5_backtest_summary / m5_episodes</td><td>5절 질문 둘, Exhibit 14</td></tr>
+      <tr><td>m6_gap.py</td><td>m6_gap_daily / m6_gap_summary</td><td>5절 질문 하나, Exhibit 13</td></tr>
+      <tr><td>m7_shock_validation.py</td><td>m7_validation_meetings / m7_validation_summary</td><td>5절 질문 셋, Exhibit 15</td></tr>
+      <tr><td>m8_regime_analysis.py</td><td>m8_regime_validation / m8_regime_betas / m8_summary</td><td>5절 질문 셋 국면 표, 부록 D-2</td></tr>
+      <tr><td>m9_ktb_strip.py</td><td>m9_ktb_snapshot / m9_ktb_timeseries</td><td>3절 교차검증 표 렌즈 ③(국고 스트립)</td></tr>
+      <tr><td>m10_afns.py</td><td>m10_afns_meta / m10_afns_decomposition / m10_afns_expected_path / m10_afns_bok_window</td><td>3절 AFNS 재현 소절, Exhibit 7, 부록 E</td></tr>
+      <tr><td>m11_irs_snapshot.py</td><td>m11_irs_snapshot</td><td>3절 교차검증 표 렌즈 ⑥(CD-IRS 스트립)</td></tr>
+      <tr><td>m12_regime_profiles.py</td><td>m12_regime_profiles</td><td>4절 국면별 대조, Exhibit 12</td></tr>
+    </table>
+    <p class="tbl-note">전 스크립트는 리포트와 같은 폴더의 scripts/에, 산출물은 output/에 있다. 원자료 갱신 후 위 순서로 재실행하면 모든 그림·표의 근거 수치가 재계산된다. Source: FI Strategy Research.</p>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<div class="sources">
+  <h2>SOURCES &amp; REFERENCES</h2>
+  <ul>
+    <li>데이터 — 연합인포맥스: KOFR OIS 호가(한국자금중개, 2022.2~), KRW IRS 제로커브(2011~). 한국은행 ECOS: 시장금리 일별(817Y002), 기준금리(722Y001). kofr.kr: KOFR 공시. 금융투자협회 채권정보센터: 시가평가 수익률(민평 5사 평균). 금융투자협회: 채권시장지표(BMSI) 2013~2026년 138회분. 한국은행: 금통위 의사일정·기준금리 변경 이력. 시장 데이터는 2026-08-07 기준(통안·IRS 스트립 교차검증은 2026-08-06까지).</li>
+    <li>한국은행 (2023), 「최근 국고채금리와 기준금리 역전 바로 이해하기」, 한국은행 블로그, 2023.3.6, 금융시장국 채권시장팀 — "국고채금리 내재 기대는 AFNS 모형을 활용한 자체 추정 결과".</li>
+    <li>한국은행 (2023), 통화신용정책보고서 2023년 3월호, 참고 I-2 「최근 장단기금리 역전에 대한 평가 및 시사점」, pp.30~35 — AFNS 모형 기반 순기대단기금리·기간프리미엄 분해.</li>
+    <li>태현욱·노건엽·김병준·장봉규·박경국 (2019), 「DNS 모형을 통한 금리 충격 시나리오 산출 및 분석」, 보험금융연구 제30권 제2호, pp.3~53 — 본 리포트 4절 충격 전파 방법론의 전거.</li>
+    <li>강규호·구병수 (2024), 「수익률곡선 추세와 기간 프리미엄」, BOK 경제연구 제2024-11호, 한국은행 경제연구원.</li>
+    <li>Kuttner, K. (2001), "Monetary Policy Surprises and Interest Rates: Evidence from the Fed Funds Futures Market", <em>Journal of Monetary Economics</em> 47(3). / Piazzesi, M. and E. Swanson (2008), "Futures Prices as Risk-Adjusted Forecasts of Monetary Policy", <em>JME</em> 55(4). / Gürkaynak, R., B. Sack and E. Swanson (2005), "Do Actions Speak Louder Than Words? The Response of Asset Prices to Monetary Policy Actions and Statements", <em>International Journal of Central Banking</em> 1(1). / Christensen, J., F. Diebold and G. Rudebusch (2011), "The Affine Arbitrage-Free Class of Nelson-Siegel Term Structure Models", <em>Journal of Econometrics</em> 164(1). / Diebold, F. and C. Li (2006), <em>Journal of Econometrics</em> 130(2).</li>
+    <li>한국거래소, KOFR OIS 청산 계약 명세(고정금리 Act/365 Fixed, KRW-KOFR-OIS Compound) — v7 가격식 교정의 근거.</li>
+    <li>교차 감사 — 「codex_claude 비교」(2026-08-08, 독립 재계산 감사 메모): OIS 연율화 오류 지적과 8월 중심치 약 50%·범위 40~60% 권고를 본 v7이 검증 후 수용했다.</li>
+  </ul>
+</div>
+
+<div class="disclaimer">
+  <strong>개정 이력.</strong> v16(2026-08-10): 5절 표본외 검증에 국고 10년을 추가(표 확장·Exhibit 15를 3패널로) — 완화 +0.32 / 급속 인상 −0.41 / 동결 +0.06 / 인하 +0.29, 풀링 −0.20으로 국고 3년과 같은 "급속 인상기 집중 실패" 무늬를 확인, 4절 국면 대조(Exhibit 12)와 정합. Word 판 백테스트 결론 문구를 "총점은 서베이 우위, 시장의 값어치는 갈림의 방향 정보"로 교정(과잉 일반화 지적 반영). 수치 변경 없음.
+  <br>v15(2026-08-10): Exhibit 7(a)를 앞 10개월로 절단(독자 지적) — 10개월 너머는 모형의 평균회귀 사전믿음이 지배해 "몇 년 뒤 인하"로 오독될 수 있어 잘랐고, 절단 사유를 본문·그림에 명시. Exhibit 7(b)의 3개월 음수 프리미엄이 경제적 보상이 아니라 시작점 웨지·짧은 끝 적합 잔차임을 그림 주석과 본문에 명시. Word 판은 그림 등장 순서에 맞게 그림 3(AFNS)·그림 4(누적·배분) 번호를 교정하고 방법론에 (4) PCA 분해 항목을 추가. 수치 변경 없음.
+  <br>v14(2026-08-10): 4절 말미에 국면별 대조 소절과 Exhibit 12를 신설했다(m12) — 실증 프로파일이 국면마다 모양을 바꾸는 것(완만기 평행 ≈1 · 급속 인상기 1년부터 음수 · 완화·재인상기 3년 2.7배 봉우리)을 DNS(국면 불변 곡선)·PCA(완만기만 측정 가능)와 한 화면에서 대조하고, 전표본 실증 0.43이 서프라이즈² 가중 혼합(가중치 절반 이상이 2022년)임을 명시했다. 기존 5절 Exhibit 12~14는 13~15로 재번호. 수치 변경 없음.
+  <br>v13(2026-08-10): 4절 서술 정확화(독자 지적 반영) — "세 잣대가 단기에서 일치"를 "데이터 잣대(실증·PCA)는 1년 이내 상호 일치, 구조 모형(DNS)은 6개월~2년 배 구간에서 체계적으로 높고 5년 이후 낮다(적재함수의 매끄러운 감쇠 형태 탓)"로 교정. 본문·Exhibit 10 읽기 안내·Word 판 동기화. 수치 변경 없음.
+  <br>v12(2026-08-10): 4절을 두 방법론 트랙으로 재구성했다 — "충격 전파 (1) DNS 계열(이벤트 베타·기울기충격 전파)"과 "충격 전파 (2) PCA 계열(부서 병행 재추정)". PCA 트랙에 전용 Exhibit 2종을 신설(Exhibit 10 요인별 전파·당일 프로파일 3잣대 대조, Exhibit 11 당일→1주→1개월 시간 전개와 95% 부트스트랩 대역, make_figs_pca.py). 기존 5절 Exhibit 10~12는 12~14로 재번호. 수치 변경 없음.
+  <br>v11(2026-08-10): 4절에 부서 병행 PCA 재추정과의 대조 소절을 추가했다 — 당일 만기 프로파일(3개월물=1)에서 세 잣대(실증 베타·DNS 전파·PCA)가 단기 일치, 장기는 PCA(10년 0.27)가 실증(0.43)과 DNS(0.19) 사이. 당일 이후 1주·1개월의 장기 확산(10년 +2.1→+9.9bp)과 3/10년 플래트닝 주의를 신설 문단으로 수록(부트스트랩 구간·비인과 한계 명시). 서프라이즈 자(전일 컨센서스 폴 평균)가 본문(시장내재)과 다름을 명시. 헤드라인 수치 변경 없음.
+  <br>v10(2026-08-10): 교차검증에 렌즈 ⑥(CD-IRS 스트립, 실무 관행의 형식화)을 추가했다 — 연말 내재 3.34%(약 2.4회)로 여섯 렌즈의 최상단이며, CD 조달 스프레드 오염과 백테스트 부적합(모든 국면에서 무정보 이하)을 명시해 연말 누적의 참고로만 쓴다(m11). 3절 재현 소절에 한은 방법론(AFNS)의 한계 네 가지(회의 일정 부재·해상도·적시성·사양 의존)와 OIS 계단함수의 역할 분담 표를 증보했다. 기존 헤드라인 수치 변경 없음.
+  <br>v9(2026-08-10): 한국은행 방법론(AFNS, CDR 2011)을 자체 데이터에 칼만 ML로 직접 추정해 3절에 재현 소절과 Exhibit 7을 추가했다. 검증: 한은 공표 분해(2022.11~2023.1월중, 금리차 축소 −136bp 중 순기대 −102bp)를 같은 창에서 −137/−115bp로 재현, 무재정 보정항은 3년 0.9bp·10년 7.5bp로 작아 기존 DNS-VAR 근사가 정당함을 확인. 교차검증 표에 렌즈 ④(AFNS 3.07%)를 추가하고 기존 DNS-VAR는 ④′로 병기(두 모형의 기대 경로는 연말 기준 1bp 차 — 순수 기대 3.0~3.1% 결론 불변). Exhibit 7~11은 8~12로 재번호. 적대적 검증(공식 원문 대조·계량 감사·정합성 감사, 에이전트 3면) 후 반영.
+  <br>v8(2026-08-10): 독립 심사의 지적을 검증 후 반영했다. 본문·그림 주석에 남아 있던 구판(v6) 수치를 일소하고(백테스트 국면 성적 0.87/0.56→0.77/0.37, DNS 10년 전달 3/7→2.4/5.3bp, Exhibit 2 RMSE 주석 1.5→0.8bp, Exhibit 11의 2024-11 시장 인하확률 84→69%, 2025-01-16 서프라이즈 9.6→6.3bp 등), 렌즈 번호를 다섯 체계로 통일해 국고 스트립을 2절에서 도입했으며, "인상 전환은 매번 서베이 우위" 서술을 2026-07 반례로 철회했다. 부록 B의 추정량 서술을 실제 구현(감쇠형 가우스-뉴턴)대로 정정하고 확률 대역의 근거(몬테카를로·λ 민감도)를 추가했다. 모델 산출물과 헤드라인 수치는 변경 없음.
+  <br>v7(2026-08-08): 교차 감사에서 확인된 OIS 고정금리 연율화 오류(유효연율 → KRX 명세의 Act/365 단리)를 교정하고 모든 산출물을 재계산했다. 주요 변경 — 8월 확률 30%→50%, 10월 100%→95%, 11월 56%→36%, 연말 내재 3.22%→3.20%. 교정 전 수치는 하향 편의가 있었다.
+  <br><br>
+  <strong>Important Notice.</strong> 본 자료는 내부 검토·토론 목적의 리서치이며 특정 증권의 매매 권유가 아니다.
+  모든 확률·경로·충격 추정치는 모형 산출값으로, 문서에 명시된 가정(25bp 격자, 2027년 일정 노드,
+  프리미엄 처리)에 의존하며 실제와 다를 수 있다. 과거의 실증 관계가 미래에도 성립한다는 보장은 없다.
+  데이터는 신뢰할 만한 출처에서 수집했으나 정확성을 보증하지 않는다. © 2026 FI Strategy Research.
+</div>
+
+<div class="page-footer">
+  <span>시장은 다음 인상을 얼마나 담아 놓았나 — KRP-2026-0807-R16</span>
+  <span>발행 2026년 8월 10일 · 데이터 2026년 8월 7일 · FI Strategy Research</span>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('.equation').forEach(el => {
+  el.addEventListener('click', () => {
+    const latex = el.getAttribute('data-latex');
+    if (!latex) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(latex).then(() => flashCopied(el)).catch(() => fallbackCopy(latex, el));
+    } else { fallbackCopy(latex, el); }
+  });
+});
+function fallbackCopy(text, el) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;left:-9999px;';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); flashCopied(el); } catch (e) {}
+  document.body.removeChild(ta);
+}
+function flashCopied(el) {
+  el.classList.add('copied');
+  setTimeout(() => el.classList.remove('copied'), 1600);
+}
+</script>
+</body>
+</html>

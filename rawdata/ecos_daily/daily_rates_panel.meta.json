@@ -1,0 +1,27 @@
+{
+  "downloaded_at_utc": "2026-08-28T00:38:12.378783+00:00",
+  "description": "Convenience wide panel of all daily series in this directory. kofr column mirrors rawdata/ecos/rates/kofr_daily.csv (canonical per-series file).",
+  "row_count": 8029,
+  "first_time": "1995-01-03",
+  "last_time": "2026-08-27",
+  "columns": [
+    "date",
+    "call_overnight",
+    "cd_91d",
+    "cp_91d",
+    "msb_91d",
+    "msb_1y",
+    "msb_2y",
+    "ktb_1y",
+    "ktb_2y",
+    "ktb_3y",
+    "ktb_5y",
+    "ktb_10y",
+    "ktb_20y",
+    "ktb_30y",
+    "corp_aa_minus_3y",
+    "kofr",
+    "bok_policy_rate"
+  ],
+  "sha256": "efb219d491c59df5e307b345e4d5876f83b64cbb2cc41bb2057980c512d7f0e8"
+}

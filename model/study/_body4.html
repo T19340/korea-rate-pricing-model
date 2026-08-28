@@ -1,0 +1,326 @@
+<div class="panel-rail">
+<aside class="tool-panel nav-panel">
+<div class="p-head">— Contents · 목차 —</div>
+<div class="p-grp">1부 · 재료</div>
+<a href="#s11"><span class="nl-n">1.1</span><span>하루짜리 금리</span></a>
+<a href="#s12"><span class="nl-n">1.2</span><span>OIS 계약의 해부</span></a>
+<a href="#s13"><span class="nl-n">1.3</span><span>호가 = 경로의 평균</span></a>
+<a href="#s14"><span class="nl-n">1.4</span><span>연율화 관행 · 셀 (a)</span></a>
+<div class="p-grp">2부 · 계단 하나</div>
+<a href="#s21"><span class="nl-n">2.1</span><span>계단 경로</span></a>
+<a href="#s22"><span class="nl-n">2.2</span><span>시작점 r₀</span></a>
+<a href="#s23"><span class="nl-n">2.3</span><span>2개월 손계산 · 셀 (b)</span></a>
+<a href="#s24"><span class="nl-n">2.4</span><span>확률의 정체</span></a>
+<div class="p-grp">3부 · 연립</div>
+<a href="#s31"><span class="nl-n">3.1</span><span>민감도 행렬 · 셀 (c)</span></a>
+<a href="#s32"><span class="nl-n">3.2</span><span>특이성과 증폭 · 셀 (d)</span></a>
+<a href="#s33"><span class="nl-n">3.3</span><span>가중·평활·수축</span></a>
+<a href="#s34"><span class="nl-n">3.4</span><span>가우스-뉴턴 · 셀 (e)</span></a>
+<div class="p-grp">4부 · 실전</div>
+<a href="#s41"><span class="nl-n">4.1</span><span>파이프라인 조감</span></a>
+<a href="#s42"><span class="nl-n">4.2</span><span>8/7 완전 재현 · 셀 (f)</span></a>
+<a href="#s43"><span class="nl-n">4.3</span><span>신뢰 폭 · 셀 (g)</span></a>
+<a href="#s44"><span class="nl-n">4.4</span><span>규율과 한계</span></a>
+<a href="#s45"><span class="nl-n">4.5</span><span>졸업시험 · 셀 (h)</span></a>
+<a href="#wb" class="grp-link"><span class="nl-n">WB</span><span>동반 워크북</span></a>
+</aside>
+<aside class="tool-panel formula-panel">
+<div class="p-head" id="fpHead">— §1.1 하루짜리 금리 —</div>
+
+<div class="fcard" data-sec="s11">
+ <div class="fblock">
+  <div class="fb-note"><b>KOFR</b> — 국채·통안증권 담보 하루짜리 레포의 실거래 가중평균 금리. 기준금리를 따라다니는 "거래되는 하루 금리".</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">기준금리</span><span class="d">— 금통위가 정하는 정책 수준, 지금 2.75%</span></div>
+  <div class="fv"><span class="s">bp</span><span class="d">— 0.01%p. 인상 한 번 = 25bp</span></div>
+  <div class="fv"><span class="s">금통위</span><span class="d">— 연 8회, 기준금리 결정 회의</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s12">
+ <div class="fblock">
+  <div class="fb-eq">\[\text{변동다리 배율}=\prod_{i=1}^{D}\Big(1+\tfrac{r_i}{365}\Big)\]</div>
+  <div class="fv-h">변수 · 용어</div>
+  <div class="fv"><span class="s">\(K\)</span><span class="d">— 고정다리 금리 = 호가 (연율 %)</span></div>
+  <div class="fv"><span class="s">\(r_i\)</span><span class="d">— i번째 날의 KOFR</span></div>
+  <div class="fv"><span class="s">\(D\)</span><span class="d">— 만기까지 일수</span></div>
+  <div class="fv"><span class="s">MID</span><span class="d">— 매수·매도 호가의 중간값</span></div>
+  <div class="fv"><span class="s">틱</span><span class="d">— 호가 최소 단위 0.25bp</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s13">
+ <div class="fblock">
+  <div class="fb-note">딜러의 균형 호가: <b>고정이자 = 변동이자의 기대값</b>. 그래서 K는 미래 KOFR 경로의 확률가중 평균 요약이다.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">위험중립 확률</span><span class="d">— 가격 책정에 쓰이는, 위험 보상이 섞인 확률 (§2.4)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s14">
+ <div class="fblock">
+  <div class="fb-eq">\[K=\tfrac{365}{D}\Big[\prod_{i=1}^{D}\big(1+\tfrac{r_i}{365}\big)-1\Big]\times 100\]</div>
+  <div class="fv-h">변수 · 용어</div>
+  <div class="fv"><span class="s">Act/365 단리</span><span class="d">— KRX 명세: 복리 이자를 단순 비례로 연율화</span></div>
+  <div class="fv"><span class="s">유효연율</span><span class="d">— 구판의 오류: 동결 눈금이 평평해져 8월 확률 −20%p</span></div>
+  <div class="fv"><span class="s">검증</span><span class="d">— 동결 경로가 1주 호가 2.740을 재현해야 한다</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s21">
+ <div class="fblock">
+  <div class="fb-eq">\[r(s)=r_0+\sum_k \Delta_k\,\mathbf{1}\{s\ge m_k\}\]</div>
+  <div class="fv-h">변수</div>
+  <div class="fv"><span class="s">\(r_0\)</span><span class="d">— 경로 시작 수준 (§2.2)</span></div>
+  <div class="fv"><span class="s">\(m_k,\ \Delta_k\)</span><span class="d">— k번째 회의까지 일수 · 그 회의의 점프</span></div>
+ </div>
+ <div class="fblock">
+  <div class="fb-eq">\[\Delta = P\times 25\text{bp}\;\Rightarrow\; P=\tfrac{\Delta}{25\text{bp}}\]</div>
+  <div class="fv-h">해석</div>
+  <div class="fv"><span class="s">\(\Delta\)</span><span class="d">— 그 회의의 기대 점프 (인상·동결의 확률가중)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s22">
+ <div class="fblock">
+  <div class="fb-note">r₀ = <b>1주 OIS 호가</b> (2.740%). 같은 상품군이라 베이시스가 시작점에 흡수된다. <b>1주 안에 회의가 있으면 KOFR 공시값으로 폴백</b>.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">베이시스</span><span class="d">— KOFR와 기준금리 사이의 상시 괴리 (담보 수급)</span></div>
+  <div class="fv"><span class="s">폴백</span><span class="d">— 1순위를 못 쓸 때의 예비 규칙 — 졸업시험의 함정</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s23">
+ <div class="fblock">
+  <div class="fb-eq">\[P=\frac{K_{\text{시장}}-K_{\text{동결}}}{K_{\text{인상}}-K_{\text{동결}}}\]</div>
+  <div class="fv-h">8/7의 2개월 값</div>
+  <div class="fv"><span class="s">\(K_{\text{동결}}\)</span><span class="d">— 2.7462%</span></div>
+  <div class="fv"><span class="s">\(K_{\text{인상}}\)</span><span class="d">— 2.9150% (차이 16.9bp = 25bp × 41/61)</span></div>
+  <div class="fv"><span class="s">\(K_{\text{시장}}\)</span><span class="d">— 2.8400% → P ≈ 56%</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s24">
+ <div class="fblock">
+  <div class="fb-note">P는 ① <b>25bp 격자</b> 가정 위의 값, ② <b>위험중립</b>(예보 아님), ③ [0,1] 밖은 <b>클리핑</b>. Δ(bp)와 P(%)를 항상 병기한다.</div>
+  <div class="fv-h">기억할 것</div>
+  <div class="fv"><span class="s">음의 Δ</span><span class="d">— 인하 기대: −Δ/25bp가 인하확률</span></div>
+  <div class="fv"><span class="s">양방향 분포</span><span class="d">— Δ 하나로는 분리 불가 (해상도 한계)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s31">
+ <div class="fblock">
+  <div class="fb-eq">\[\frac{\partial K_D}{\partial \Delta_k}\approx\frac{D-m_k}{D}\quad(m_k&lt;D)\]</div>
+  <div class="fv-h">읽기</div>
+  <div class="fv"><span class="s">민감도</span><span class="d">— 만기 내 "회의 뒤 날수"의 비중</span></div>
+  <div class="fv"><span class="s">예</span><span class="d">— 3개월×10/22 = 16/92 = 0.174 → 25bp가 4.3bp로만 전달</span></div>
+  <div class="fv"><span class="s">자코비안</span><span class="d">— 이 민감도들을 모은 6×6 행렬</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s32">
+ <div class="fblock">
+  <div class="fb-note">특이값 여섯째 = 0 → <b>계수(rank) 5</b>: 정확해가 유일하지 않다. 유효 조건수 45, 1틱 잡음 → Δ 최대 ±2.4bp(<b>10배 증폭</b>), 이웃 회의는 시소.</div>
+  <div class="fv-h">용어</div>
+  <div class="fv"><span class="s">특이값</span><span class="d">— 행렬이 각 방향을 구분하는 세기. 0이면 그 방향은 안 보임</span></div>
+  <div class="fv"><span class="s">최소노름 해</span><span class="d">— 무한한 해 중 크기가 가장 작은 것 (lstsq)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s33">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\min_{\Delta}\;&(y-K(\Delta))^{\!\top}W(y-K(\Delta))\\&+\lambda\lVert D\Delta\rVert^2+\Delta^{\!\top}T\Delta\end{aligned}\]</div>
+  <div class="fv-h">세 처방</div>
+  <div class="fv"><span class="s">\(W\)</span><span class="d">— 가중 1/1/1/0.9/0.8/0.7 (뒷 만기 오염)</span></div>
+  <div class="fv"><span class="s">\(\lambda=2{\times}10^{-3}\)</span><span class="d">— 이웃 점프 차이 벌점 (시소 겨냥)</span></div>
+  <div class="fv"><span class="s">\(T\)</span><span class="d">— 수축: 확정 2×10⁻⁴ · 2027 가정 10⁻³ (5배)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s34">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\Delta\leftarrow\Delta+\big(J^{\top}WJ&+\lambda D^{\top}D+T\big)^{-1}\\ \times\;&J^{\top}W(y-K(\Delta))\end{aligned}\]</div>
+  <div class="fv-h">구현의 실제</div>
+  <div class="fv"><span class="s">8회 반복</span><span class="d">— 거의 선형이라 첫 걸음이 대부분</span></div>
+  <div class="fv"><span class="s">벌점 = 감쇠</span><span class="d">— 우변에 없음: 보이는 곳은 데이터, 안 보이는 곳은 벌점이 채움</span></div>
+  <div class="fv"><span class="s">정확 최적해</span><span class="d">— 10·11월을 섞어 버림 (81/58%) → 채택 안 함</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s41">
+ <div class="fblock">
+  <div class="fb-note">① 입력(호가 7·일정) → ② r₀(1주) → ③ 노드(확정 3 + 2027 가정 3) → ④ fit_deltas → ⑤ Δ→P·연말 내재. 매일 <b>1주 재현·잔차 점검</b>을 먼저 돌린다.</div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s42">
+ <div class="fblock">
+  <div class="fb-note">2026-08-07 결과 — RMSE 0.81bp, 운영 공표값과 0.05bp 내 일치.</div>
+  <div class="fv-h">회의별 Δ → P</div>
+  <div class="fv"><span class="s">8/27</span><span class="d">— +12.54bp → 50.2%</span></div>
+  <div class="fv"><span class="s">10/22</span><span class="d">— +23.77bp → 95.1%</span></div>
+  <div class="fv"><span class="s">11/26</span><span class="d">— +9.00bp → 36.0%</span></div>
+  <div class="fv"><span class="s">연말 내재</span><span class="d">— 3.20% (약 1.8회 인상)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s43">
+ <div class="fblock">
+  <div class="fb-note">±1틱 몬테카를로 90% 대역 — 8/27 <b>4%p</b> · 10/22 <b>13%p</b> · 11/26 <b>22%p</b>. 커버리지 구조 그대로.</div>
+  <div class="fv-h">구분</div>
+  <div class="fv"><span class="s">잡음</span><span class="d">— 무작위 흔들림, 몬테카를로로 잰다</span></div>
+  <div class="fv"><span class="s">근사</span><span class="d">— 가정의 치우침(연율화·T+1), 가정을 바꿔 재계산해야 보인다 — 8월 실무 범위 40~60%의 주범</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s44">
+ <div class="fblock">
+  <div class="fb-note"><b>누적은 수준으로, 배분은 방향으로.</b> 배분이 26%로 무너진 날(6/10) 누적은 기간 최고점(3.45%) — 둘은 따로 논다.</div>
+  <div class="fv-h">질문 → 산출</div>
+  <div class="fv"><span class="s">연말 몇 회?</span><span class="d">— 누적 (3.20%)</span></div>
+  <div class="fv"><span class="s">다음 회의?</span><span class="d">— 앞 배분 (50%, 40~60%)</span></div>
+  <div class="fv"><span class="s">두세 회의 뒤?</span><span class="d">— 방향·크기만</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s45">
+ <div class="fblock">
+  <div class="fb-note">졸업시험 (7/15) — 함정: 1주 구간에 회의 → r₀는 <b>KOFR 2.546% 폴백</b>. 답: 7/16 <b>91%</b> · 8/27 <b>73%</b>. 다음날 실제로 인상.</div>
+  <div class="fv-h">확인</div>
+  <div class="fv"><span class="s">73% vs 50%</span><span class="d">— 7월 인상 실현 후 8월 기대가 반반으로 갱신</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="wb">
+ <div class="fblock">
+  <div class="fb-note">워크북 = 이 문서의 <b>재현 증명</b>. 셀 (a)~(h) 코드·출력·그림이 본문과 글자·픽셀까지 동일. 순서대로 실행할 것.</div>
+  <div class="fv-h">파일</div>
+  <div class="fv"><span class="s">ipynb</span><span class="d">— step_method_workbook.ipynb</span></div>
+  <div class="fv"><span class="s">figs/</span><span class="d">— 도표 3·5·6·7·8·10·11·13의 원본</span></div>
+ </div>
+</div>
+</aside>
+</div>
+</div><!-- /with-layer-panel -->
+
+<!-- ================= 참고문헌 ================= -->
+<div class="refs" id="refs">
+  <h2>참고문헌 · 출처</h2>
+  <ol>
+    <li id="fn1">KOFR 산출·공시와 KOFR OIS 표준 명세(고정금리 Act/365 단리 연율화 — §1.4의 근거). 한국예탁결제원·한국거래소, KOFR 공식 사이트: <a class="src" href="https://www.kofr.kr">kofr.kr</a></li>
+    <li id="fn2">KOFR OIS 호가 데이터 — 한국자금중개 고시 매수·매도의 중간값(MID), 연합인포맥스 단말 수신 (2026-08-07 · 2026-07-15 기준).</li>
+    <li id="fn3">금융통화위원회 일정 공표 — 한국은행: <a class="src" href="https://www.bok.or.kr">bok.or.kr</a> (2026년 정례회의 8회. 2027년 일정은 미공표 — 본문 §3.1의 분기 가정 노드).</li>
+    <li id="fn4">같은 원리의 원조 — CME Group, "FedWatch Tool Methodology" (페드펀드 선물로 FOMC 확률 산출): <a class="src" href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html">cmegroup.com/…/cme-fedwatch-tool</a>. 한국은 회의 구간별 선물이 없어 누적형 OIS를 회의별로 분해하는 본 문서의 방식이 필요하다.</li>
+    <li id="fn5">본 방법론의 운영 구현 — <code>model/scripts/m1_step_function.py</code> (같은 저장소). 본 문서의 셀 (e)·(f)가 이 구현의 공표값을 0.05bp 내 재현함을 확인.</li>
+    <li id="fn6">결과의 활용·검증 리포트 — <code>model/report.html</code> (같은 저장소): 통안·국고·DNS-VAR·서베이 교차 렌즈, 2013~2026 백테스트 124회, 국면 층화 분석. 이 학습 문서가 "어떻게 계산하나"라면 리포트는 "그 숫자를 믿어도 되나"를 다룬다.</li>
+    <li id="fn7">연율화 관행 오류(§1.4)의 발견 경위 — 동일 문제를 독립 구현한 타 분석과의 교차 감사 기록: <code>model/codex_claude 비교.md</code> (같은 저장소).</li>
+  </ol>
+</div>
+
+<div class="disclaimer">
+  <b>검증 및 고지.</b> 본문 코드 셀 (a)~(h)와 셋업 셀, 접이식 실행 결과, 데이터 그림 8장(도표 3·5·6·7·8·10·11·13)은 동반 워크북 <code>step_method_workbook.ipynb</code>를 검증 환경(Python 3.14 · numpy 2.4 · matplotlib 3.10)에서 처음부터 끝까지 실행해 산출한 것과 동일합니다. 실측 그림 2장(도표 1·12)은 보조 스크립트 <code>_extra_figures.py</code>가 프로젝트 원데이터(ECOS·kofr.kr·인포맥스)와 운영 모형의 일별 산출로 생성했습니다. 도표 2·4·9는 개념도입니다. 입력 호가는 한국자금중개 고시 호가의 중간값으로 실제 체결가와 다를 수 있습니다. 본 문서의 확률은 시장가격에 내재된 위험중립 확률로서 예보가 아니며, 문서 전체는 교육 목적으로 작성되어 투자 자문이 아닙니다. 수식 영역 클릭 시 LaTeX 소스가 클립보드에 복사됩니다.
+</div>
+
+<footer>Korea Rate Pricing Model · Method School 01 — KOFR OIS 계단함수 · 2026-08-08</footer>
+
+</div>
+
+<script>
+/* ── 수식: data-tex → 렌더 + 클릭 복사 ── */
+function showToast(){
+  var t=document.getElementById('toast');
+  t.style.opacity='1'; clearTimeout(t._tmo);
+  t._tmo=setTimeout(function(){t.style.opacity='0';},1300);
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.top='-1000px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+function copyTeX(el){
+  var tex=el.getAttribute('data-tex');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(tex).then(showToast,function(){fallbackCopy(tex);showToast();});
+  }else{fallbackCopy(tex);showToast();}
+}
+document.querySelectorAll('.eq').forEach(function(el){
+  el.textContent='\\['+el.getAttribute('data-tex')+'\\]';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+document.querySelectorAll('.eqi').forEach(function(el){
+  el.textContent='\\('+el.getAttribute('data-tex')+'\\)';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+</script>
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+  svg:{fontCache:'global'},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}
+};
+</script>
+<script src="mathjax-tex-svg-full.js" id="MathJax-script"></script>
+
+<script>
+(function(){
+  var links={};
+  document.querySelectorAll('.nav-panel a').forEach(function(x){
+    links[x.getAttribute('href').slice(1)]=x;
+  });
+  var fcards={};
+  document.querySelectorAll('.fcard').forEach(function(c){
+    fcards[c.getAttribute('data-sec')]=c;
+  });
+  var fpHead=document.getElementById('fpHead');
+  var secName={s11:'§1.1 하루짜리 금리',s12:'§1.2 OIS 계약',s13:'§1.3 호가 = 평균',
+    s14:'§1.4 연율화 관행',s21:'§2.1 계단 경로',s22:'§2.2 시작점 r₀',
+    s23:'§2.3 2개월 손계산',s24:'§2.4 확률의 정체',s31:'§3.1 민감도 행렬',
+    s32:'§3.2 특이성·증폭',s33:'§3.3 세 가지 처방',s34:'§3.4 가우스-뉴턴',
+    s41:'§4.1 파이프라인',s42:'§4.2 8/7 재현',s43:'§4.3 신뢰 폭',
+    s44:'§4.4 규율과 한계',s45:'§4.5 졸업시험',wb:'동반 워크북'};
+  var cur=null;
+  function activate(id){
+    if(!links[id]||cur===id)return;
+    if(cur&&links[cur])links[cur].classList.remove('active');
+    links[id].classList.add('active');cur=id;
+    for(var k in fcards){fcards[k].classList.toggle('fc-on',k===id);}
+    if(fpHead)fpHead.textContent='— '+(secName[id]||'참조')+' —';
+  }
+  if(fcards.s11)fcards.s11.classList.add('fc-on');
+  var targets=['s11','s12','s13','s14','s21','s22','s23','s24','s31','s32','s33','s34','s41','s42','s43','s44','s45','wb']
+    .map(function(id){return document.getElementById(id);}).filter(Boolean);
+  function spy(){
+    var line=window.innerHeight*0.2,best=null;
+    targets.forEach(function(t){
+      if(t.getBoundingClientRect().top<line)best=t.id;
+    });
+    if(best)activate(best);
+  }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  window.addEventListener('load',spy);
+  if(window.MathJax&&MathJax.startup&&MathJax.startup.promise){
+    MathJax.startup.promise.then(spy);
+  }
+  spy();
+})();
+</script>
+<div class="lightbox" id="lightbox"><img src="" alt=""></div>
+<script>
+/* 라이트박스 — 그림 클릭 확대, 오버레이 클릭·Esc로 닫기 */
+(function(){
+  var ov=document.getElementById('lightbox');
+  var im=ov.querySelector('img');
+  function close(){ov.classList.remove('on');}
+  ov.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  document.querySelectorAll('.fig img').forEach(function(g){
+    g.addEventListener('click',function(){im.src=g.getAttribute('src');im.alt=g.alt||'';ov.classList.add('on');});
+  });
+})();
+</script>

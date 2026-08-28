@@ -1,0 +1,39 @@
+{
+  "source_name": "Bank of Korea ECOS (daily market rates, internal web endpoint)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "endpoint": "https://ecos.bok.or.kr/serviceEndpoint/httpService/request.json",
+  "endpoint_note": "ECOS 웹 화면이 쓰는 내부 조회 서비스(trxCd OSUUA02R01). 인증키 없이 전 구간을 한 번에 받으므로 sample 키의 10행 제한과 요청수 제한을 피한다. 공식 OpenAPI(api/StatisticSearch)와 값이 동일함은 2026-07 국고3년 3,140영업일 전 구간 대조로 확인됨.",
+  "download_segments": [["19910102", "20101231"], ["20110101", "today"]],
+  "tables": [
+    {
+      "stat_code": "817Y002",
+      "stat_name": "1.3.2.1. 시장금리(일별)",
+      "item_group": "G11950",
+      "series": [
+        {"slug": "call_overnight_daily", "item": "010101000", "description": "무담보 콜금리(1일, 전체거래) 일별"},
+        {"slug": "cd_91d_daily", "item": "010502000", "description": "CD 91일 일별; 2023-10-04부터 실거래 기반 산출(일 1회 16:30 공시)"},
+        {"slug": "cp_91d_daily", "item": "010503000", "description": "CP 91일 일별; 신용 프리미엄 통제용"},
+        {"slug": "msb_91d_daily", "item": "010400000", "description": "통안증권 91일 일별; 회의별 계단함수 모델 핵심 입력"},
+        {"slug": "msb_1y_daily", "item": "010400001", "description": "통안증권 1년 일별"},
+        {"slug": "msb_2y_daily", "item": "010400002", "description": "통안증권 2년 일별"},
+        {"slug": "ktb_1y_daily", "item": "010190000", "description": "국고채 1년 일별"},
+        {"slug": "ktb_2y_daily", "item": "010195000", "description": "국고채 2년 일별"},
+        {"slug": "ktb_3y_daily", "item": "010200000", "description": "국고채 3년 일별"},
+        {"slug": "ktb_5y_daily", "item": "010200001", "description": "국고채 5년 일별"},
+        {"slug": "ktb_10y_daily", "item": "010210000", "description": "국고채 10년 일별"},
+        {"slug": "ktb_20y_daily", "item": "010220000", "description": "국고채 20년 일별"},
+        {"slug": "ktb_30y_daily", "item": "010230000", "description": "국고채 30년 일별"},
+        {"slug": "corp_aa_minus_3y_daily", "item": "010300000", "description": "회사채 3년 AA- 일별; 신용 통제용"},
+        {"slug": "kofr_panel_only", "item": "010901000", "description": "KOFR(일별). 정본 파일은 rawdata/ecos/rates/kofr_daily.csv — 여기서는 통합 패널 열로만 사용", "panel_only": true}
+      ]
+    },
+    {
+      "stat_code": "722Y001",
+      "stat_name": "1.1.1. 한국은행 기준금리 및 여수신금리",
+      "item_group": "G12214",
+      "series": [
+        {"slug": "bok_policy_rate_daily", "item": "0101000", "description": "한국은행 기준금리 일별(변경일 반영)"}
+      ]
+    }
+  ]
+}

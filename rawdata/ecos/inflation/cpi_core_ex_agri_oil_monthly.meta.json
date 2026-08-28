@@ -1,0 +1,23 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/901Y010/M/197501/202608/QB",
+  "query": {
+    "slug": "cpi_core_ex_agri_oil_monthly",
+    "category": "inflation",
+    "stat_code": "901Y010",
+    "cycle": "M",
+    "start_time": "197501",
+    "items": [
+      "QB"
+    ],
+    "description": "농산물 및 석유류 제외 소비자물가지수",
+    "end_time": "202608"
+  },
+  "row_count": 619,
+  "first_time": "197501",
+  "last_time": "202607",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

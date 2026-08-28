@@ -1,0 +1,23 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/901Y062/M/198601/202608/P63ACA",
+  "query": {
+    "slug": "kb_seoul_apartment_price_monthly",
+    "category": "financial_stability",
+    "stat_code": "901Y062",
+    "cycle": "M",
+    "start_time": "198601",
+    "items": [
+      "P63ACA"
+    ],
+    "description": "KB 서울 아파트 매매가격지수",
+    "end_time": "202608"
+  },
+  "row_count": 487,
+  "first_time": "198601",
+  "last_time": "202607",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

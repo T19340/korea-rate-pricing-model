@@ -1,0 +1,124 @@
+{
+  "model": "AFNS correlated-factor (CDR 2011), Kalman ML (independent-factor as robustness)",
+  "sample": [
+    "2013-01",
+    "2026-08"
+  ],
+  "n_months": 164,
+  "est_tenors_m": [
+    3,
+    6,
+    9,
+    12,
+    24,
+    36,
+    60,
+    120
+  ],
+  "lambda_per_year": 0.4557,
+  "K_P": [
+    [
+      0.1386,
+      0.2394,
+      -0.2612
+    ],
+    [
+      -0.1091,
+      0.392,
+      -0.4199
+    ],
+    [
+      0.5188,
+      2.2035,
+      1.3195
+    ]
+  ],
+  "K_P_eig_real": [
+    0.1966,
+    0.8267,
+    0.8267
+  ],
+  "eig_half_life_months": [
+    42.3,
+    10.1,
+    10.1
+  ],
+  "mu_pct": [
+    3.537,
+    -1.143,
+    -0.532
+  ],
+  "sigma_pct": [
+    0.412,
+    0.549,
+    2.016
+  ],
+  "sigma_e_bp": 4.99,
+  "loglik": 7440.0,
+  "loglik_indep": 7426.3,
+  "fit_rmse_bp": 4.22,
+  "indep_robustness": {
+    "lambda": 0.4638,
+    "expected_base_2026_12": 2.774
+  },
+  "yield_adj_bp_at": {
+    "12": 0.1,
+    "36": 0.9,
+    "60": 2.4,
+    "120": 7.5
+  },
+  "short_proxy_now": 2.847,
+  "base_rate_now": 2.75,
+  "wedge_bp": 9.7,
+  "expected_base_2026_12": 3.074,
+  "expected_base_2027_08": 3.334,
+  "expected_base_2028_08": 3.195,
+  "bok_window": {
+    "window": "2022-10월말 -> 2023-01월말 (한은 표기 '2022.11~2023.1월중' 변화)",
+    "d_spread_bp": -137.1,
+    "d_exp_minus_base_bp": -114.9,
+    "d_exp_pure_bp": -64.9,
+    "d_base_bp": 50.0,
+    "d_tp_bp": -22.3,
+    "bok_published": {
+      "d_spread_bp": -136,
+      "d_net_exp_bp": -102,
+      "d_pure_exp_bp_fn7": -52
+    },
+    "note": "상태는 전체 표본(2013~2026) 파라미터로 필터링(사후 분해, 실시간 재현 아님)"
+  },
+  "long_run_expected_base": 2.3,
+  "K_P_eig_imag": [
+    0.0,
+    0.9125,
+    -0.9125
+  ],
+  "opt_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+  "selftest_ok": true,
+  "selftest": {
+    "yadj_closed_vs_numeric_bp": 0.0,
+    "seeds": [
+      7,
+      11,
+      23
+    ],
+    "lambda_true_vs_hat": [
+      0.456,
+      [
+        0.444,
+        0.472,
+        0.47
+      ]
+    ],
+    "h4_expected_err_bp": [
+      -17.6,
+      3.7,
+      -12.0
+    ],
+    "path36_rmse_bp": [
+      28.4,
+      7.1,
+      11.6
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/902Y023/M/195304/202608/IRLT/USA",
+  "query": {
+    "slug": "us_long_rate_monthly",
+    "category": "fx_global",
+    "stat_code": "902Y023",
+    "cycle": "M",
+    "start_time": "195304",
+    "items": [
+      "IRLT",
+      "USA"
+    ],
+    "description": "미국 장기금리",
+    "end_time": "202608"
+  },
+  "row_count": 879,
+  "first_time": "195304",
+  "last_time": "202606",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

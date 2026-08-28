@@ -1,0 +1,10 @@
+{
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "using_sample_key": true,
+  "series_requested_this_run": 29,
+  "series_succeeded_this_run": 29,
+  "series_failed_this_run": 0,
+  "series_in_manifest": 29,
+  "manifest": "manifest.csv"
+}

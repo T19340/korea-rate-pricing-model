@@ -1,0 +1,3 @@
+﻿dataset,rows,first_date,last_date,downloaded_at_utc,relative_path,sha256,source_url
+policy_rate_change_history,61,1999-05-06,2026-08-27,2026-08-28T00:16:27.460579+00:00,rawdata\bok\policy_rate_change_history.csv,81e326fcb6951fe0b131982721a0be39beced17417109e0059b9d2ce43b69702,https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643
+mpc_meeting_calendar,190,2008-01-10,2026-11-26,2026-08-28T00:16:27.460579+00:00,rawdata\bok\mpc_meeting_calendar.csv,175239b58ca44c81c2038e9b913d68385f7fb6c318cc3f704a81319d31d8d82f,https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?mtgSe=A&menuNo=200755&pYear={year}

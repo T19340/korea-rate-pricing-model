@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인과추론 심화 — Double Machine Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Modern CAD Plotter Output — Project Finance Blueprint
+   BP_SKILL의 외형 시스템만 이식: Source Sans 3 본문 / Source Serif 4
+   헤드라인 / IBM Plex Mono 라벨 · 순백 + 차콜 + CAD red 액센트.
+   엔지니어링 미학은 라벨·타이틀블록·레이어패널·차트에만, 본문은 명료하게.
+   ========================================================= */
+:root{
+  --paper:#FFFFFF; --paper-2:#FAFAFA;
+  --ink:#0A0A0A; --ink-2:#2A2A2A; --mute:#6E6E6E; --muted:#6E6E6E;
+  --rule:#0A0A0A; --rule-l:#D6D6D6; --rule-xl:#ECECEC;
+  --cad-red:#C53030; --cad-blue:#2D7EAA; --layer-or:#ED8936;
+  --sans:'Source Sans 3','Malgun Gothic','맑은 고딕',system-ui,sans-serif;
+  --serif:'Source Serif 4','Nanum Myeongjo','바탕',Georgia,serif;
+  --mono:'IBM Plex Mono','D2Coding',Consolas,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--paper);}
+body{font-family:var(--sans);font-size:15px;line-height:1.65;color:var(--ink);
+  -webkit-font-smoothing:antialiased;}
+.wrap{max-width:1100px;margin:0 auto;padding:36px 50px 54px;
+  border-left:1px solid var(--rule-xl);border-right:1px solid var(--rule-xl);}
+a{color:var(--cad-red);text-decoration:none;border-bottom:1px solid var(--rule-l);}
+a:hover{border-bottom-color:var(--cad-red);}
+b,strong{font-weight:700;}
+i,em{font-style:italic;}
+
+/* ── Top strip · 프로젝트 태그 + ISO 7200 타이틀 블록 ── */
+header.mast{display:grid;grid-template-columns:1fr 322px;gap:26px;
+  align-items:start;padding-bottom:20px;border-bottom:1.5px solid var(--rule);
+  margin-bottom:38px;}
+.mast .firm{grid-column:1;grid-row:1;font-family:var(--mono);
+  font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--cad-red);margin-bottom:3px;}
+.mast .series{grid-column:1;grid-row:2;font-family:var(--mono);
+  font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mute);margin-bottom:11px;}
+.mast h1{grid-column:1;grid-row:3;font-family:var(--serif);font-weight:600;
+  font-size:33px;line-height:1.16;letter-spacing:-.01em;color:var(--ink);
+  margin:0 0 10px;font-variation-settings:'opsz' 36;}
+.mast .subtitle{grid-column:1;grid-row:4;font-family:var(--sans);
+  font-weight:400;font-size:16px;line-height:1.5;color:var(--ink-2);
+  margin:0;max-width:600px;}
+.mast .metarow{grid-column:2;grid-row:1 / span 4;align-self:start;
+  border:1px solid var(--rule);background:var(--paper);font-family:var(--mono);
+  font-size:10.5px;}
+.mast .metarow .iso-row{display:grid;grid-template-columns:78px 1fr;
+  border-bottom:.5px solid var(--rule);}
+.mast .metarow .iso-row:last-child{border-bottom:0;}
+.mast .metarow .iso-row .k{padding:6px 9px;border-right:.5px solid var(--rule);
+  letter-spacing:.05em;color:var(--mute);font-weight:500;background:var(--paper-2);}
+.mast .metarow .iso-row .v{padding:6px 9px;color:var(--ink);
+  letter-spacing:.02em;font-weight:500;line-height:1.45;}
+
+/* ── 본문 2단 · 콘텐츠 + 레이어 패널 ── */
+.with-layer-panel{display:grid;grid-template-columns:1fr 264px;gap:30px;
+  align-items:start;}
+.content{min-width:0;}
+html{scroll-behavior:smooth;}
+.panel-rail{position:sticky;top:18px;display:flex;flex-direction:column;
+  gap:14px;max-height:calc(100vh - 34px);overflow-y:auto;}
+.tool-panel{border:1px solid var(--rule);background:var(--paper-2);
+  font-family:var(--mono);}
+.tool-panel .p-head{background:var(--ink);color:var(--paper);font-size:9px;
+  font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:7px 12px;}
+.nav-panel{padding-bottom:7px;}
+.nav-panel .p-grp{font-size:8.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);padding:11px 12px 3px;}
+.nav-panel a{display:flex;gap:7px;padding:3.5px 12px 3.5px 13px;font-size:11px;
+  color:var(--ink-2);text-decoration:none;border-bottom:none;
+  border-left:2px solid transparent;letter-spacing:.01em;}
+.nav-panel a:hover{color:var(--cad-red);background:#F0F0F0;}
+.nav-panel a .nl-n{min-width:23px;font-size:10px;font-weight:600;color:var(--mute);}
+.nav-panel a.grp-link{font-weight:600;color:var(--ink);margin-top:5px;}
+.nav-panel a.active{color:var(--cad-red);background:var(--paper);
+  border-left-color:var(--cad-red);font-weight:600;}
+.nav-panel a.active .nl-n{color:var(--cad-red);}
+.formula-panel{padding:0 0 4px;}
+.fcard{display:none;}
+.fcard.fc-on{display:block;}
+.fblock{padding:9px 13px 11px;border-top:.5px solid var(--rule-l);}
+.fblock:first-child{border-top:none;}
+.fb-eq{font-size:13px;text-align:center;color:var(--ink);margin:3px 0 9px;}
+.fb-eq mjx-container{margin:0 !important;}
+.fb-eq mjx-container svg{max-width:100%;}
+.fb-note{font-family:var(--sans);font-size:10.5px;line-height:1.55;
+  color:var(--ink-2);margin:1px 0 9px;}
+.fb-note b{color:var(--cad-red);font-weight:600;}
+.fv-h{font-size:8px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--mute);margin:4px 0 3px;}
+.fv{padding:3px 0;font-size:10px;line-height:1.5;color:var(--mute);}
+.fv .s{font-size:11.5px;color:var(--ink);margin-right:2px;}
+.fv .d{font-family:var(--sans);color:var(--mute);}
+
+/* ── 핵심 요지 ── */
+.summary{border:1px solid var(--rule-l);border-top:3px solid var(--cad-red);
+  background:var(--paper-2);padding:17px 22px;margin:0 0 30px;}
+.summary h2{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--cad-red);margin:0 0 11px;}
+.summary p{margin:8px 0;font-size:14.5px;line-height:1.7;}
+.summary ul{margin:9px 0 0;padding-left:20px;font-size:14.5px;}
+.summary li{margin:5px 0;line-height:1.6;}
+
+/* ── 목차 ── */
+nav.toc{border:1px solid var(--rule);margin:0 0 30px;padding-bottom:13px;}
+nav.toc h2{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  background:var(--paper-2);border-bottom:1px solid var(--rule);
+  padding:9px 16px;margin:0;}
+nav.toc .grp{font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--cad-red);
+  margin:14px 0 0;padding:0 16px;}
+nav.toc ul{margin:6px 0 0;padding:0 16px 0 36px;list-style:none;}
+nav.toc li{margin:5px 0;font-size:14px;}
+nav.toc a{color:var(--ink);border-bottom:none;}
+nav.toc a:hover{color:var(--cad-red);}
+
+/* ── 파트 구분 ── */
+.part{border-top:3px solid var(--rule);margin:60px 0 10px;padding-top:16px;}
+.part .pn{font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--cad-red);}
+.part h2{font-family:var(--serif);font-weight:600;font-size:27px;line-height:1.15;
+  letter-spacing:-.01em;color:var(--ink);margin:9px 0 7px;}
+.part p{font-family:var(--sans);font-size:14px;line-height:1.5;
+  color:var(--ink-2);margin:0;}
+
+/* ── 섹션 헤딩 · CAD 섹션 태그 ── */
+h3.sec{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:center;
+  margin:46px 0 20px;padding-bottom:9px;border-bottom:1.5px solid var(--rule);
+  font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.005em;
+  color:var(--ink);}
+h3.sec .sn{display:inline-flex;align-items:center;justify-content:center;
+  min-width:24px;height:24px;padding:0 6px;border:1.2px solid var(--cad-red);
+  color:var(--cad-red);font-family:var(--mono);font-size:11.5px;font-weight:700;
+  background:var(--paper);}
+h4.sub{font-family:var(--sans);font-weight:600;font-size:12px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--cad-red);
+  margin:30px 0 11px;}
+
+/* ── 본문 ── */
+p{font-size:15px;line-height:1.75;margin:0 0 16px;color:var(--ink);}
+.lead-q{font-family:var(--sans);font-size:15.5px;line-height:1.6;color:var(--ink-2);
+  border-left:3px solid var(--cad-red);padding-left:15px;margin:0 0 18px;}
+
+/* ── 수식 · Engineering Note ── */
+.eq{cursor:pointer;position:relative;background:var(--paper-2);
+  border:1px solid var(--rule-l);border-left:3px solid var(--cad-red);
+  padding:24px 24px 16px;margin:24px 0;overflow-x:auto;
+  transition:background .2s,border-color .2s;}
+.eq::before{content:"NOTE / EQ";position:absolute;top:7px;left:20px;
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.18em;
+  color:var(--cad-red);}
+.eq:hover{background:#F4F4F4;border-left-color:var(--ink);}
+.eq::after{content:"⊕ CLICK TO COPY LATEX";position:absolute;bottom:5px;right:13px;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;
+  color:var(--mute);opacity:0;transition:opacity .2s;}
+.eq:hover::after{opacity:1;}
+.eqi{cursor:pointer;border-bottom:1px dotted var(--rule-l);}
+.eqi:hover{background:#F4F4F4;}
+
+/* ── MathJax 수식 SVG ── */
+mjx-container[jax="SVG"]{max-width:100%;}
+mjx-container[jax="SVG"] svg{max-width:100%;height:auto;}
+.eq mjx-container[jax="SVG"][display="true"]{margin:0!important;}
+.eq mjx-container[jax="SVG"]{font-size:106%;}
+
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;
+  opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+
+/* ── 콜아웃 ── */
+.note{border:1px solid var(--rule-l);border-left:3px solid var(--cad-blue);
+  background:var(--paper-2);padding:12px 16px;margin:18px 0;font-size:14px;
+  color:var(--ink-2);line-height:1.7;}
+.note b{color:var(--cad-blue);font-weight:700;}
+.warn{border:1px solid var(--rule-l);border-left:3px solid var(--cad-red);
+  background:var(--paper-2);padding:12px 16px;margin:18px 0;font-size:14px;
+  color:var(--ink-2);line-height:1.7;}
+.warn b{color:var(--cad-red);font-weight:700;}
+
+/* ── 도표 · Exhibit (CAD plotter chart) ── */
+figure{margin:30px 0;}
+.fig{border:1px solid var(--rule);background:var(--paper);}
+.figtag{font-family:var(--mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.1em;color:var(--ink);background:var(--paper-2);
+  border-bottom:1px solid var(--rule);padding:9px 16px;}
+.figtag::before{content:"";display:inline-block;width:7px;height:7px;
+  background:var(--cad-red);margin-right:8px;vertical-align:1px;}
+.fig > svg{display:block;width:100%;height:auto;padding:16px 18px 6px;}
+.fig > img{display:block;width:100%;height:auto;padding:16px 18px 6px;cursor:zoom-in;}
+/* 라이트박스 — 그림 클릭 확대 (모든 노트 기본 장치) */
+.lightbox{position:fixed;inset:0;background:rgba(10,10,10,.87);display:none;
+  align-items:center;justify-content:center;z-index:200;cursor:zoom-out;}
+.lightbox.on{display:flex;}
+.lightbox img{max-width:92vw;max-height:92vh;background:#fff;
+  box-shadow:0 10px 44px rgba(0,0,0,.55);}
+figcaption{font-family:var(--sans);font-size:11.5px;line-height:1.6;
+  color:var(--mute);border-top:.5px solid var(--rule-l);
+  padding:9px 16px 11px;margin:0;}
+figcaption b{font-weight:700;color:var(--ink-2);}
+
+/* ── 표 · Schedule ── */
+table.tbl{width:100%;border-collapse:collapse;margin:22px 0;
+  font-family:var(--sans);font-size:13px;border:1px solid var(--rule);}
+table.tbl thead th{background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-weight:500;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;
+  text-align:left;vertical-align:bottom;}
+table.tbl td{padding:8px 12px;border-bottom:.5px solid var(--rule-l);
+  text-align:left;vertical-align:top;line-height:1.55;}
+table.tbl tbody tr:nth-child(even) td{background:var(--paper-2);}
+table.tbl tbody tr:last-child td{border-bottom:0;}
+table.tbl code{font-size:12px;}
+
+/* ── 코드 / 셀 ── */
+code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);
+  border:1px solid var(--rule-l);padding:1px 5px;}
+.cell{margin:22px 0;border:1px solid var(--rule);}
+.cell-hd{background:var(--ink);color:var(--paper);font-family:var(--mono);
+  font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:9px 15px;}
+pre.code{background:var(--paper-2);margin:0;padding:15px 17px;overflow-x:auto;
+  border-bottom:1px solid var(--rule-l);font-family:var(--mono);
+  font-size:12px;line-height:1.65;color:var(--ink-2);}
+pre.code .cmt{color:var(--mute);font-style:italic;}
+pre.code .kw{color:var(--cad-red);}
+.cell-note{font-family:var(--sans);padding:11px 16px;font-size:13px;
+  color:var(--ink-2);line-height:1.7;}
+details.out,details.key{border-top:1px solid var(--rule-l);}
+details.key{margin:22px 0;border:1px solid var(--rule);}
+summary{cursor:pointer;font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;padding:9px 15px;color:var(--ink);
+  background:var(--paper-2);list-style:none;user-select:none;}
+summary::-webkit-details-marker{display:none;}
+summary::before{content:"+  ";color:var(--cad-red);font-weight:700;}
+details[open] summary::before{content:"−  ";}
+details.key summary{color:var(--cad-red);}
+.output{font-family:var(--mono);margin:0;padding:13px 17px;background:var(--paper);
+  font-size:11.5px;line-height:1.7;color:var(--ink-2);white-space:pre-wrap;
+  border-top:1px solid var(--rule-l);}
+.keybody{font-family:var(--sans);padding:9px 16px 14px;font-size:13px;
+  color:var(--ink-2);}
+.keybody pre.code{margin:9px 0;border:1px solid var(--rule-l);}
+
+/* ── 체크리스트 ── */
+.checklist div{font-size:14px;margin:7px 0;padding-left:26px;position:relative;
+  color:var(--ink-2);line-height:1.6;}
+.checklist div::before{content:"";position:absolute;left:0;top:4px;
+  width:11px;height:11px;border:1.3px solid var(--cad-red);}
+
+/* ── 각주 · 참고문헌 · 고지 ── */
+sup.fn{font-size:.66em;line-height:0;}
+sup.fn a{font-family:var(--mono);color:var(--cad-red);font-weight:600;border-bottom:none;}
+.refs{margin-top:46px;border-top:1.5px solid var(--rule);padding-top:18px;}
+.refs h2{font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink);}
+.refs ol{padding-left:22px;}
+.refs li{font-family:var(--sans);font-size:12px;line-height:1.7;
+  color:var(--mute);margin-bottom:9px;}
+.refs li a{color:var(--cad-red);border-bottom:none;word-break:break-all;}
+.refs li a.fn-back{font-family:var(--mono);font-weight:600;word-break:normal;padding:0 3px;}
+.disclaimer{margin-top:20px;font-family:var(--sans);font-size:11px;
+  line-height:1.55;color:var(--mute);}
+.disclaimer b{font-weight:600;color:var(--ink-2);}
+footer{margin-top:26px;border-top:1.5px solid var(--rule);padding-top:13px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);text-align:center;}
+
+@media (max-width:980px){
+  .wrap{padding:24px;border-left:0;border-right:0;}
+  header.mast{grid-template-columns:1fr;}
+  .mast .firm,.mast .series,.mast h1,.mast .subtitle{grid-column:1;}
+  .mast .metarow{grid-column:1;grid-row:auto;margin-top:14px;}
+  .with-layer-panel{grid-template-columns:1fr;}
+  .panel-rail{position:static;max-height:none;overflow:visible;}
+}
+</style>
+</head>
+<body>
+<div id="toast">LaTeX 수식이 복사되었습니다</div>
+<div class="wrap">
+
+<header class="mast">
+  <div class="firm">Quantitative Strategies</div>
+  <div class="series">심화 교육 노트 · 시리즈 01</div>
+  <h1>인과추론 심화 — Double Machine Learning</h1>
+  <p class="subtitle">교란이 고차원·비선형이어도 처치효과를 타당하게 추정하는 방법: 이론 · 실습 · 적용</p>
+  <div class="metarow">
+    <div class="iso-row"><div class="k">발행</div><div class="v">2026-05-20</div></div>
+    <div class="iso-row"><div class="k">분류</div><div class="v">인과추론 / 계량경제</div></div>
+    <div class="iso-row"><div class="k">선행자료</div><div class="v">「금융분석-개념해설」 §3</div></div>
+    <div class="iso-row"><div class="k">검증환경</div><div class="v">Python 3.13.3 · numpy 2.2.5 · scikit-learn 1.6.1</div></div>
+  </div>
+</header>
+
+<div class="with-layer-panel">
+<div class="content">
+
+<div class="summary">
+  <h2>이 노트의 요지</h2>
+  <p>머신러닝(ML)은 상관을 잘 잡지만, 그 예측 편향이 인과 모수 추정에 새어들면 신뢰구간이 무효가 된다. Double Machine Learning(DML)은 <b>직교화</b>와 <b>교차적합</b>이라는 두 장치로 이 누수를 막아, 고차원·비선형 교란 아래에서도 <span class="eqi" data-tex="\sqrt{n}"></span>-추론을 회복시킨다.</p>
+  <ul>
+    <li><b>1부 · 해설서</b> — 정규화 편향, Neyman 직교성, 교차적합을 수식과 실측 실험으로 전개.</li>
+    <li><b>2부 · 워크북</b> — 참값을 심은 모의 데이터로 8개 셀을 직접 실행(전부 검증 완료). 접이식 정답·답지 포함.</li>
+    <li><b>3부 · 플레이북</b> — 금융·통계 실무에서의 적용 시나리오, 체크리스트, 함정, 민감도 분석.</li>
+  </ul>
+  <p style="font-size:13px;color:var(--muted);margin-top:8px;">수식 영역을 클릭하면 LaTeX 소스가 클립보드에 복사됩니다.</p>
+</div>
+
+<nav class="toc">
+  <h2>목차</h2>
+  <div class="grp">1부 — 심화 해설서</div>
+  <ul>
+    <li><a href="#s11">1.1 문제 설정 — 구체적 예시로 보는 교란</a></li>
+    <li><a href="#s12">1.2 정규화 편향 — ML을 그냥 끼우면 안 되는 이유</a></li>
+    <li><a href="#s13">1.3 해법 ① 직교화 (Neyman 직교성)</a></li>
+    <li><a href="#s14">1.4 해법 ② 교차적합</a></li>
+    <li><a href="#s15">1.5 DML 알고리즘</a></li>
+    <li><a href="#s16">1.6 PLR과 IRM — 이중 강건성</a></li>
+    <li><a href="#s17">1.7 이질적 효과 — CATE</a></li>
+    <li><a href="#s18">1.8 가정과 실패 사례</a></li>
+  </ul>
+  <div class="grp">2부 — 실습 워크북</div>
+  <ul><li><a href="#wb">셀 1–8 · 비교 도표 · 직접 해보기(답지)</a></li></ul>
+  <div class="grp">3부 — 적용 플레이북</div>
+  <ul><li><a href="#pb">적용 기준 · 시나리오 · 체크리스트 · 함정 · 민감도 분석</a></li></ul>
+</nav>
+
+<!-- ================= PART 1 ================= -->
+<div class="part">
+  <div class="pn">Part 1</div>
+  <h2>심화 해설서 — DML은 어떻게, 왜 작동하는가</h2>
+  <p>직교화와 교차적합, 두 장치의 작동 원리를 수식과 실측 실험으로 전개한다.</p>
+</div>
+
+<h3 class="sec" id="s11"><span class="sn">1.1</span> 문제 설정 — 구체적 예시로 보는 교란</h3>
+<p class="lead-q">애널리스트 보고서가 거래량을 늘리는가? — 숫자 두 개로 시작하자.</p>
+<p>한 애널리스트가 묻습니다. <b>“보고서를 한 건 더 내면 그 종목의 거래량이 얼마나 늘어나는가?”</b> 처치는 보고서 발간 건수 <span class="eqi" data-tex="T"></span>, 결과는 거래량 <span class="eqi" data-tex="Y"></span>입니다. 데이터를 모아 두 종목을 봅니다.</p>
+
+<table class="tbl">
+  <thead><tr><th>종목</th><th>유형</th><th>연간 보고서 수 T</th><th>거래량 Y (지수)</th></tr></thead>
+  <tbody>
+    <tr><td>종목 A</td><td>소형주</td><td>5건</td><td>30</td></tr>
+    <tr><td>종목 B</td><td>대형주</td><td>15건</td><td>70</td></tr>
+  </tbody>
+</table>
+
+<p>순진하게 계산하면, 보고서 1건의 효과는 두 점을 잇는 기울기입니다.</p>
+<div class="eq" data-tex="\hat\theta_{\text{naive}} = \frac{70 - 30}{15 - 5} = \frac{40}{10} = 4"></div>
+<p>“보고서 1건당 거래량 +4” — 그럴듯합니다. 그러나 여기엔 함정이 있습니다. <b>대형주는 보고서가 0건이어도 거래량이 원래 높습니다.</b> 시가총액이라는 제3의 변수 <span class="eqi" data-tex="X"></span>가 보고서 수 <span class="eqi" data-tex="T"></span>와 거래량 <span class="eqi" data-tex="Y"></span>를 <i>동시에</i> 끌어올리고 있습니다. 이것이 <b>교란(confounding)</b>입니다.</p>
+
+<p>진실은 이렇습니다. 보고서의 실제 효과는 <span class="eqi" data-tex="\theta_0 = 2"></span>이고, 시총에서 오는 기본 거래량(baseline)은 소형주 20, 대형주 40입니다.</p>
+<table class="tbl">
+  <thead><tr><th>종목</th><th>시총 기본 거래량</th><th>보고서 효과 (2 × 건수)</th><th>합계 = 관측 Y</th></tr></thead>
+  <tbody>
+    <tr><td>종목 A (소형)</td><td>20</td><td>2 × 5 = 10</td><td>30 ✓</td></tr>
+    <tr><td>종목 B (대형)</td><td>40</td><td>2 × 15 = 30</td><td>70 ✓</td></tr>
+  </tbody>
+</table>
+<p>두 종목의 거래량 차이 40을 분해하면 — <b>20은 시총 차이</b>(40−20)에서, <b>20은 보고서 차이</b>(10건 × 2)에서 옵니다. 순진한 계산은 이 40을 전부 보고서 10건의 공으로 돌려 4가 나왔습니다. 시총 몫 20을 제거하면 진짜 효과는 <span class="eqi" data-tex="20 \,/\, 10 = 2"></span>입니다. <b>순진한 추정 4는 참값 2의 두 배</b>입니다.</p>
+
+<p>이 편향에는 정확한 공식이 있습니다. <span class="eqi" data-tex="g_0(X)"></span>를 시총이 거래량에 주는 영향이라 하면,</p>
+<div class="eq" data-tex="\hat\theta_{\text{naive}} \;\xrightarrow{\;p\;}\; \theta_0 \;+\; \frac{\operatorname{Cov}\!\big(T,\; g_0(X)\big)}{\operatorname{Var}(T)}"></div>
+<p>편향항은 “처치 <span class="eqi" data-tex="T"></span>와 교란 효과 <span class="eqi" data-tex="g_0(X)"></span>의 공분산”입니다. 시총이 높을수록 보고서도 많고 거래량도 많으니 이 공분산은 양(+) — 그래서 과대추정됩니다. (2부 워크북의 모의 데이터에서 이 편향항은 실측 <b>0.79</b>로 나옵니다: 순진한 추정 2.79, 참값 2.0.)</p>
+
+<p>두 점이 아니라 종목 100개를 흩뿌리면 교란의 기하학이 분명해집니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 1 · 실측 데이터 100종목</div>
+    <svg viewBox="0 0 660 340" role="img" aria-label="보고서 수와 거래량 산점도, 시총군 교란">
+      <line x1="80" y1="290" x2="600" y2="290" stroke="#111111" stroke-width="1.3"/>
+      <line x1="80" y1="40" x2="80" y2="290" stroke="#111111" stroke-width="1.3"/>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">
+        <text x="80" y="307">0</text><text x="202.7" y="307">5</text><text x="325.5" y="307">10</text>
+        <text x="448.2" y="307">15</text><text x="570.9" y="307">20</text>
+        <text x="340" y="328" font-size="11.5" fill="#111111">연간 보고서 수 (T)</text>
+      </g>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="end">
+        <text x="72" y="294">0</text><text x="72" y="235">20</text><text x="72" y="176">40</text>
+        <text x="72" y="117">60</text><text x="72" y="58">80</text>
+      </g>
+      <text x="26" y="170" font-size="11.5" fill="#111111" text-anchor="middle" transform="rotate(-90 26 170)">거래량 (Y)</text>
+      <!-- 소형주 점 -->
+      <circle cx="202.8" cy="196.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="213.7" cy="206.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="192.6" cy="203.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="169.9" cy="205.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="186.0" cy="207.0" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="166.2" cy="206.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="204.9" cy="201.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="252.1" cy="185.6" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="184.6" cy="196.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="179.9" cy="211.6" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="220.8" cy="196.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="215.9" cy="201.6" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="206.6" cy="200.0" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="168.5" cy="217.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="201.7" cy="205.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="228.3" cy="196.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="153.2" cy="207.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="185.9" cy="198.4" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="132.7" cy="227.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="155.2" cy="218.3" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="134.9" cy="213.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="194.1" cy="216.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="156.1" cy="215.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="212.7" cy="200.0" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="208.5" cy="192.2" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="195.8" cy="199.0" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="110.1" cy="226.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="182.9" cy="208.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="200.9" cy="203.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="206.9" cy="190.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="146.4" cy="218.0" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="185.1" cy="207.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="166.7" cy="208.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="172.9" cy="209.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="241.8" cy="193.7" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="173.0" cy="216.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="201.5" cy="202.1" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="235.3" cy="196.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="181.2" cy="199.4" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="198.6" cy="198.5" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="206.8" cy="200.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="205.1" cy="196.9" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="157.6" cy="214.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="205.5" cy="194.3" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="252.8" cy="189.8" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="145.8" cy="211.6" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="234.4" cy="202.5" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="207.1" cy="198.5" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="179.1" cy="218.3" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/> <circle cx="276.4" cy="197.3" r="3.4" fill="#6E6E6E" fill-opacity="0.75"/>
+      <!-- 대형주 점 -->
+      <circle cx="434.0" cy="92.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="406.2" cy="96.3" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="455.8" cy="85.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="552.9" cy="59.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="409.4" cy="95.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="419.1" cy="93.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="457.8" cy="90.7" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="471.2" cy="83.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="440.0" cy="75.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="438.6" cy="90.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="480.9" cy="83.1" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="472.4" cy="76.1" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="400.0" cy="86.6" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="444.5" cy="94.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="449.8" cy="85.1" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="399.0" cy="100.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="460.3" cy="92.6" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="408.2" cy="89.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="493.5" cy="73.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="457.2" cy="81.5" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="452.3" cy="88.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="420.6" cy="87.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="442.7" cy="88.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="355.0" cy="107.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="395.4" cy="103.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="465.1" cy="87.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="348.9" cy="99.3" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="487.7" cy="77.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="366.8" cy="101.7" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="483.5" cy="75.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="408.8" cy="96.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="484.5" cy="78.7" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="454.3" cy="78.6" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="376.5" cy="103.2" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="506.4" cy="71.1" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="515.4" cy="67.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="445.1" cy="77.2" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="435.4" cy="82.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="440.7" cy="83.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="402.7" cy="98.7" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="499.4" cy="80.8" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="422.9" cy="84.0" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="445.8" cy="78.4" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="411.2" cy="93.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="419.0" cy="87.6" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="388.6" cy="93.3" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="506.8" cy="64.7" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="441.0" cy="79.9" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="493.2" cy="76.3" r="3.4" fill="#C53030" fill-opacity="0.8"/> <circle cx="448.8" cy="74.2" r="3.4" fill="#C53030" fill-opacity="0.8"/>
+      <!-- 회귀선 -->
+      <line x1="104.5" y1="241.7" x2="544.9" y2="42.0" stroke="#111111" stroke-width="2.6"/>
+      <line x1="129.1" y1="219.2" x2="300.9" y2="179.6" stroke="#6E6E6E" stroke-width="2.4"/>
+      <line x1="350.0" y1="105.6" x2="570.9" y2="58.5" stroke="#C53030" stroke-width="2.4"/>
+      <!-- 범례 -->
+      <g font-family="Segoe UI,sans-serif" font-size="11">
+        <circle cx="95" cy="50" r="4" fill="#6E6E6E"/><text x="105" y="54" fill="#111111">소형주</text>
+        <circle cx="170" cy="50" r="4" fill="#C53030"/><text x="180" y="54" fill="#111111">대형주</text>
+        <line x1="250" y1="50" x2="278" y2="50" stroke="#111111" stroke-width="2.6"/><text x="284" y="54" fill="#111111">전체 회귀(순진)</text>
+      </g>
+    </svg>
+    <figcaption><b>교란의 기하학.</b> 검은 선(전체 회귀)의 기울기는 <b>3.78</b> — 두 집단을 가로지르며 시총 차이를 보고서 효과로 오인한다. 반면 각 집단 <i>내부</i>의 기울기는 소형주 <b>1.92</b>, 대형주 <b>1.78</b>로 참값 2.0 부근이다. 올바른 추정은 “집단 내부”를 봐야 한다. (실측: <code>검증-산점도데이터.py</code>, 종목 100개, 참값 <span class="eqi" data-tex="\theta_0=2.0"></span>)</figcaption>
+  </div>
+</figure>
+
+<p>DML의 목표는 단 하나 — 이 “집단 내부 기울기”를, 교란 변수가 수백 개이고 그 영향이 비선형이어도 자동으로, 그리고 <b>신뢰구간과 함께</b> 뽑아내는 것입니다. 그 표준 모형이 <b>부분선형회귀(Partially Linear Regression, PLR)</b>입니다.</p>
+<div class="eq" data-tex="Y = \theta_0\, T + g_0(X) + U, \qquad \mathbb{E}[\,U \mid X, T\,] = 0"></div>
+<div class="eq" data-tex="T = m_0(X) + V, \qquad \mathbb{E}[\,V \mid X\,] = 0"></div>
+<p><span class="eqi" data-tex="\theta_0"></span>가 목표 모수(보고서 효과), <span class="eqi" data-tex="g_0(X)"></span>와 <span class="eqi" data-tex="m_0(X)"></span>는 형태를 모르는 <b>장애 함수(nuisance function)</b>입니다 — 각각 “시총 등 X가 거래량에 주는 영향”, “X가 보고서 수에 주는 영향”입니다.</p>
+
+<h3 class="sec" id="s12"><span class="sn">1.2</span> 정규화 편향 — ML을 그냥 끼우면 안 되는 이유</h3>
+<p class="lead-q">교란 변수를 회귀식에 ‘넣기만’ 하면 되지 않나?</p>
+<p>가장 순진한 개선책: 교란 변수 X를 회귀식에 추가한다. 2부 워크북의 모의 데이터(교란이 <span class="eqi" data-tex="X_0^2"></span> 같은 비선형 형태로 들어감)에서 이를 실제로 해보면 — 보고서 효과만 회귀했을 때 <b>2.79</b>, 교란 변수 20개를 <b>선형으로</b> 함께 넣으면 <b>2.63</b>. 편향이 줄긴 했지만 참값 2.0과는 여전히 멉니다. 선형항으로는 비선형 교란을 다 걷어내지 못하기 때문입니다.</p>
+<p>그렇다면 <span class="eqi" data-tex="g_0(X)"></span>를 머신러닝으로 유연하게 추정해 끼우면? 여기서 진짜 문제가 드러납니다. 모든 ML 추정량은 <b>정규화 편향</b>을 가집니다 — 라쏘는 계수를 0으로 수축시키고, 랜덤 포레스트·부스팅은 평활화로 편향을 만듭니다. 편향-분산 트레이드오프상 ML은 의도적으로 약간의 편향을 받아들입니다.</p>
+<p>그 결과 추정된 <span class="eqi" data-tex="\hat g"></span>는 참값에 <span class="eqi" data-tex="\sqrt{n}"></span>보다 느리게 수렴하고, 이 비순진 방식에서는 <span class="eqi" data-tex="\hat g"></span>의 오차가 <span class="eqi" data-tex="\hat\theta"></span>에 <b>1차(first-order)로</b> — 그대로 — 흘러듭니다. 그러면 <span class="eqi" data-tex="\hat\theta"></span>의 수렴 속도가 느려지고 점근정규성이 깨져, <b>타당한 신뢰구간을 만들 수 없습니다.</b></p>
+<div class="note"><b>요점.</b> ML은 예측엔 훌륭하지만, 그 편향이 인과 모수에 직접 새어들면 통계적 추론이 무효가 된다. DML의 두 장치 — 직교화와 교차적합 — 는 이 새어듦을 막는 장치다.</div>
+
+<h3 class="sec" id="s13"><span class="sn">1.3</span> 해법 ① 직교화 (Neyman 직교성)</h3>
+<p>첫 번째 장치는 <b>잔차화</b>입니다. Y와 T 양쪽에서 X가 설명하는 부분을 빼냅니다.</p>
+<div class="eq" data-tex="\tilde Y = Y - \ell_0(X), \qquad \tilde T = T - m_0(X), \qquad \ell_0(X) \equiv \mathbb{E}[\,Y \mid X\,]"></div>
+<p>그러면 목표 모수는 두 잔차의 비로 식별됩니다 — 1.1 도표의 “집단 내부 기울기”의 일반화입니다.</p>
+<div class="eq" data-tex="\theta_0 = \frac{\mathbb{E}[\,\tilde T \, \tilde Y\,]}{\mathbb{E}[\,\tilde T^{\,2}\,]}"></div>
+<p>이 잔차 기반 추정은 Robinson(1988)의 부분선형회귀 추정량입니다<sup class="fn"><a id="r1" href="#fn1">1</a></sup>. 이를 모멘트 조건(스코어 함수)으로 쓰면,</p>
+<div class="eq" data-tex="\psi(W;\theta,\eta) = \big(\,Y - \ell(X) - \theta\,(T - m(X))\,\big)\,\big(\,T - m(X)\,\big)"></div>
+<p>여기서 <span class="eqi" data-tex="\eta = (\ell, m)"></span>이 장애 함수입니다. 이 스코어의 결정적 성질이 <b>Neyman 직교성</b> — 장애 함수를 참값 부근에서 흔들어도 모멘트의 1차 변화가 0입니다.</p>
+<div class="eq" data-tex="\frac{\partial}{\partial \eta}\, \mathbb{E}\big[\,\psi(W;\theta_0,\eta)\,\big]\Big|_{\eta = \eta_0} = 0"></div>
+<p>의미는 — <b>장애 함수 추정 오차가 <span class="eqi" data-tex="\hat\theta"></span>에 미치는 1차 효과가 사라지고, 오차의 제곱(2차)으로만 남는다</b>는 것입니다. 이를 실제 실험으로 확인할 수 있습니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 2 · 몬테카를로 실험 (300회 반복, n=20,000)</div>
+    <svg viewBox="0 0 660 320" role="img" aria-label="장애함수 오차 대 theta 편향, 직교 대 비직교">
+      <line x1="90" y1="260" x2="615" y2="260" stroke="#111111" stroke-width="1.3"/>
+      <line x1="90" y1="50" x2="90" y2="260" stroke="#111111" stroke-width="1.3"/>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">
+        <text x="90" y="277">0</text><text x="205.6" y="277">0.10</text><text x="321.1" y="277">0.20</text>
+        <text x="436.7" y="277">0.30</text><text x="552.2" y="277">0.40</text>
+        <text x="350" y="298" font-size="11.5" fill="#111111">장애 함수 추정 오차 수준 c</text>
+      </g>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="end">
+        <text x="82" y="264">0</text><text x="82" y="222">0.05</text><text x="82" y="180">0.10</text>
+        <text x="82" y="139">0.15</text><text x="82" y="97">0.20</text>
+      </g>
+      <text x="30" y="155" font-size="11.5" fill="#111111" text-anchor="middle" transform="rotate(-90 30 155)">θ 추정 편향 (절댓값)</text>
+      <g stroke="#C9C9C9" stroke-width="1">
+        <line x1="90" y1="218.3" x2="615" y2="218.3"/><line x1="90" y1="176.7" x2="615" y2="176.7"/>
+        <line x1="90" y1="135" x2="615" y2="135"/><line x1="90" y1="93.3" x2="615" y2="93.3"/>
+      </g>
+      <!-- 비직교 -->
+      <polyline fill="none" stroke="#C53030" stroke-width="2.6"
+        points="90,259.7 147.8,239.6 205.6,219.3 263.3,199.1 321.1,178.6 378.9,158.2 436.7,137.8 494.4,117.6 552.2,97.7 610,77.0"/>
+      <!-- 직교 -->
+      <polyline fill="none" stroke="#111111" stroke-width="2.6"
+        points="90,259.3 147.8,257.9 205.6,251.3 263.3,241.3 321.1,228.0 378.9,210.2 436.7,191.4 494.4,168.7 552.2,145.2 610,119.3"/>
+      <g fill="#C53030"><circle cx="205.6" cy="219.3" r="3.3"/><circle cx="321.1" cy="178.6" r="3.3"/><circle cx="436.7" cy="137.8" r="3.3"/><circle cx="552.2" cy="97.7" r="3.3"/></g>
+      <g fill="#111111"><circle cx="205.6" cy="251.3" r="3.3"/><circle cx="321.1" cy="228.0" r="3.3"/><circle cx="436.7" cy="191.4" r="3.3"/><circle cx="552.2" cy="145.2" r="3.3"/></g>
+      <g font-family="Segoe UI,sans-serif" font-size="11.5" font-weight="700">
+        <text x="470" y="70" fill="#C53030">비직교 스코어 — 편향 ∝ 오차</text>
+        <text x="350" y="248" fill="#111111">직교 스코어 — 편향 ∝ 오차²</text>
+      </g>
+    </svg>
+    <figcaption><b>실측 곡선.</b> 장애 함수에 크기 <span class="eqi" data-tex="c"></span>의 구조적 오차를 주입하고 편향을 측정. 비직교(적색)는 <b>직선</b> — c=0.10에서 편향 0.049. 직교(흑색)는 <b>아래로 휘는 곡선</b> — c=0.10에서 0.010으로 약 <b>5배</b> 작다. 작은 오차 구간일수록 격차가 벌어진다. (실측: <code>검증-전체수치.py</code>, 몬테카를로 300회)</figcaption>
+  </div>
+</figure>
+
+<p>이것이 왜 결정적일까요. ML 추정량은 <span class="eqi" data-tex="\sqrt{n}"></span> 속도엔 못 미쳐도 보통 <span class="eqi" data-tex="n^{-1/4}"></span>보다는 빠릅니다. 직교 스코어에서는 <span class="eqi" data-tex="\hat\ell"></span> 오차와 <span class="eqi" data-tex="\hat m"></span> 오차가 <b>곱으로</b> 들어가므로,</p>
+<div class="eq" data-tex="\big\|\hat\ell - \ell_0\big\| \cdot \big\|\hat m - m_0\big\| \;=\; o\!\left(n^{-1/4}\right)\cdot o\!\left(n^{-1/4}\right) \;=\; o\!\left(n^{-1/2}\right)"></div>
+<p>장애 함수 편향이 <span class="eqi" data-tex="\hat\theta"></span>의 <span class="eqi" data-tex="\sqrt{n}"></span> 추정 오차에 묻혀 무시됩니다. 그 결과 <span class="eqi" data-tex="\hat\theta"></span>은 <span class="eqi" data-tex="\sqrt{n}"></span>-일치성과 점근정규성을 회복하고, 신뢰구간·검정이 다시 가능해집니다<sup class="fn"><a id="r2" href="#fn2">2</a></sup>.</p>
+
+<h3 class="sec" id="s14"><span class="sn">1.4</span> 해법 ② 교차적합 (cross-fitting)</h3>
+<p>두 번째 누수 경로가 있습니다. <b>같은 데이터로 장애 함수를 학습하고 그 잔차로 <span class="eqi" data-tex="\theta"></span>를 추정</b>하면, 학습된 <span class="eqi" data-tex="\hat\ell,\hat m"></span>이 자기 학습에 쓰인 관측치와 상관됩니다 — ML이 과적합할수록 잔차가 인위적으로 작아져 ‘과적합 편향’이 새어듭니다.</p>
+<p>해법은 표본 분할입니다. 데이터를 K개 폴드로 나누고, 각 폴드의 잔차를 계산할 때 장애 함수는 <b>나머지 폴드에서만</b> 학습합니다.</p>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 3 · 교차적합 절차 (K=5)</div>
+    <svg viewBox="0 0 660 150" role="img" aria-label="교차적합 5-폴드 도식">
+      <g font-family="Segoe UI,sans-serif">
+        <rect x="40" y="40" width="108" height="46" fill="#D7D7D7"/>
+        <rect x="156" y="40" width="108" height="46" fill="#D7D7D7"/>
+        <rect x="272" y="40" width="108" height="46" fill="#C53030"/>
+        <rect x="388" y="40" width="108" height="46" fill="#D7D7D7"/>
+        <rect x="504" y="40" width="108" height="46" fill="#D7D7D7"/>
+        <g font-size="12" font-weight="700" text-anchor="middle" fill="#111111">
+          <text x="94" y="59">폴드 1</text><text x="210" y="59">폴드 2</text>
+          <text x="326" y="59" fill="#fff">폴드 3</text><text x="442" y="59">폴드 4</text><text x="558" y="59">폴드 5</text>
+        </g>
+        <g font-size="10.5" text-anchor="middle" fill="#6E6E6E">
+          <text x="94" y="76">학습</text><text x="210" y="76">학습</text>
+          <text x="326" y="76" fill="#F6DCDC">잔차 계산</text><text x="442" y="76">학습</text><text x="558" y="76">학습</text>
+        </g>
+        <text x="326" y="116" font-size="11.5" text-anchor="middle" fill="#111111">폴드 3의 장애 함수는 회색 4개 폴드에서만 학습 → 잔차와 독립</text>
+        <text x="326" y="134" font-size="10.5" text-anchor="middle" fill="#6E6E6E">동일 절차를 폴드 1~5 각각에 대해 반복</text>
+      </g>
+    </svg>
+    <figcaption><b>학습과 평가의 분리.</b> 이 분리 덕분에 랜덤 포레스트·신경망처럼 복잡한 ML도 추가 이론 조건 없이 안전하게 쓸 수 있다.</figcaption>
+  </div>
+</figure>
+
+<p>교차적합의 효과는 학습기에 따라 다릅니다 — 이를 2부 워크북 셀 6에서 두 학습기로 직접 측정합니다. 미리 결과만 보면(참값 2.0):</p>
+<table class="tbl">
+  <thead><tr><th>장애 함수 학습기</th><th>교차적합 적용</th><th>교차적합 없음</th><th>해석</th></tr></thead>
+  <tbody>
+    <tr><td>랜덤 포레스트</td><td>2.0370</td><td>2.0308</td><td>차이 미미 — 배깅이 과적합을 자체 완화</td></tr>
+    <tr><td>단일 의사결정나무</td><td>1.1293</td><td>0.3741</td><td>과적합에 취약 — 교차적합 없으면 붕괴</td></tr>
+  </tbody>
+</table>
+<p>정직하게 말하면, 랜덤 포레스트는 배깅이 과적합을 스스로 누그러뜨려 교차적합 유무 차이가 거의 없습니다(2.037 vs 2.031). 그러나 과적합에 취약한 단일 의사결정나무에서는 교차적합을 빼면 추정이 1.13에서 <b>0.37로 붕괴</b>합니다 — 격차가 0.76에 이릅니다. (단일 나무는 애초에 좋은 장애 함수 추정기가 아니라 교차적합을 써도 1.13에 그칩니다. 즉 교차적합은 나쁜 학습기를 좋게 만들어 주지는 않지만, 그 위에서도 편향을 크게 줄여 줍니다.) 교차적합은 <b>학습기가 무엇이든 이론적 보장을 지켜 주는 안전장치</b>입니다.</p>
+<div class="note"><b>두 장치의 분담.</b> 직교화는 ‘장애 함수가 부정확해도 괜찮게’ 만들고(편향을 2차로 낮춤), 교차적합은 ‘장애 함수가 데이터를 엿보지 못하게’ 만든다(과적합 누수 차단).</div>
+
+<h3 class="sec" id="s15"><span class="sn">1.5</span> DML 알고리즘</h3>
+<table class="tbl">
+  <thead><tr><th style="width:40px;">단계</th><th>내용</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>표본을 K개 폴드로 무작위 분할.</td></tr>
+    <tr><td>2</td><td>각 폴드 k: 나머지 폴드에서 ML로 <span class="eqi" data-tex="\hat\ell(X)=\mathbb{E}[Y\mid X]"></span>, <span class="eqi" data-tex="\hat m(X)=\mathbb{E}[T\mid X]"></span> 학습.</td></tr>
+    <tr><td>3</td><td>폴드 k에서 잔차: <span class="eqi" data-tex="\hat{\tilde Y} = Y - \hat\ell(X)"></span>, <span class="eqi" data-tex="\hat{\tilde T} = T - \hat m(X)"></span>.</td></tr>
+    <tr><td>4</td><td>전체 잔차를 모아 <span class="eqi" data-tex="\theta"></span> 추정.</td></tr>
+    <tr><td>5</td><td>영향함수로 표준오차·신뢰구간 구성.</td></tr>
+  </tbody>
+</table>
+<div class="eq" data-tex="\hat\theta_{\text{DML}} = \frac{\sum_{i=1}^{n} \hat{\tilde T}_i\,\hat{\tilde Y}_i}{\sum_{i=1}^{n} \hat{\tilde T}_i^{\,2}}"></div>
+<div class="eq" data-tex="\widehat{\operatorname{SE}}(\hat\theta) = \sqrt{\frac{\tfrac{1}{n}\sum_i \hat\psi_i^{\,2}}{n\,\big(\tfrac{1}{n}\sum_i \hat{\tilde T}_i^{\,2}\big)^{2}}}, \qquad \hat\psi_i = \hat{\tilde T}_i\big(\hat{\tilde Y}_i - \hat\theta\,\hat{\tilde T}_i\big)"></div>
+<p>2부 워크북 셀 4–5가 이 알고리즘을 그대로 코드로 옮긴 것입니다 — 실측 결과 <span class="eqi" data-tex="\hat\theta = 2.0370"></span>, 95% 신뢰구간 [2.0019, 2.0721].</p>
+
+<h3 class="sec" id="s16"><span class="sn">1.6</span> PLR과 IRM — 이중 강건성</h3>
+<p>지금까지는 처치효과가 모두 같다고 본 <b>부분선형회귀(PLR)</b>로, 연속 처치에 적합합니다. 처치가 <b>이항(0/1)</b>이고 효과가 이질적일 수 있으면 <b>상호작용 회귀 모형(IRM)</b>과 평균처치효과(ATE)를 씁니다.</p>
+<div class="eq" data-tex="\theta_{\text{ATE}} = \mathbb{E}\!\left[\, g(1,X) - g(0,X) \;+\; \frac{T\,\big(Y - g(1,X)\big)}{m(X)} \;-\; \frac{(1-T)\big(Y - g(0,X)\big)}{1 - m(X)} \,\right]"></div>
+<p>여기서 <span class="eqi" data-tex="g(t,X)=\mathbb{E}[Y\mid T=t,X]"></span>는 결과 모형, <span class="eqi" data-tex="m(X)=\mathbb{P}(T=1\mid X)"></span>는 성향점수입니다. 이 스코어(AIPW)는 Neyman 직교적이며 보너스로 <b>이중 강건성</b>을 가집니다 — <b>결과 모형이나 성향 모형 중 하나만 맞아도</b> 추정이 일치합니다.</p>
+
+<h3 class="sec" id="s17"><span class="sn">1.7</span> 이질적 효과 — CATE</h3>
+<p>“효과가 평균적으로 양인가”를 넘어 “<b>누구에게</b> 큰가”를 묻는 것이 조건부 평균처치효과(CATE)입니다.</p>
+<div class="eq" data-tex="\tau(x) = \mathbb{E}\big[\,Y(1) - Y(0)\;\big|\;X = x\,\big]"></div>
+<p>직교화 아이디어를 CATE로 확장한 대표 기법이 <b>인과 숲</b><sup class="fn"><a id="r3" href="#fn3">3</a></sup>과 <b>R-learner</b><sup class="fn"><a id="r4" href="#fn4">4</a></sup>입니다. 2부 셀 8에서는 가장 투명한 형태 — 잔차를 부분군별로 나눠 추정 — 로 이질 효과를 복원합니다(참값 1.0·2.5를 실측 1.0039·2.4951로 복원).</p>
+
+<h3 class="sec" id="s18"><span class="sn">1.8</span> 가정과 실패 사례</h3>
+<table class="tbl">
+  <thead><tr><th>가정</th><th>의미</th><th>깨지면</th></tr></thead>
+  <tbody>
+    <tr><td><b>비교란성</b></td><td><span class="eqi" data-tex="\big(Y(0),Y(1)\big) \perp\!\!\!\perp T \mid X"></span>. 모든 교란 변수가 관측됨.</td><td>검정 불가능. 누락 교란이 하나라도 있으면 <span class="eqi" data-tex="\hat\theta"></span> 편향. DML은 누락변수 편향을 풀지 못한다.</td></tr>
+    <tr><td><b>중첩</b></td><td><span class="eqi" data-tex="0 &lt; m(X) &lt; 1"></span>. 모든 X에서 처치·비처치 모두 가능.</td><td>성향점수가 0·1에 몰리면 IPW형 항이 폭발 → 분산 급증.</td></tr>
+    <tr><td><b>올바른 구조</b></td><td>X가 ‘교란 변수’여야 함.</td><td>충돌부·매개부를 넣으면 오히려 편향(아래 도표).</td></tr>
+    <tr><td><b>장애 함수 수렴 속도</b></td><td><span class="eqi" data-tex="\hat\ell,\hat m"></span>이 <span class="eqi" data-tex="n^{-1/4}"></span>보다 빠르게 수렴.</td><td>표본 부족·과도한 고차원이면 직교화 보장이 사라짐.</td></tr>
+  </tbody>
+</table>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 4 · X에 무엇을 넣을 것인가</div>
+    <svg viewBox="0 0 680 230" role="img" aria-label="교란변수 충돌부 매개부 DAG">
+      <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" fill="#6E6E6E"/></marker></defs>
+      <g font-family="Segoe UI,sans-serif">
+        <text x="115" y="22" font-size="12.5" font-weight="700" fill="#111111" text-anchor="middle">교란 변수 — 통제 ✓</text>
+        <circle cx="115" cy="56" r="21" fill="#111111"/><text x="115" y="61" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">X</text>
+        <circle cx="60" cy="160" r="21" fill="#3A3A3A"/><text x="60" y="165" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">T</text>
+        <circle cx="170" cy="160" r="21" fill="#3A3A3A"/><text x="170" y="165" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Y</text>
+        <line x1="105.5" y1="73.7" x2="69.4" y2="142.4" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <line x1="124.5" y1="73.7" x2="160.6" y2="142.4" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <line x1="81" y1="160" x2="149" y2="160" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <text x="115" y="205" font-size="10.5" fill="#6E6E6E" text-anchor="middle">T와 Y를 동시에 흔듦 → 통제 필수</text>
+        <line x1="232" y1="34" x2="232" y2="210" stroke="#C9C9C9"/>
+        <text x="343" y="22" font-size="12.5" font-weight="700" fill="#C53030" text-anchor="middle">충돌부 — 통제 금지 ✗</text>
+        <circle cx="288" cy="60" r="21" fill="#3A3A3A"/><text x="288" y="65" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">T</text>
+        <circle cx="398" cy="60" r="21" fill="#3A3A3A"/><text x="398" y="65" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Y</text>
+        <circle cx="343" cy="165" r="21" fill="#C53030"/><text x="343" y="170" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">C</text>
+        <line x1="297.5" y1="77.7" x2="333.5" y2="147.3" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <line x1="388.5" y1="77.7" x2="352.5" y2="147.3" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <text x="343" y="205" font-size="10.5" fill="#6E6E6E" text-anchor="middle">통제 시 가짜 상관 발생</text>
+        <line x1="455" y1="34" x2="455" y2="210" stroke="#C9C9C9"/>
+        <text x="568" y="22" font-size="12.5" font-weight="700" fill="#C53030" text-anchor="middle">매개부 — 통제 금지 ✗</text>
+        <circle cx="506" cy="112" r="21" fill="#3A3A3A"/><text x="506" y="117" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">T</text>
+        <circle cx="568" cy="112" r="21" fill="#C53030"/><text x="568" y="117" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">M</text>
+        <circle cx="630" cy="112" r="21" fill="#3A3A3A"/><text x="630" y="117" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Y</text>
+        <line x1="527" y1="112" x2="547" y2="112" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <line x1="589" y1="112" x2="609" y2="112" stroke="#6E6E6E" stroke-width="1.8" marker-end="url(#ar)"/>
+        <text x="568" y="168" font-size="10.5" fill="#6E6E6E" text-anchor="middle">통제 시 효과의 일부 소거</text>
+      </g>
+    </svg>
+    <figcaption><b>같은 변수라도 인과 구조상 위치가 다르면 통제 여부가 정반대다.</b> 이 판단은 데이터가 아니라 도메인 지식(인과 그래프)에서 나온다.</figcaption>
+  </div>
+</figure>
+<div class="warn"><b>가장 흔한 오해.</b> “DML이 머신러닝을 쓰니 교란을 알아서 처리해 줄 것이다.” 아니다. DML은 <b>관측된</b> 교란을 비선형·고차원이어도 잘 통제하지만, <b>관측되지 않은</b> 교란에는 무력하다. 2부 셀 7이 이를 실측으로 보여준다 — 누락 교란이 있으면 <span class="eqi" data-tex="\hat\theta"></span>이 2.61로 편향되고, 신뢰구간은 여전히 좁아 그 사실을 경고하지 못한다.</div>
+
+<!-- ================= PART 2 ================= -->
+<div class="part" id="wb">
+  <div class="pn">Part 2</div>
+  <h2>실습 워크북 — 모의 데이터로 DML 체화하기</h2>
+  <p>참값을 심은 데이터로 8개 셀을 실행한다. 모든 출력은 실제 실행해 검증한 값이다.</p>
+</div>
+
+<p style="font-size:14px;">셀을 위에서 아래로 실행합니다. 의존성은 <code>numpy · scikit-learn</code>뿐입니다(전체 코드: 동봉된 <code>인과추론-워크북.py</code>). 각 셀의 <b>실행 결과</b>는 접혀 있습니다 — 코드를 보고 결과를 먼저 예측한 뒤 펼쳐 확인하십시오. 표시된 수치는 검증 환경(Python 3.13.3 / numpy 2.2.5 / scikit-learn 1.6.1)에서 실제 실행한 값이며, scikit-learn 버전이 다르면 랜덤 포레스트 결과가 미세하게 달라질 수 있습니다.</p>
+
+<div class="cell">
+  <div class="cell-hd">셀 1 · 모의 데이터 생성 — 참값 θ = 2.0</div>
+<pre class="code">import numpy as np
+
+def make_data(n=4000, p=20, theta=2.0, seed=42):
+    rng = np.random.default_rng(seed)
+    X = rng.normal(size=(n, p))
+    <span class="cmt"># 장애 함수: 일부러 비선형(제곱·sin)으로 — 선형 통제로는 안 잡히게</span>
+    m = 0.8*X[:,0] + 0.7*X[:,0]**2 + 0.5*X[:,1] + 0.3*X[:,2]
+    g = 1.0*X[:,0] + 0.9*X[:,0]**2 + 0.6*X[:,1] + np.sin(X[:,3]) + 0.5*X[:,4]
+    T = m + rng.normal(size=n)
+    Y = theta*T + g + rng.normal(size=n)
+    return X, T, Y
+
+X, T, Y = make_data()
+print("X.shape =", X.shape)
+print("T: 평균 %.3f, 표준편차 %.3f" % (T.mean(), T.std()))
+print("Y: 평균 %.3f, 표준편차 %.3f" % (Y.mean(), Y.std()))</pre>
+  <div class="cell-note">설계 핵심: T와 Y가 <b>둘 다 X[:,0], X[:,1]에 의존</b>합니다(= 교란). 그리고 X[:,0]이 <code>X[:,0]**2</code> 형태로 m·g 양쪽에 들어가 — <b>비선형 교란</b>이라 선형 통제로는 제거되지 않습니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">X.shape = (4000, 20)
+T: 평균 0.701, 표준편차 1.727
+Y: 평균 2.297, 표준편차 5.087</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 2 · 순진한 회귀 — Y를 T에만 회귀 (교란 무시)</div>
+<pre class="code">slope = np.polyfit(T, Y, 1)[0]
+print("순진한 회귀 Y~T : theta_hat = %.4f" % slope)</pre>
+  <div class="cell-note">교란을 무시한 결과입니다. 1.1의 보고서→거래량 예시에서 순진한 추정이 2배로 부풀던 그 현상입니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">순진한 회귀 Y~T : theta_hat = 2.7864      ← 참값 2.0 보다 +0.79 위로 편향</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 3 · 선형 회귀 — Y를 T와 X에 회귀</div>
+<pre class="code">from sklearn.linear_model import LinearRegression
+theta_lin = LinearRegression().fit(np.column_stack([T, X]), Y).coef_[0]
+print("선형 회귀 Y~T+X : theta_hat = %.4f" % theta_lin)</pre>
+  <div class="cell-note">교란 변수 20개를 <b>선형으로</b> 넣었습니다. 그런데도 편향이 남습니다 — 진짜 장애 함수 g가 <code>X[:,0]**2</code> 같은 비선형을 포함하기 때문입니다. “교란을 회귀식에 넣는 것”만으로는 부족하고, 그 <b>함수 형태</b>를 잡아야 합니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">선형 회귀 Y~T+X : theta_hat = 2.6346      ← 2.79 → 2.63, 줄었지만 여전히 편향</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 4 · 직접 만든 DML — 교차적합 + 잔차화</div>
+<pre class="code">from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import KFold
+
+def crossfit_residual(X, target, seed=0):
+    resid = np.zeros(len(target))
+    for tr, te in KFold(5, shuffle=True, random_state=seed).split(X):
+        rf = RandomForestRegressor(n_estimators=200, min_samples_leaf=5,
+                                   random_state=0, n_jobs=-1)
+        rf.fit(X[tr], target[tr])
+        resid[te] = target[te] - rf.predict(X[te])
+    return resid
+
+W = crossfit_residual(X, Y)          <span class="cmt"># Y의 잔차</span>
+V = crossfit_residual(X, T)          <span class="cmt"># T의 잔차</span>
+theta_dml = (V @ W) / (V @ V)        <span class="cmt"># 잔차끼리 회귀 (1.5의 추정식)</span>
+print("직접 만든 DML : theta_hat = %.4f" % theta_dml)</pre>
+  <div class="cell-note">1.5 알고리즘을 그대로 옮긴 것입니다. 랜덤 포레스트가 비선형 g·m을 잡아내고, 교차적합이 과적합 누수를 막아 추정값이 참값에 수렴합니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">직접 만든 DML : theta_hat = 2.0370        ← 참값 2.0 에 근접</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 5 · DML + 신뢰구간 (영향함수 기반)</div>
+<pre class="code">def dml_with_ci(X, T, Y, seed=0):
+    W = crossfit_residual(X, Y, seed)
+    V = crossfit_residual(X, T, seed)
+    theta = (V @ W) / (V @ V)
+    psi = V * (W - theta * V)                          <span class="cmt"># 영향함수</span>
+    n = len(Y)
+    se = np.sqrt(np.mean(psi**2) / (n * np.mean(V**2)**2))
+    return theta, se, (theta - 1.96*se, theta + 1.96*se)
+
+theta, se, ci = dml_with_ci(X, T, Y)
+print("DML : theta=%.4f  SE=%.4f  95%%CI=[%.4f, %.4f]"
+      % (theta, se, ci[0], ci[1]))</pre>
+  <div class="cell-note">점추정이 맞는 것보다, <b>신뢰구간이 참값을 포함한다</b>는 사실이 더 중요합니다 — 1.3의 직교화·1.4의 교차적합이 지키려던 ‘타당한 추론’이 바로 이것입니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">DML : theta=2.0370  SE=0.0179  95%CI=[2.0019, 2.0721]
+                              ← 95% 신뢰구간이 참값 2.0 을 포함</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 6 · 교차적합은 정말 필요한가 — 학습기별 비교</div>
+<pre class="code">from sklearn.tree import DecisionTreeRegressor
+
+def dml_crossfit(X, T, Y, make_model):
+    def resid(target):
+        r = np.zeros(len(target))
+        for tr, te in KFold(5, shuffle=True, random_state=0).split(X):
+            r[te] = target[te] - make_model().fit(X[tr], target[tr]).predict(X[te])
+        return r
+    W, V = resid(Y), resid(T)
+    return (V @ W) / (V @ V)
+
+def dml_nocrossfit(X, T, Y, make_model):
+    W = Y - make_model().fit(X, Y).predict(X)        <span class="cmt"># 같은 데이터로 학습+평가</span>
+    V = T - make_model().fit(X, T).predict(X)
+    return (V @ W) / (V @ V)
+
+learners = {
+  "랜덤 포레스트":     lambda: RandomForestRegressor(n_estimators=200, min_samples_leaf=5,
+                                                    random_state=0, n_jobs=-1),
+  "단일 의사결정나무": lambda: DecisionTreeRegressor(min_samples_leaf=3, random_state=0),
+}
+for name, mk in learners.items():
+    print("%-14s 교차적합=%.4f  교차적합없음=%.4f"
+          % (name, dml_crossfit(X,T,Y,mk), dml_nocrossfit(X,T,Y,mk)))</pre>
+  <div class="cell-note">랜덤 포레스트는 배깅이 과적합을 자체 완화해 교차적합 유무 차이가 거의 없습니다. 반면 과적합에 취약한 단일 의사결정나무는 교차적합 없이는 추정이 0.37까지 붕괴합니다 — 교차적합은 학습기 불문 안전장치입니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">랜덤 포레스트     교차적합=2.0370  교차적합없음=2.0308
+단일 의사결정나무 교차적합=1.1293  교차적합없음=0.3741</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 7 · 관측되지 않은 교란 변수가 있다면</div>
+<pre class="code">def make_data_with_U(n=4000, p=20, theta=2.0, a=0.8, b=1.2, seed=42):
+    rng = np.random.default_rng(seed)
+    X = rng.normal(size=(n, p))
+    m = 0.8*X[:,0] + 0.7*X[:,0]**2 + 0.5*X[:,1] + 0.3*X[:,2]
+    g = 1.0*X[:,0] + 0.9*X[:,0]**2 + 0.6*X[:,1] + np.sin(X[:,3]) + 0.5*X[:,4]
+    U = rng.normal(size=n)                       <span class="cmt"># 관측되지 않는 교란변수</span>
+    T = m + a*U + rng.normal(size=n)
+    Y = theta*T + g + b*U + rng.normal(size=n)
+    return X, T, Y
+
+Xu, Tu, Yu = make_data_with_U()
+theta, se, ci = dml_with_ci(Xu, Tu, Yu)          <span class="cmt"># U를 모르므로 X만 사용</span>
+print("누락 교란 존재 : theta=%.4f  95%%CI=[%.4f, %.4f]"
+      % (theta, ci[0], ci[1]))</pre>
+  <div class="warn"><b>이 셀이 모듈 전체에서 가장 중요합니다.</b> 숨은 교란 U가 있으면 DML은 2.61로 편향되고, <b>신뢰구간은 여전히 좁아</b> 그 사실을 경고하지 못합니다. ‘좁은 CI’가 ‘옳은 추정’을 뜻하지 않습니다 — CI는 통계적 불확실성만 담고, 가정 위반은 담지 못합니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">누락 교란 존재 : theta=2.6053  95%CI=[2.5699, 2.6407]
+                  ← 참값 2.0 을 벗어났는데 CI 폭은 겨우 0.07</div></details>
+</div>
+
+<div class="cell">
+  <div class="cell-hd">셀 8 · 이질적 효과 (부분군 DML)</div>
+<pre class="code">def make_data_hetero(n=16000, p=20, seed=42):
+    rng = np.random.default_rng(seed)
+    X = rng.normal(size=(n, p))
+    m = 0.8*X[:,0] + 0.7*X[:,0]**2 + 0.5*X[:,1] + 0.3*X[:,2]
+    g = 1.0*X[:,0] + 0.9*X[:,0]**2 + 0.6*X[:,1] + np.sin(X[:,3]) + 0.5*X[:,4]
+    theta_x = np.where(X[:,0] &lt; 0, 1.0, 2.5)     <span class="cmt"># 효과가 X[:,0] 부호에 따라 다름</span>
+    T = m + rng.normal(size=n)
+    Y = theta_x*T + g + rng.normal(size=n)
+    return X, T, Y
+
+Xh, Th, Yh = make_data_hetero()
+W = crossfit_residual(Xh, Yh)                    <span class="cmt"># 전역 교차적합 잔차</span>
+V = crossfit_residual(Xh, Th)
+for label, mask in [("X0&lt;0  (참값 1.0)", Xh[:,0] &lt; 0),
+                    ("X0&gt;=0 (참값 2.5)", Xh[:,0] &gt;= 0)]:
+    Wg, Vg = W[mask], V[mask]
+    theta = (Vg @ Wg) / (Vg @ Vg)
+    psi = Vg * (Wg - theta * Vg)
+    se = np.sqrt(np.mean(psi**2) / (mask.sum() * np.mean(Vg**2)**2))
+    print("%s : theta=%.4f  95%%CI=[%.4f, %.4f]"
+          % (label, theta, theta-1.96*se, theta+1.96*se))</pre>
+  <div class="cell-note">CATE는 “효과가 누구에게 큰가”를 보여줍니다. 금융에서는 “이 신호가 어떤 종목군·국면에서 특히 잘 듣는가”에 해당합니다.</div>
+  <details class="out"><summary>실행 결과 확인</summary><div class="output">X0&lt;0  (참값 1.0) : theta=1.0039  95%CI=[0.9801, 1.0277]
+X0&gt;=0 (참값 2.5) : theta=2.4951  95%CI=[2.4692, 2.5209]</div></details>
+</div>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 5 · 네 방법의 추정 결과 (워크북 실측, 참값 θ = 2.0)</div>
+    <svg viewBox="0 0 660 290" role="img" aria-label="네 추정 방법의 점추정과 신뢰구간">
+      <line x1="242" y1="46" x2="242" y2="262" stroke="#6E6E6E" stroke-width="2" stroke-dasharray="5 3"/>
+      <text x="242" y="280" font-size="11" fill="#6E6E6E" text-anchor="middle" font-weight="700" font-family="Segoe UI,sans-serif">참값 2.0</text>
+      <line x1="200" y1="262" x2="630" y2="262" stroke="#111111" stroke-width="1.3"/>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">
+        <text x="242" y="278">2.0</text><text x="326" y="278">2.2</text><text x="410" y="278">2.4</text>
+        <text x="494" y="278">2.6</text><text x="578" y="278">2.8</text>
+      </g>
+      <g font-family="Segoe UI,sans-serif" font-size="12.5">
+        <text x="190" y="79" text-anchor="end" fill="#111111">순진한 회귀 (Y~T)</text>
+        <line x1="559.9" y1="75" x2="584.7" y2="75" stroke="#111111" stroke-width="2.4"/>
+        <circle cx="572.3" cy="75" r="5" fill="#111111"/>
+        <text x="595" y="79" font-size="11" fill="#6E6E6E">2.79</text>
+        <text x="190" y="134" text-anchor="end" fill="#111111">선형 회귀 (Y~T+X)</text>
+        <line x1="496.1" y1="130" x2="521.0" y2="130" stroke="#111111" stroke-width="2.4"/>
+        <circle cx="508.5" cy="130" r="5" fill="#111111"/>
+        <text x="531" y="134" font-size="11" fill="#6E6E6E">2.63</text>
+        <text x="190" y="189" text-anchor="end" fill="#111111">DML (정확히 적용)</text>
+        <line x1="242.8" y1="185" x2="272.3" y2="185" stroke="#C53030" stroke-width="2.4"/>
+        <circle cx="257.5" cy="185" r="5" fill="#C53030"/>
+        <text x="283" y="189" font-size="11" fill="#6E6E6E">2.04</text>
+        <text x="190" y="244" text-anchor="end" fill="#111111">DML (누락 교란 존재)</text>
+        <line x1="481.4" y1="240" x2="511.1" y2="240" stroke="#111111" stroke-width="2.4"/>
+        <circle cx="496.2" cy="240" r="5" fill="#111111"/>
+        <text x="521" y="244" font-size="11" fill="#6E6E6E">2.61</text>
+      </g>
+    </svg>
+    <figcaption><b>워크북 요약.</b> 점은 점추정, 가로선은 95% 신뢰구간. 정확히 적용한 DML(적색)만 신뢰구간이 참값을 포함한다. 맨 아래 — 누락 교란이 있으면 DML도 빗나가며, 그래도 CI는 좁다(셀 7). 모든 수치는 셀 2·3·5·7의 실측값.</figcaption>
+  </div>
+</figure>
+
+<figure>
+  <div class="fig">
+    <div class="figtag">도표 6 · 이질적 효과 — 부분군 DML (셀 8 실측)</div>
+    <svg viewBox="0 0 660 200" role="img" aria-label="부분군별 처치효과 추정">
+      <line x1="180" y1="170" x2="630" y2="170" stroke="#111111" stroke-width="1.3"/>
+      <g font-family="Segoe UI,sans-serif" font-size="10.5" fill="#6E6E6E" text-anchor="middle">
+        <text x="240" y="186">1.0</text><text x="340" y="186">1.5</text><text x="440" y="186">2.0</text><text x="540" y="186">2.5</text>
+        <text x="405" y="199" font-size="11" fill="#111111">추정 처치효과 θ</text>
+      </g>
+      <g font-family="Segoe UI,sans-serif" font-size="12.5">
+        <line x1="240" y1="58" x2="240" y2="102" stroke="#6E6E6E" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="240" y="50" font-size="10.5" fill="#6E6E6E" text-anchor="middle">참값 1.0</text>
+        <line x1="236.0" y1="80" x2="245.5" y2="80" stroke="#111111" stroke-width="2.6"/>
+        <circle cx="240.8" cy="80" r="5" fill="#111111"/>
+        <text x="170" y="84" text-anchor="end" fill="#111111">X0 &lt; 0 집단</text>
+        <line x1="540" y1="108" x2="540" y2="152" stroke="#6E6E6E" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="540" y="100" font-size="10.5" fill="#6E6E6E" text-anchor="middle">참값 2.5</text>
+        <line x1="533.8" y1="130" x2="544.2" y2="130" stroke="#C53030" stroke-width="2.6"/>
+        <circle cx="539.0" cy="130" r="5" fill="#C53030"/>
+        <text x="170" y="134" text-anchor="end" fill="#111111">X0 ≥ 0 집단</text>
+      </g>
+    </svg>
+    <figcaption><b>DML은 이질적 효과도 복원한다.</b> 두 부분군의 참값 1.0·2.5를 실측 1.0039·2.4951로 추정, 신뢰구간이 각각의 참값을 포함한다(폭이 좁아 점에 가깝게 보임).</figcaption>
+  </div>
+</figure>
+
+<h4 class="sub">직접 해보기 — 풀이는 답지를 펼쳐 확인</h4>
+
+<details class="key">
+  <summary>문제 1 · 셀 1에서 theta_true를 5.0으로 바꾸면 셀 2(순진)와 셀 4(DML)는?</summary>
+  <div class="keybody">
+    <pre class="code">X5, T5, Y5 = make_data(theta=5.0)
+print("순진 Y~T :", round(np.polyfit(T5, Y5, 1)[0], 4))
+W5, V5 = crossfit_residual(X5, Y5), crossfit_residual(X5, T5)
+print("DML      :", round((V5 @ W5) / (V5 @ V5), 4))</pre>
+    <div class="output">순진 Y~T : 5.7864
+DML      : 5.0367</div>
+    <p style="font-size:13.5px;">순진한 추정의 편향은 <b>+0.79로 동일</b>합니다(5.79−5.0 = 0.79 = 2.79−2.0). 편향항 <span class="eqi" data-tex="\operatorname{Cov}(T,g_0)/\operatorname{Var}(T)"></span>는 <span class="eqi" data-tex="\theta_0"></span>와 무관한 가산 상수이기 때문입니다. DML은 참값이 무엇이든 그것을 복원합니다.</p>
+  </div>
+</details>
+
+<details class="key">
+  <summary>문제 2 · 표본을 n = 400으로 줄이면 신뢰구간 폭은?</summary>
+  <div class="keybody">
+    <pre class="code">X4, T4, Y4 = make_data(n=400)
+theta, se, ci = dml_with_ci(X4, T4, Y4)
+print("n=400  : theta=%.4f  CI=[%.4f, %.4f]  폭=%.4f"
+      % (theta, ci[0], ci[1], ci[1]-ci[0]))</pre>
+    <div class="output">n=400  : theta=2.2100  CI=[2.0817, 2.3382]  폭=0.2565
+n=4000 : theta=2.0370  CI=[2.0019, 2.0721]  폭=0.0702</div>
+    <p style="font-size:13.5px;">신뢰구간 폭이 0.070 → 0.257로 <b>3.65배</b> 넓어집니다(표본 10배 감소 → <span class="eqi" data-tex="\sqrt{10}\approx 3.16"></span> 배가 이론치, 유한표본 차이로 3.65). 게다가 점추정도 2.21로 더 부정확해집니다 — 작은 표본에서는 장애 함수 추정(<span class="eqi" data-tex="n^{-1/4}"></span> 수렴 가정)이 부실해지기 때문입니다.</p>
+  </div>
+</details>
+
+<details class="key">
+  <summary>문제 3 · 셀 7의 숨은 교란을 약하게(a=0.2, b=0.3) 만들면 편향은?</summary>
+  <div class="keybody">
+    <pre class="code">Xw, Tw, Yw = make_data_with_U(a=0.2, b=0.3)
+theta, se, ci = dml_with_ci(Xw, Tw, Yw)
+print("약한 교란 : theta=%.4f (편향 %+.4f)" % (theta, theta-2.0))</pre>
+    <div class="output">약한 교란 : theta=2.0873 (편향 +0.0873)
+강한 교란(a=0.8,b=1.2, 셀 7) : theta=2.6053 (편향 +0.6053)</div>
+    <p style="font-size:13.5px;">편향이 +0.61에서 +0.09로 줄어듭니다. 누락 교란이 약할수록 DML 편향도 작아집니다 — 핵심은, 숨은 교란이 “얼마나 강하면 결론이 뒤집히는가”를 따지는 것이 곧 3부의 <b>민감도 분석</b>이라는 점입니다.</p>
+  </div>
+</details>
+
+<!-- ================= PART 3 ================= -->
+<div class="part" id="pb">
+  <div class="pn">Part 3</div>
+  <h2>적용 플레이북 — 실무에서 DML 쓰기</h2>
+  <p>이론과 실습을 통계·금융 업무로 옮긴다. 적용 기준, 시나리오, 체크리스트, 함정, 민감도 분석.</p>
+</div>
+
+<h4 class="sub">언제 DML을 꺼내는가</h4>
+<table class="tbl">
+  <thead><tr><th>조건</th><th>설명</th></tr></thead>
+  <tbody>
+    <tr><td>질문이 인과형</td><td>“X가 Y를 <b>일으키는가</b>”. 단순 예측이 목적이면 DML은 불필요.</td></tr>
+    <tr><td>관측 데이터</td><td>무작위 실험이 아니다. (깨끗한 실험이 있으면 집단 간 평균 비교로 충분.)</td></tr>
+    <tr><td>교란이 많고 복잡</td><td>통제할 공변량이 수십~수백 개이거나 관계가 비선형.</td></tr>
+    <tr><td>신뢰구간이 필요</td><td>점추정뿐 아니라 통계적 불확실성까지 보고해야 한다.</td></tr>
+  </tbody>
+</table>
+
+<h4 class="sub">금융·통계 업무 시나리오 매핑</h4>
+<table class="tbl">
+  <thead><tr><th>업무 질문</th><th>처치 T</th><th>결과 Y</th><th>교란 X (예시)</th></tr></thead>
+  <tbody>
+    <tr><td>팩터 노출이 수익률을 높이나?</td><td>팩터 노출도</td><td>초과수익률</td><td>규모·밸류·모멘텀·유동성·섹터</td></tr>
+    <tr><td>리서치 발간이 거래량을 늘리나?</td><td>보고서 발간</td><td>이후 거래량</td><td>시총·인지도·과거 거래량·뉴스량</td></tr>
+    <tr><td>신용정책 강화가 부도율을 낮추나?</td><td>정책 적용</td><td>부도 발생</td><td>신용점수·소득·업종·거시 환경</td></tr>
+    <tr><td>프로모션이 예치금을 늘리나?</td><td>프로모션 대상</td><td>예치금 증가액</td><td>고객 자산·연령·기존 거래 패턴</td></tr>
+  </tbody>
+</table>
+
+<h4 class="sub">설정 체크리스트</h4>
+<div class="checklist">
+  <div>처치 T와 결과 Y를 <b>시점까지 포함해</b> 정의했는가 (T가 Y보다 앞서는가?)</div>
+  <div>인과 그래프(DAG)를 그려, X의 각 변수가 교란 변수임을 확인했는가</div>
+  <div>X에 충돌부·매개부·처치 이후 변수를 넣지 않았는가 (도표 4)</div>
+  <div>관측되지 않은 주요 교란이 있는가? 있다면 민감도 분석을 계획했는가</div>
+  <div>중첩을 점검했는가 — 성향점수 분포가 0·1에 몰리지 않는가</div>
+  <div>표본이 충분한가 — 장애 함수 학습과 θ 추정 양쪽에 (워크북 문제 2 참조)</div>
+  <div>처치가 연속이면 PLR, 이항·이질효과면 IRM/ATE를 선택했는가</div>
+</div>
+
+<h4 class="sub">결과 해석법</h4>
+<table class="tbl">
+  <thead><tr><th>볼 것</th><th>해석</th></tr></thead>
+  <tbody>
+    <tr><td>점추정 + 신뢰구간</td><td>항상 함께 본다. CI가 0을 포함하면 “효과가 있다고 말할 수 없다”.</td></tr>
+    <tr><td>효과 크기</td><td>유의성과 별개로 <b>경제적 크기</b>를 본다.</td></tr>
+    <tr><td>장애 모델 예측력</td><td><span class="eqi" data-tex="\hat\ell,\hat m"></span>의 교차검증 <span class="eqi" data-tex="R^2"></span>가 너무 낮으면 교란을 못 잡고 있다는 신호.</td></tr>
+    <tr><td>분할 안정성</td><td>다른 시드로 재실행해 <span class="eqi" data-tex="\hat\theta"></span>이 안정적인지 본다.</td></tr>
+  </tbody>
+</table>
+
+<h4 class="sub">흔한 함정 일곱 가지</h4>
+<table class="tbl">
+  <thead><tr><th>#</th><th>함정</th><th>대응</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>DML이 누락 교란을 풀어줄 것이라 믿는다</td><td>풀지 못한다. 민감도 분석으로 보완.</td></tr>
+    <tr><td>2</td><td>충돌부·매개부를 X에 포함</td><td>분석 전 DAG를 그린다.</td></tr>
+    <tr><td>3</td><td>처치 이후 변수를 통제에 넣음</td><td>X는 처치 ‘이전’ 정보만.</td></tr>
+    <tr><td>4</td><td>시계열 자기상관 — 기본 교차적합은 iid 가정</td><td>시간 블록 분할을 쓴다.</td></tr>
+    <tr><td>5</td><td>여러 처치를 돌려 유의한 것만 보고(p-해킹)</td><td>가설 사전 등록, 다중검정 보정.</td></tr>
+    <tr><td>6</td><td>좁은 CI를 ‘인과의 확실함’으로 오독</td><td>CI는 통계적 불확실성만 — 셀 7을 기억하라.</td></tr>
+    <tr><td>7</td><td>중첩 위반 — 성향점수가 0·1 근처</td><td>해당 구간을 잘라내거나(trimming) 한정 보고.</td></tr>
+  </tbody>
+</table>
+
+<h4 class="sub">민감도 분석 — 누락 교란에 대비하기</h4>
+<p>비교란성 가정은 검정할 수 없습니다. 그래서 진지한 인과 분석은 늘 묻습니다 — <b>“관측되지 않은 교란이 얼마나 강해야 결론이 뒤집히는가?”</b> 워크북 문제 3이 그 축소판입니다: 숨은 교란이 강하면 편향 +0.61, 약하면 +0.09. 민감도 분석은 이 ‘뒤집기 위한 강도’를 정량화합니다 — 이미 통제한 가장 강한 교란만큼 강한 숨은 변수가 있어야 효과가 0이 된다면 결론은 견고하고, 아주 약한 변수로도 뒤집힌다면 신중해야 합니다. 도구로는 Cinelli–Hazlett의 민감도 분석<sup class="fn"><a id="r5" href="#fn5">5</a></sup>이 있고, <code>EconML</code>·<code>DoubleML</code>도 관련 기능을 제공합니다<sup class="fn"><a id="r6" href="#fn6">6</a></sup><sup class="fn"><a id="r7" href="#fn7">7</a></sup>.</p>
+<div class="note"><b>보고의 정석.</b> ① 점추정과 신뢰구간, ② 가정한 인과 그래프, ③ 통제한 교란 변수 목록, ④ 민감도 분석 결과 — 이 넷을 함께 제시하면 읽는 사람이 결론의 신뢰도를 스스로 판단할 수 있다. 인과 주장의 설득력은 추정값이 아니라 ‘가정의 투명성’에서 나온다.</div>
+
+</div><!-- /content -->
+<div class="panel-rail">
+<aside class="tool-panel nav-panel">
+<div class="p-head">— Contents · 목차 —</div>
+<div class="p-grp">1부 · 심화 해설서</div>
+<a href="#s11"><span class="nl-n">1.1</span><span>문제 설정</span></a>
+<a href="#s12"><span class="nl-n">1.2</span><span>정규화 편향</span></a>
+<a href="#s13"><span class="nl-n">1.3</span><span>해법 ① 직교화</span></a>
+<a href="#s14"><span class="nl-n">1.4</span><span>해법 ② 교차적합</span></a>
+<a href="#s15"><span class="nl-n">1.5</span><span>DML 알고리즘</span></a>
+<a href="#s16"><span class="nl-n">1.6</span><span>PLR과 IRM</span></a>
+<a href="#s17"><span class="nl-n">1.7</span><span>이질적 효과 · CATE</span></a>
+<a href="#s18"><span class="nl-n">1.8</span><span>가정과 실패 사례</span></a>
+<a href="#wb" class="grp-link"><span class="nl-n">2부</span><span>실습 워크북</span></a>
+<a href="#pb" class="grp-link"><span class="nl-n">3부</span><span>적용 플레이북</span></a>
+</aside>
+<aside class="tool-panel formula-panel">
+<div class="p-head" id="fpHead">— §1.1 문제 설정 —</div>
+
+<div class="fcard" data-sec="s11">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}Y&=\theta_0\,T+g_0(X)+U\\T&=m_0(X)+V\end{aligned}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(T,\,Y,\,X\)</span><span class="d">— 처치 · 결과 · 교란변수</span></div>
+  <div class="fv"><span class="s">\(\theta_0\)</span><span class="d">— 처치효과 참값(목표 모수)</span></div>
+  <div class="fv"><span class="s">\(g_0(X),\,m_0(X)\)</span><span class="d">— X가 결과 · 처치에 주는 영향</span></div>
+  <div class="fv"><span class="s">\(U,\,V\)</span><span class="d">— 오차항</span></div>
+ </div>
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\hat\theta_{\text{naive}}&\xrightarrow{\;p\;}\theta_0\\[2pt]&+\,\frac{\operatorname{Cov}(T,g_0(X))}{\operatorname{Var}(T)}\end{aligned}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\operatorname{Cov},\operatorname{Var}\)</span><span class="d">— 편향항: 공분산 / 분산</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s12">
+ <div class="fblock">
+  <div class="fb-note">ML 추정량의 <b>정규화 편향</b>이 \(\hat\theta\)에 1차(first-order)로 그대로 누수 → \(\sqrt{n}\) 추론·신뢰구간이 무효화된다.</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\hat g\)</span><span class="d">— ML로 추정한 장애 함수</span></div>
+  <div class="fv"><span class="s">\(\sqrt{n}\)</span><span class="d">— 타당한 추론에 필요한 속도</span></div>
+  <div class="fv"><span class="s">\(n^{-1/4}\)</span><span class="d">— 장애 함수 수렴 최소 한계</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s13">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\tilde Y&=Y-\ell_0(X)\\\tilde T&=T-m_0(X)\\[3pt]\theta_0&=\frac{\mathbb{E}[\tilde T\,\tilde Y]}{\mathbb{E}[\tilde T^{2}]}\end{aligned}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\tilde Y,\,\tilde T\)</span><span class="d">— 잔차화된 Y · T</span></div>
+  <div class="fv"><span class="s">\(\ell_0(X)\)</span><span class="d">— \(\mathbb{E}[Y\mid X]\)</span></div>
+  <div class="fv"><span class="s">\(\theta_0\)</span><span class="d">— 두 잔차의 비로 식별</span></div>
+ </div>
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\psi(W;\theta,\eta)={}&\big(Y-\ell(X)\\&-\theta(T-m(X))\big)\\&\times\big(T-m(X)\big)\end{aligned}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\psi\)</span><span class="d">— 직교 스코어(모멘트) 함수</span></div>
+  <div class="fv"><span class="s">\(\eta=(\ell,m)\)</span><span class="d">— 장애 함수 묶음</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s14">
+ <div class="fblock">
+  <div class="fb-note">잔차를 계산할 폴드의 장애 함수는 <b>나머지 K−1개 폴드</b>에서만 학습 → 과적합 누수 차단.</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(K\)</span><span class="d">— 폴드 수 (보통 5)</span></div>
+  <div class="fv"><span class="s">\(\tilde Y,\,\tilde T\)</span><span class="d">— 폴드별 교차적합 잔차</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s15">
+ <div class="fblock">
+  <div class="fb-eq">\[\hat\theta_{\text{DML}}=\frac{\sum_i\hat{\tilde T}_i\,\hat{\tilde Y}_i}{\sum_i\hat{\tilde T}_i^{\,2}}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\hat\theta_{\text{DML}}\)</span><span class="d">— DML 점추정량</span></div>
+  <div class="fv"><span class="s">\(\hat{\tilde T},\,\hat{\tilde Y}\)</span><span class="d">— 교차적합 잔차</span></div>
+ </div>
+ <div class="fblock">
+  <div class="fb-eq">\[\widehat{\operatorname{SE}}(\hat\theta)=\sqrt{\frac{\tfrac1n\sum_i\hat\psi_i^{2}}{n\big(\tfrac1n\sum_i\hat{\tilde T}_i^{2}\big)^{2}}}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\hat\psi_i\)</span><span class="d">— 영향함수</span></div>
+  <div class="fv"><span class="s">\(n\)</span><span class="d">— 표본 수</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s16">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}\theta_{\text{ATE}}=\mathbb{E}\big[\,&g(1,X)-g(0,X)\\&+\tfrac{T(Y-g(1,X))}{m(X)}\\&-\tfrac{(1-T)(Y-g(0,X))}{1-m(X)}\,\big]\end{aligned}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(g(t,X)\)</span><span class="d">— 결과 모형 \(\mathbb{E}[Y\mid T{=}t,X]\)</span></div>
+  <div class="fv"><span class="s">\(m(X)\)</span><span class="d">— 성향점수 \(\mathbb{P}(T{=}1\mid X)\)</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s17">
+ <div class="fblock">
+  <div class="fb-eq">\[\tau(x)=\mathbb{E}\big[\,Y(1)-Y(0)\,\big|\,X=x\,\big]\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\tau(x)\)</span><span class="d">— 조건부 평균처치효과(CATE)</span></div>
+  <div class="fv"><span class="s">\(Y(1),\,Y(0)\)</span><span class="d">— 잠재적 결과</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="s18">
+ <div class="fblock">
+  <div class="fb-eq">\[\begin{aligned}&\big(Y(0),Y(1)\big)\perp\!\!\!\perp T\mid X\\[2pt]&\qquad 0&lt;m(X)&lt;1\end{aligned}\]</div>
+  <div class="fv-h">핵심 가정</div>
+  <div class="fv"><span class="s">비교란성</span><span class="d">— 모든 교란 변수가 관측됨</span></div>
+  <div class="fv"><span class="s">중첩</span><span class="d">— 성향점수가 0·1에 몰리지 않음</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="wb">
+ <div class="fblock">
+  <div class="fb-note">2부 8개 셀이 §1.5의 DML 추정량을 <b>numpy · scikit-learn</b>으로 직접 구현·검증한다.</div>
+  <div class="fb-eq">\[\hat\theta_{\text{DML}}=\frac{\sum_i\hat{\tilde T}_i\,\hat{\tilde Y}_i}{\sum_i\hat{\tilde T}_i^{\,2}}\]</div>
+  <div class="fv-h">변수 · 파라미터</div>
+  <div class="fv"><span class="s">\(\hat\theta_{\text{DML}}\)</span><span class="d">— 코드로 구현하는 추정량</span></div>
+  <div class="fv"><span class="s">\(\hat{\tilde T},\,\hat{\tilde Y}\)</span><span class="d">— 교차적합 잔차</span></div>
+ </div>
+</div>
+
+<div class="fcard" data-sec="pb">
+ <div class="fblock">
+  <div class="fb-note">적용의 핵심 — <b>비교란성 · 중첩</b> 가정 점검과 누락 교란 <b>민감도 분석</b>.</div>
+  <div class="fv-h">점검 항목</div>
+  <div class="fv"><span class="s">비교란성</span><span class="d">— 관측된 교란만 통제 가능</span></div>
+  <div class="fv"><span class="s">중첩</span><span class="d">— 성향점수 0·1 회피</span></div>
+  <div class="fv"><span class="s">민감도</span><span class="d">— 누락 교란 강도 정량화</span></div>
+ </div>
+</div>
+</aside>
+</div>
+</div><!-- /with-layer-panel -->
+
+<!-- ================= 참고문헌 ================= -->
+<div class="refs" id="refs">
+  <h2>참고문헌 · 출처</h2>
+  <ol>
+    <li id="fn1">부분선형회귀 잔차화 추정량의 고전. Robinson, P. M. (1988), “Root-N-Consistent Semiparametric Regression,” <i>Econometrica</i> 56(4), 931–954. DOI: <a class="src" href="https://doi.org/10.2307/1912705">10.2307/1912705</a> <a href="#r1">↩</a></li>
+    <li id="fn2">DML의 정립 — 직교 스코어, 교차적합, <span class="eqi" data-tex="\sqrt{n}"></span>-추론. Chernozhukov, V. 외 (2018), “Double/Debiased Machine Learning for Treatment and Structural Parameters,” <i>The Econometrics Journal</i> 21(1), C1–C68. 전문(arXiv): <a class="src" href="https://arxiv.org/abs/1608.00060">arxiv.org/abs/1608.00060</a> <a href="#r2">↩</a></li>
+    <li id="fn3">CATE 추정용 인과 숲. Wager, S. &amp; Athey, S. (2018), “Estimation and Inference of Heterogeneous Treatment Effects using Random Forests,” <i>JASA</i> 113(523). 전문(arXiv): <a class="src" href="https://arxiv.org/abs/1510.04342">arxiv.org/abs/1510.04342</a> <a href="#r3">↩</a></li>
+    <li id="fn4">잔차화 손실로 CATE를 학습하는 R-learner. Nie, X. &amp; Wager, S. (2021), “Quasi-Oracle Estimation of Heterogeneous Treatment Effects,” <i>Biometrika</i> 108(2). 전문(arXiv): <a class="src" href="https://arxiv.org/abs/1712.04912">arxiv.org/abs/1712.04912</a> <a href="#r4">↩</a></li>
+    <li id="fn5">누락변수 편향을 확장한 민감도 분석. Cinelli, C. &amp; Hazlett, C. (2020), “Making Sense of Sensitivity: Extending Omitted Variable Bias,” <i>JRSS-B</i> 82(1), 39–67. DOI: <a class="src" href="https://doi.org/10.1111/rssb.12348">10.1111/rssb.12348</a> <a href="#r5">↩</a></li>
+    <li id="fn6">파이썬 인과 ML 라이브러리. EconML, Microsoft Research / PyWhy. <a class="src" href="https://github.com/py-why/EconML">github.com/py-why/EconML</a> <a href="#r6">↩</a></li>
+    <li id="fn7">DML 전용 파이썬·R 패키지. DoubleML. <a class="src" href="https://docs.doubleml.org/">docs.doubleml.org</a> <a href="#r7">↩</a></li>
+    <li>종합 참고서(온라인 무료). Chernozhukov, Hansen, Kallus, Spindler, Syrgkanis, <i>Applied Causal Inference Powered by ML and AI</i>. <a class="src" href="https://www.causalmlbook.com/">causalmlbook.com</a></li>
+  </ol>
+</div>
+
+<div class="disclaimer">
+  <b>검증 및 고지.</b> 2부 워크북의 모든 수치와 도표 5·6은 동봉 스크립트 <code>인과추론-워크북.py</code>를, 도표 1·2는 <code>검증-산점도데이터.py</code>·<code>검증-전체수치.py</code>를 검증 환경(Python 3.13.3 · numpy 2.2.5 · scikit-learn 1.6.1)에서 실제 실행해 산출했습니다. 세 스크립트 모두 동봉되어 있으며, 워크북은 처음부터 끝까지 정상 실행됨을 확인했습니다. scikit-learn 버전이 다르면 랜덤 포레스트 결과가 미세하게 달라질 수 있습니다. 1.1의 두 종목 산술 예시는 설명용으로 구성한 값입니다. 본 문서는 교육 목적이며 투자 자문이 아닙니다. 수식 영역 클릭 시 LaTeX 소스가 클립보드에 복사됩니다(로컬 파일에서 동작하도록 폴백 포함).
+</div>
+
+<footer>인과추론 심화 모듈 01 · Double Machine Learning · 2026-05-20 — 나머지 5개 주제도 동일 형식으로 확장 가능</footer>
+
+</div>
+
+<script>
+/* ── 수식: data-tex → 렌더 + 클릭 복사 ── */
+function showToast(){
+  var t=document.getElementById('toast');
+  t.style.opacity='1'; clearTimeout(t._tmo);
+  t._tmo=setTimeout(function(){t.style.opacity='0';},1300);
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.top='-1000px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+}
+function copyTeX(el){
+  var tex=el.getAttribute('data-tex');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(tex).then(showToast,function(){fallbackCopy(tex);showToast();});
+  }else{fallbackCopy(tex);showToast();}
+}
+document.querySelectorAll('.eq').forEach(function(el){
+  el.textContent='\\['+el.getAttribute('data-tex')+'\\]';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+document.querySelectorAll('.eqi').forEach(function(el){
+  el.textContent='\\('+el.getAttribute('data-tex')+'\\)';
+  el.addEventListener('click',function(){copyTeX(el);});
+  el.title='클릭하면 LaTeX 소스가 복사됩니다';
+});
+</script>
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},
+  svg:{fontCache:'global'},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}
+};
+</script>
+<script src="mathjax-tex-svg-full.js" id="MathJax-script"></script>
+
+<script>
+(function(){
+  var links={};
+  document.querySelectorAll('.nav-panel a').forEach(function(x){
+    links[x.getAttribute('href').slice(1)]=x;
+  });
+  var fcards={};
+  document.querySelectorAll('.fcard').forEach(function(c){
+    fcards[c.getAttribute('data-sec')]=c;
+  });
+  var fpHead=document.getElementById('fpHead');
+  var secName={s11:'§1.1 문제 설정',s12:'§1.2 정규화 편향',s13:'§1.3 직교화',
+    s14:'§1.4 교차적합',s15:'§1.5 DML 알고리즘',s16:'§1.6 PLR · IRM',
+    s17:'§1.7 CATE',s18:'§1.8 가정과 실패',wb:'2부 실습 워크북',pb:'3부 적용 플레이북'};
+  var cur=null;
+  function activate(id){
+    if(!links[id]||cur===id)return;
+    if(cur&&links[cur])links[cur].classList.remove('active');
+    links[id].classList.add('active');cur=id;
+    for(var k in fcards){fcards[k].classList.toggle('fc-on',k===id);}
+    if(fpHead)fpHead.textContent='— '+(secName[id]||'공식')+' —';
+  }
+  if(fcards.s11)fcards.s11.classList.add('fc-on');
+  var targets=['s11','s12','s13','s14','s15','s16','s17','s18','wb','pb']
+    .map(function(id){return document.getElementById(id);}).filter(Boolean);
+  function spy(){
+    var line=window.innerHeight*0.2,best=null;
+    targets.forEach(function(t){
+      if(t.getBoundingClientRect().top<line)best=t.id;
+    });
+    if(best)activate(best);
+  }
+  window.addEventListener('scroll',spy,{passive:true});
+  window.addEventListener('resize',spy,{passive:true});
+  window.addEventListener('load',spy);
+  if(window.MathJax&&MathJax.startup&&MathJax.startup.promise){
+    MathJax.startup.promise.then(spy);
+  }
+  spy();
+})();
+</script>
+<div class="lightbox" id="lightbox"><img src="" alt=""></div>
+<script>
+/* 라이트박스 — 그림 클릭 확대, 오버레이 클릭·Esc로 닫기 */
+(function(){
+  var ov=document.getElementById('lightbox');
+  var im=ov.querySelector('img');
+  function close(){ov.classList.remove('on');}
+  ov.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  document.querySelectorAll('.fig img').forEach(function(g){
+    g.addEventListener('click',function(){im.src=g.getAttribute('src');im.alt=g.alt||'';ov.classList.add('on');});
+  });
+})();
+</script>
+</body>
+</html>

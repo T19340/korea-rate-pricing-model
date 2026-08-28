@@ -1,0 +1,24 @@
+{
+  "downloaded_at_utc": "2026-08-28T00:38:19.486856+00:00",
+  "description": "Wide panel of evaluator-average (평가사 평균) valuation yields; input for month-end AFNS zero-curve construction.",
+  "row_count": 3365,
+  "first_time": "2013-01-02",
+  "last_time": "2026-08-27",
+  "columns": [
+    "date",
+    "msb_3m",
+    "msb_6m",
+    "msb_9m",
+    "ktb_3m",
+    "ktb_6m",
+    "ktb_9m",
+    "ktb_1y",
+    "ktb_2y",
+    "ktb_3y",
+    "ktb_5y",
+    "ktb_10y",
+    "ktb_20y",
+    "ktb_30y"
+  ],
+  "sha256": "07386ad517220077bc384e86946db8f03bfbefe24139ee8b644d396c843e1ad3"
+}

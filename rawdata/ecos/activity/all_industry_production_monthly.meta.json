@@ -1,0 +1,24 @@
+{
+  "source_name": "Bank of Korea Economic Statistics System (ECOS)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "downloaded_at_utc": "2026-08-07T08:58:53.549610+00:00",
+  "request_template_first_page": "https://ecos.bok.or.kr/api/StatisticSearch/<ECOS_API_KEY>/json/kr/1/10/901Y033/M/200001/202608/A00/2",
+  "query": {
+    "slug": "all_industry_production_monthly",
+    "category": "activity",
+    "stat_code": "901Y033",
+    "cycle": "M",
+    "start_time": "200001",
+    "items": [
+      "A00",
+      "2"
+    ],
+    "description": "전산업생산지수(농림어업 제외, 계절조정)",
+    "end_time": "202608"
+  },
+  "row_count": 318,
+  "first_time": "200001",
+  "last_time": "202606",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "None; ECOS row fields are preserved as returned."
+}

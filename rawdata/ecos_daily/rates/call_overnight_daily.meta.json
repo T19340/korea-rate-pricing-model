@@ -1,0 +1,29 @@
+{
+  "source_name": "Bank of Korea ECOS (daily market rates, internal web endpoint)",
+  "source_url": "https://ecos.bok.or.kr/",
+  "endpoint": "https://ecos.bok.or.kr/serviceEndpoint/httpService/request.json",
+  "endpoint_note": "ECOS 웹 화면이 쓰는 내부 조회 서비스(trxCd OSUUA02R01). 인증키 없이 전 구간을 한 번에 받으므로 sample 키의 10행 제한과 요청수 제한을 피한다. 공식 OpenAPI(api/StatisticSearch)와 값이 동일함은 2026-07 국고3년 3,140영업일 전 구간 대조로 확인됨.",
+  "downloaded_at_utc": "2026-08-28T00:38:12.378783+00:00",
+  "query": {
+    "stat_code": "817Y002",
+    "stat_name": "1.3.2.1. 시장금리(일별)",
+    "item_code": "010101000",
+    "cycle": "D",
+    "segments": [
+      [
+        "19910102",
+        "20101231"
+      ],
+      [
+        "20110101",
+        "20260828"
+      ]
+    ]
+  },
+  "description": "무담보 콜금리(1일, 전체거래) 일별",
+  "row_count": 8028,
+  "first_time": "1995-01-03",
+  "last_time": "2026-08-26",
+  "encoding": "UTF-8 with BOM",
+  "transformation": "Wide (date-keyed) service response reshaped to tidy date,value rows; holiday placeholders ('-'/empty) dropped. Values otherwise as returned."
+}

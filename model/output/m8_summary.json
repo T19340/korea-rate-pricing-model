@@ -1,0 +1,34 @@
+{
+ "turning_points": {
+  "hike_turns": [
+   {
+    "meeting": "2017-11-30",
+    "msb": 0.67,
+    "bmsi": 0.82
+   },
+   {
+    "meeting": "2021-08-26",
+    "msb": 0.23,
+    "bmsi": 0.33
+   },
+   {
+    "meeting": "2026-07-16",
+    "msb": 1.0,
+    "bmsi": 0.66
+   }
+  ],
+  "cut_turns": [
+   {
+    "meeting": "2019-07-18",
+    "msb": 0.58,
+    "bmsi": 0.3
+   },
+   {
+    "meeting": "2024-10-11",
+    "msb": 1.0,
+    "bmsi": 0.64
+   }
+  ]
+ },
+ "note": "corr on n<15 has s.e. ~0.25-0.5; treat regime rows as direction, not precision."
+}

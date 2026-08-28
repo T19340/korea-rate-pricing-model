@@ -1,0 +1,225 @@
+{
+ "phi_bp": {
+  "91": 0.8,
+  "6m": 1.1,
+  "1y": 3.9
+ },
+ "quiet_days": 710,
+ "periods": {
+  "2013-2016 인하기(2.75→1.25)": {
+   "n": 47,
+   "outcomes": {
+    "hike": 0,
+    "hold": 41,
+    "cut": 6
+   },
+   "brier_msb": [
+    0.2191,
+    47
+   ],
+   "brier_irs": [
+    0.2432,
+    47
+   ],
+   "brier_ois": [
+    null,
+    0
+   ],
+   "brier_bmsi": [
+    0.1492,
+    47
+   ],
+   "brier_climatology": 0.2227
+  },
+  "2017-2019.6 인상기(→1.75)": {
+   "n": 20,
+   "outcomes": {
+    "hike": 2,
+    "hold": 18,
+    "cut": 0
+   },
+   "brier_msb": [
+    0.0625,
+    20
+   ],
+   "brier_irs": [
+    0.1893,
+    20
+   ],
+   "brier_ois": [
+    null,
+    0
+   ],
+   "brier_bmsi": [
+    0.0261,
+    20
+   ],
+   "brier_climatology": 0.18
+  },
+  "2019.7-2021.7 인하기(→0.50)": {
+   "n": 17,
+   "outcomes": {
+    "hike": 0,
+    "hold": 14,
+    "cut": 3
+   },
+   "brier_msb": [
+    0.3058,
+    17
+   ],
+   "brier_irs": [
+    0.336,
+    17
+   ],
+   "brier_ois": [
+    null,
+    0
+   ],
+   "brier_bmsi": [
+    0.1584,
+    17
+   ],
+   "brier_climatology": 0.2907
+  },
+  "2021.8-2023.1 인상기(→3.50)": {
+   "n": 12,
+   "outcomes": {
+    "hike": 10,
+    "hold": 2,
+    "cut": 0
+   },
+   "brier_msb": [
+    0.7676,
+    12
+   ],
+   "brier_irs": [
+    1.3643,
+    12
+   ],
+   "brier_ois": [
+    1.1155,
+    7
+   ],
+   "brier_bmsi": [
+    0.1964,
+    12
+   ],
+   "brier_climatology": 0.2778
+  },
+  "2023.2-2024.9 동결기": {
+   "n": 13,
+   "outcomes": {
+    "hike": 0,
+    "hold": 13,
+    "cut": 0
+   },
+   "brier_msb": [
+    0.3673,
+    13
+   ],
+   "brier_irs": [
+    0.0499,
+    13
+   ],
+   "brier_ois": [
+    0.1452,
+    13
+   ],
+   "brier_bmsi": [
+    0.0293,
+    13
+   ],
+   "brier_climatology": 0.0
+  },
+  "2024.10-2026.5 인하기(→2.50)": {
+   "n": 14,
+   "outcomes": {
+    "hike": 0,
+    "hold": 10,
+    "cut": 4
+   },
+   "brier_msb": [
+    0.3313,
+    14
+   ],
+   "brier_irs": [
+    0.5417,
+    14
+   ],
+   "brier_ois": [
+    0.2584,
+    14
+   ],
+   "brier_bmsi": [
+    0.1932,
+    14
+   ],
+   "brier_climatology": 0.4082
+  },
+  "2026 인상기": {
+   "n": 2,
+   "outcomes": {
+    "hike": 2,
+    "hold": 0,
+    "cut": 0
+   },
+   "brier_msb": [
+    0.5914,
+    2
+   ],
+   "brier_irs": [
+    1.3372,
+    2
+   ],
+   "brier_ois": [
+    0.0089,
+    2
+   ],
+   "brier_bmsi": [
+    0.2312,
+    1
+   ],
+   "brier_climatology": 0.0
+  }
+ },
+ "overall": {
+  "n": 125,
+  "brier_msb": [
+   0.2924,
+   125
+  ],
+  "brier_irs": [
+   0.3857,
+   125
+  ],
+  "brier_ois": [
+   0.3703,
+   36
+  ],
+  "brier_bmsi": [
+   0.1283,
+   124
+  ],
+  "brier_climatology": 0.362
+ },
+ "head_to_head_bmsi_subset": {
+  "n": 124,
+  "brier_msb": [
+   0.2852,
+   124
+  ],
+  "brier_irs": [
+   0.3766,
+   124
+  ],
+  "brier_ois": [
+   0.3809,
+   35
+  ],
+  "brier_bmsi": [
+   0.1283,
+   124
+  ],
+  "brier_climatology": 0.3534
+ }
+}
